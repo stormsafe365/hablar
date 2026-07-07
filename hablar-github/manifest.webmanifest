@@ -1,0 +1,26 @@
+{
+  "name": "Hablar — Spanish for real life",
+  "short_name": "Hablar",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f5f2",
+  "theme_color": "#e0533d",
+  "lang": "en",
+  "description": "Learn Cuban & Colombian Spanish for real family life.",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
