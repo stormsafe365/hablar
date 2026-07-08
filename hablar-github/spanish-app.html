@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="theme-color" content="#262421"/>
 <title>Hablar · Learn Spanish for Real Life</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -25,14 +26,15 @@
   --serif:'Fraunces',Georgia,serif;
 }
 [data-theme="dark"]{
-  --bg:#141310; --surface:#1e1c19; --surface-2:#252220; --elevated:#26231f;
-  --text:#f3efe8; --text-soft:#a8a29a; --text-faint:#6f6a62; --line:#302c27;
-  --accent:#f2765f; --accent-soft:#3a2420; --accent-ink:#f2765f;
-  --cuba:#e86b7c; --cuba-soft:#3a2126; --colombia:#e9b949; --colombia-soft:#37301b;
-  --teal:#3bb4a4; --teal-soft:#16302c; --violet:#9a8dea; --violet-soft:#241f3a;
-  --good:#41b483; --good-soft:#173028; --bad:#e86b7c; --bad-soft:#3a2126;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
-  --shadow-lg:0 4px 12px rgba(0,0,0,.4),0 24px 48px rgba(0,0,0,.5);
+  /* warm greige — soft gray-brown, not black */
+  --bg:#262421; --surface:#302d29; --surface-2:#3a352f; --elevated:#332f2b;
+  --text:#efe9df; --text-soft:#aca498; --text-faint:#7d7566; --line:#3d382f;
+  --accent:#ec7a5f; --accent-soft:#3a2b25; --accent-ink:#f3a892;
+  --cuba:#d97487; --cuba-soft:#39282c; --colombia:#d9b45f; --colombia-soft:#352f20;
+  --teal:#4bb3a3; --teal-soft:#1e332f; --violet:#a294e6; --violet-soft:#2a2540;
+  --good:#5cc191; --good-soft:#1f332a; --bad:#dd7488; --bad-soft:#392830;
+  --shadow:0 1px 2px rgba(0,0,0,.26),0 10px 26px rgba(0,0,0,.32);
+  --shadow-lg:0 6px 16px rgba(0,0,0,.38),0 24px 50px rgba(0,0,0,.48);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg);color:var(--text);font-family:var(--sans);
@@ -50,8 +52,9 @@ input{font-family:inherit}
   backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line);
   padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px}
-.brand-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(140deg,var(--accent),var(--cuba));
+.brand-mark{width:34px;height:34px;border-radius:11px;background:var(--accent);
   display:grid;place-items:center;color:#fff;font-weight:800;font-size:17px;box-shadow:var(--shadow)}
+.streak-chip svg{color:var(--accent)}
 .brand-name{font-family:var(--serif);font-weight:600;font-size:19px;letter-spacing:-.01em}
 .brand-name small{font-family:var(--sans);font-weight:500;font-size:11px;color:var(--text-faint);
   display:block;letter-spacing:.02em;margin-top:-2px}
@@ -68,7 +71,8 @@ input{font-family:inherit}
   border-top:1px solid var(--line);display:flex;padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
 .navbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 2px;
   border-radius:14px;color:var(--text-faint);font-weight:600;font-size:10.5px;transition:color .2s}
-.navbtn .ni{font-size:21px;line-height:1;transition:transform .2s}
+.navbtn .ni{font-size:21px;line-height:1;transition:transform .2s;display:grid;place-items:center}
+.navbtn .ni svg{width:23px;height:23px}
 .navbtn.on{color:var(--accent)}
 .navbtn.on .ni{transform:translateY(-2px) scale(1.06)}
 
@@ -86,26 +90,26 @@ input{font-family:inherit}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 12px;box-shadow:var(--shadow)}
 .stat .n{font-family:var(--serif);font-size:26px;font-weight:700;line-height:1}
 .stat .l{font-size:11px;color:var(--text-soft);margin-top:5px;font-weight:600}
-.goal-card{margin-top:14px;padding:18px;background:linear-gradient(140deg,var(--accent),var(--cuba));
-  border-radius:var(--r-lg);color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
-.goal-card::after{content:"";position:absolute;right:-30px;top:-30px;width:130px;height:130px;
-  background:rgba(255,255,255,.13);border-radius:50%}
+.goal-card{margin-top:14px;padding:18px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r-lg);color:var(--text);box-shadow:var(--shadow);position:relative;overflow:hidden}
 .goal-card h3{font-family:var(--serif);font-size:19px;font-weight:600;margin-bottom:3px}
-.goal-card p{font-size:13px;opacity:.92;margin-bottom:14px}
-.goal-bar{height:9px;background:rgba(255,255,255,.28);border-radius:99px;overflow:hidden}
-.goal-bar>div{height:100%;background:#fff;border-radius:99px;transition:width .6s cubic-bezier(.2,.7,.3,1)}
-.goal-meta{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-top:9px;opacity:.95}
+.goal-card p{font-size:13px;color:var(--text-soft);margin-bottom:14px}
+.goal-bar{height:9px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.goal-bar>div{height:100%;background:var(--accent);border-radius:99px;transition:width .6s cubic-bezier(.2,.7,.3,1)}
+.goal-meta{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-top:9px;color:var(--text-soft)}
 .quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
 .quick{padding:16px;border-radius:var(--r);text-align:left;box-shadow:var(--shadow);border:1px solid var(--line);
   background:var(--surface);transition:transform .15s,box-shadow .2s;display:flex;flex-direction:column;gap:8px;min-height:112px}
 .quick:active{transform:scale(.97)}
-.quick .qi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px}
+.quick .qi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:var(--surface-2);color:var(--accent-ink)}
+.quick .qi svg{width:22px;height:22px}
 .quick .qt{font-weight:700;font-size:15px;letter-spacing:-.01em}
 .quick .qd{font-size:12px;color:var(--text-soft);line-height:1.4}
 .list-link{display:flex;align-items:center;gap:13px;padding:14px 16px;background:var(--surface);
   border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-top:10px;transition:transform .15s}
 .list-link:active{transform:scale(.98)}
-.list-link .li{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;flex-shrink:0}
+.list-link .li{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;flex-shrink:0;background:var(--surface-2);color:var(--accent-ink)}
+.list-link .li svg{width:22px;height:22px}
 .list-link .lt{font-weight:700;font-size:15px}
 .list-link .ld{font-size:12.5px;color:var(--text-soft);margin-top:2px}
 .list-link .chev{margin-left:auto;color:var(--text-faint);font-size:18px}
@@ -162,7 +166,7 @@ input{font-family:inherit}
 .fc-btn.again{background:var(--bad-soft);color:var(--bad);border-color:color-mix(in srgb,var(--bad) 25%,transparent)}
 .fc-btn.got{background:var(--good-soft);color:var(--good);border-color:color-mix(in srgb,var(--good) 25%,transparent)}
 .fc-progress{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:2px 0 14px}
-.fc-progress>div{height:100%;background:linear-gradient(90deg,var(--teal),var(--good));transition:width .4s}
+.fc-progress>div{height:100%;background:var(--accent);transition:width .4s}
 .done-card{text-align:center;padding:44px 24px}
 .done-card .big{font-size:60px;margin-bottom:10px}
 .done-card h2{font-family:var(--serif);font-size:26px;font-weight:600;margin-bottom:8px}
@@ -182,11 +186,11 @@ input{font-family:inherit}
 .scn-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);
   overflow:hidden;margin-bottom:14px;transition:transform .15s}
 .scn-card:active{transform:scale(.99)}
-.scn-top{padding:18px 18px 16px;position:relative;overflow:hidden}
+.scn-top{padding:18px 18px 16px;position:relative;overflow:hidden;background:var(--surface-2);border-bottom:1px solid var(--line)}
 .scn-top .lvl{position:absolute;top:14px;right:16px;font-size:11px;font-weight:800;letter-spacing:.05em;
-  text-transform:uppercase;background:rgba(255,255,255,.25);color:#fff;padding:4px 10px;border-radius:999px}
-.scn-top h3{font-family:var(--serif);font-size:20px;font-weight:600;color:#fff;letter-spacing:-.01em;max-width:80%}
-.scn-top p{font-size:13px;color:rgba(255,255,255,.9);margin-top:4px}
+  text-transform:uppercase;background:var(--surface);color:var(--text-faint);border:1px solid var(--line);padding:4px 10px;border-radius:999px}
+.scn-top h3{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text);letter-spacing:-.01em;max-width:80%}
+.scn-top p{font-size:13px;color:var(--text-soft);margin-top:4px}
 .scn-foot{padding:12px 18px;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--text-soft);font-weight:600}
 .scn-foot .done-badge{margin-left:auto;color:var(--good);font-weight:700;display:flex;align-items:center;gap:4px}
 /* roleplay */
@@ -198,7 +202,7 @@ input{font-family:inherit}
 .who-tag{font-size:11px;font-weight:800;letter-spacing:.03em;color:var(--text-faint);margin-bottom:4px;padding:0 4px}
 .bubble{max-width:82%;padding:13px 16px;border-radius:20px;box-shadow:var(--shadow)}
 .bubble.them{background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:6px}
-.bubble.me-b{background:linear-gradient(135deg,var(--accent),var(--cuba));color:#fff;border-bottom-right-radius:6px}
+.bubble.me-b{background:var(--accent);color:#fff;border-bottom-right-radius:6px}
 .bubble .b-es{font-size:15px;font-weight:600;cursor:pointer}
 .bubble.them .b-es{font-family:var(--serif);font-weight:600}
 .bubble .b-en{font-size:12.5px;opacity:.82;margin-top:4px}
@@ -221,8 +225,9 @@ input{font-family:inherit}
 /* ---------- Listening ---------- */
 .listen-card{text-align:center;padding:8px 4px}
 .big-speak{width:118px;height:118px;border-radius:50%;margin:14px auto 8px;
-  background:linear-gradient(140deg,var(--teal),#1c7d72);color:#fff;display:grid;place-items:center;
-  font-size:46px;box-shadow:0 12px 30px color-mix(in srgb,var(--teal) 40%,transparent);transition:transform .15s}
+  background:var(--teal);color:#fff;display:grid;place-items:center;
+  font-size:46px;box-shadow:0 12px 30px color-mix(in srgb,var(--teal) 32%,transparent);transition:transform .15s}
+.big-speak svg{width:46px;height:46px}
 .big-speak:active{transform:scale(.94)}
 .big-speak.playing{animation:pulse 1s ease infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
@@ -242,11 +247,11 @@ input{font-family:inherit}
 /* ---------- Verbs / reference ---------- */
 .verb-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
   overflow:hidden;margin-bottom:14px}
-.verb-h{padding:16px 18px;background:linear-gradient(135deg,var(--teal),#1c7d72);color:#fff;cursor:pointer;
+.verb-h{padding:16px 18px;background:var(--surface-2);color:var(--text);cursor:pointer;border-bottom:1px solid var(--line);
   display:flex;align-items:center;justify-content:between;gap:10px}
-.verb-h .vt{font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:.01em}
-.verb-h .vm{font-size:13px;opacity:.92;margin-top:1px}
-.verb-h .vx{margin-left:auto;font-size:20px;opacity:.8;transition:transform .3s}
+.verb-h .vt{font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:.01em;color:var(--accent-ink)}
+.verb-h .vm{font-size:13px;color:var(--text-soft);margin-top:1px}
+.verb-h .vx{margin-left:auto;font-size:20px;color:var(--text-faint);transition:transform .3s}
 .verb-h.open .vx{transform:rotate(45deg)}
 .verb-body{padding:16px 18px;display:none}
 .verb-body.show{display:block;animation:rise .3s ease}
@@ -287,7 +292,7 @@ input{font-family:inherit}
 .quiz-wrap{padding:6px 0}
 .quiz-meta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--text-soft);font-weight:700;margin-bottom:8px}
 .quiz-bar{height:7px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-bottom:20px}
-.quiz-bar>div{height:100%;background:linear-gradient(90deg,var(--accent),var(--cuba));transition:width .4s}
+.quiz-bar>div{height:100%;background:var(--accent);transition:width .4s}
 .quiz-q{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.3;margin-bottom:18px;letter-spacing:-.01em}
 .quiz-hint{background:var(--colombia-soft);border-radius:14px;padding:13px 15px;margin-top:14px;font-size:13px;line-height:1.5}
 
@@ -735,6 +740,33 @@ function SpeakPill({text,label}){ return (
   <button className="speak-pill" onClick={(e)=>{e.stopPropagation();speak(text);}}>🔊 {label||"Hear it"}</button>
 ); }
 
+/* ---------- clean line icons (monochrome, inherit color) ---------- */
+const ICONS = {
+  home:  "M3 11.4 12 4l9 7.4M5.5 9.8V19a1 1 0 0 0 1 1H10v-5.5h4V20h3.5a1 1 0 0 0 1-1V9.8",
+  cards: "M8 6.5h11a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H8A1.5 1.5 0 0 1 6.5 17V8A1.5 1.5 0 0 1 8 6.5ZM4 8.5v9A2.5 2.5 0 0 0 6.5 20H16",
+  talk:  "M20 14.5a2 2 0 0 1-2 2H9l-4 3.5V6.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2Z",
+  listen:"M4 13v-1a8 8 0 0 1 16 0v1M4.5 13.5A1.5 1.5 0 0 1 6 15v2.5A1.5 1.5 0 0 1 4.5 19 1.5 1.5 0 0 1 3 17.5v-2.5a1.5 1.5 0 0 1 1.5-1.5ZM19.5 13.5A1.5 1.5 0 0 0 18 15v2.5a1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5v-2.5a1.5 1.5 0 0 0-1.5-1.5Z",
+  quiz:  "M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16ZM12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z",
+  verbs: "M6 4.5h11a1.5 1.5 0 0 1 1.5 1.5v13.5H8A2 2 0 0 0 6 21.5V4.5ZM6 21.5A2 2 0 0 1 8 19.5h10.5",
+  pron:  "M11 5.5 6.5 9.5H3.5v5h3L11 18.5ZM15.5 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11",
+  browse:"M4.5 4.5h6v6h-6ZM13.5 4.5h6v6h-6ZM4.5 13.5h6v6h-6ZM13.5 13.5h6v6h-6Z",
+  saved: "M7 4.5h10a1 1 0 0 1 1 1V20l-6-4-6 4V5.5a1 1 0 0 1 1-1Z",
+  sun:   "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4",
+  moon:  "M20 14.2A8 8 0 1 1 9.8 4 6.4 6.4 0 0 0 20 14.2Z",
+  flame: "M12 3.5c.6 3 3.5 4.2 3.5 7.8a3.5 3.5 0 0 1-7 0c0-1 .4-1.9 1-2.6C10.5 10.5 12.5 9 12 3.5Z",
+  speaker:"M11 5.5 6.5 9.5H3.5v5h3L11 18.5ZM15.5 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11",
+  trash: "M5 7h14M9.5 7V5.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V7M7 7l.8 12a1 1 0 0 0 1 .9h6.4a1 1 0 0 0 1-.9L18 7",
+};
+function Icon({name, size}){
+  const d = ICONS[name]; if(!d) return null;
+  return (
+    <svg width={size||22} height={size||22} viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={d}/>
+    </svg>
+  );
+}
+
 function normKey(x){ return (x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[¿¡?!.,;:'"()\/…]/g,"").replace(/\s+/g," ").trim(); }
 const BD_MAP = {};
 (typeof BREAKDOWN!=="undefined"?BREAKDOWN:[]).forEach(function(bd){ BD_MAP[normKey(bd.es)] = bd; });
@@ -743,7 +775,7 @@ function BreakItDown({item}){
   const bd = BD_MAP[normKey(item.es)];
   return (
     <>
-      <button className="bd-toggle" onClick={()=>setOpen(o=>!o)}>🔍 {open?"Hide breakdown":"Break it down — word by word"}</button>
+      <button className="bd-toggle" onClick={()=>setOpen(o=>!o)}>{open?"Hide breakdown":"Break it down — word by word"}</button>
       {open && (bd ? (
         <div className="bd-panel">
           {bd.lit && <div className="bd-lit"><b>Word for word:</b> "{bd.lit}"</div>}
@@ -953,10 +985,10 @@ function Home({prog, go, phraseOfDay}){
   const greet = hour<12?"Buenos días":hour<19?"Buenas tardes":"Buenas noches";
   return (
     <div className="page">
-      <div className="eyebrow">{greet}, Jenna 👋</div>
+      <div className="eyebrow">{greet}, Jenna</div>
       <div className="h-hello" style={{marginTop:6}}>Let's talk to his family.</div>
       <div className="stat-row">
-        <div className="stat"><div className="n">{prog.streak||0}🔥</div><div className="l">Day streak</div></div>
+        <div className="stat"><div className="n">{prog.streak||0}</div><div className="l">Day streak</div></div>
         <div className="stat"><div className="n">{prog.xp||0}</div><div className="l">Total XP</div></div>
         <div className="stat"><div className="n">{learned}</div><div className="l">Phrases mastered</div></div>
       </div>
@@ -970,22 +1002,22 @@ function Home({prog, go, phraseOfDay}){
       <div className="sec-title">Jump in</div>
       <div className="quick-grid">
         <button className="quick" onClick={()=>go("learn")}>
-          <div className="qi" style={{background:"var(--teal-soft)"}}>🗂️</div>
+          <div className="qi"><Icon name="cards"/></div>
           <div className="qt">Flashcards</div>
           <div className="qd">Smart review that resurfaces what you struggle with.</div>
         </button>
         <button className="quick" onClick={()=>go("scenarios")}>
-          <div className="qi" style={{background:"var(--accent-soft)"}}>🎬</div>
+          <div className="qi"><Icon name="talk"/></div>
           <div className="qt">Scenarios</div>
           <div className="qd">Roleplay real situations with his family.</div>
         </button>
         <button className="quick" onClick={()=>go("listen")}>
-          <div className="qi" style={{background:"var(--violet-soft)"}}>👂</div>
+          <div className="qi"><Icon name="listen"/></div>
           <div className="qt">Listening</div>
           <div className="qd">Train your ear for fast Cuban speech.</div>
         </button>
         <button className="quick" onClick={()=>go("quiz")}>
-          <div className="qi" style={{background:"var(--cuba-soft)"}}>🎯</div>
+          <div className="qi"><Icon name="quiz"/></div>
           <div className="qt">Quiz</div>
           <div className="qd">Test yourself · best {prog.quizBest||0}/10</div>
         </button>
@@ -993,7 +1025,6 @@ function Home({prog, go, phraseOfDay}){
 
       <div className="sec-title">Phrase of the day</div>
       <div className="phrase-of-day">
-        <div className="be" style={{fontSize:26}}>{phraseOfDay.e}</div>
         <div className="es spk" onClick={()=>speak(phraseOfDay.es)}>{phraseOfDay.es} 🔊</div>
         <div className="en">{phraseOfDay.en}</div>
         <div className="note">{phraseOfDay.note}</div>
@@ -1002,22 +1033,22 @@ function Home({prog, go, phraseOfDay}){
 
       <div className="sec-title">Reference</div>
       <button className="list-link" onClick={()=>go("verbs")}>
-        <div className="li" style={{background:"var(--teal-soft)"}}>📘</div>
+        <div className="li"><Icon name="verbs"/></div>
         <div><div className="lt">Verbs & tenses</div><div className="ld">The 12 verbs you'll use most, conjugated</div></div>
         <div className="chev">›</div>
       </button>
       <button className="list-link" onClick={()=>go("pron")}>
-        <div className="li" style={{background:"var(--colombia-soft)"}}>🗣️</div>
+        <div className="li"><Icon name="pron"/></div>
         <div><div className="lt">Pronunciation</div><div className="ld">Sound out any word · Cuban vs Colombian accents</div></div>
         <div className="chev">›</div>
       </button>
       <button className="list-link" onClick={()=>go("browse")}>
-        <div className="li" style={{background:"var(--violet-soft)"}}>📚</div>
+        <div className="li"><Icon name="browse"/></div>
         <div><div className="lt">Browse all phrases</div><div className="ld">Every phrase, searchable, by category</div></div>
         <div className="chev">›</div>
       </button>
       <button className="list-link" onClick={()=>go("myphrases")}>
-        <div className="li" style={{background:"var(--accent-soft)"}}>📌</div>
+        <div className="li"><Icon name="saved"/></div>
         <div><div className="lt">My phrases</div><div className="ld">Save phrases you hear & break down every word</div></div>
         <div className="chev">›</div>
       </button>
@@ -1134,7 +1165,6 @@ function Learn({prog, rate, toast, toggleSave}){
             <div className={"fc "+(flip?"flip":"")} onClick={()=>setFlip(f=>!f)}>
               <div className="fc-face">
                 <span className="fc-tag" style={{background:tdeck.soft,color:tdeck.color}}>{tdeck.flag} {tdeck.label}</span>
-                <div className="fc-emoji">{cur.it.e}</div>
                 <div className="fc-es">{cur.it.es}</div>
                 {cur.it.pron && <div className="fc-pron">{cur.it.pron}</div>}
                 <SpeakPill text={cur.it.es}/>
@@ -1185,7 +1215,6 @@ function Browse(){
         {filtered.map((it,i)=>(
           <div key={i} className="bcard" onClick={()=>speak(it.es)}>
             <span className="bspk">🔊</span>
-            <div className="be">{it.e}</div>
             <div className="bp">{it.es}</div>
             <div className="bt">{it.en}</div>
           </div>
@@ -1217,9 +1246,9 @@ function Scenarios({prog, finishScenario, toast}){
       <div style={{marginTop:10}}>
         {list.map(s=>(
           <div key={s.id} className="scn-card" onClick={()=>setOpenId(s.id)}>
-            <div className="scn-top" style={{background:s.grad}}>
+            <div className="scn-top">
               <span className="lvl">{s.level}</span>
-              <h3>{s.icon} {s.title}</h3>
+              <h3>{s.title}</h3>
               <p>{s.setting.length>92?s.setting.slice(0,92)+"…":s.setting}</p>
             </div>
             <div className="scn-foot">
@@ -1264,11 +1293,11 @@ function Roleplay({scn, back, done, finish, toast}){
   return (
     <div className="page">
       <button className="back-btn" onClick={back}>‹ All scenarios</button>
-      <div className="scn-top" style={{background:scn.grad,borderRadius:"var(--r-lg)",marginBottom:14}}>
+      <div className="scn-top" style={{borderRadius:"var(--r-lg)",marginBottom:14,border:"1px solid var(--line)"}}>
         <span className="lvl">{scn.level}</span>
-        <h3>{scn.icon} {scn.title}</h3>
+        <h3>{scn.title}</h3>
       </div>
-      <div className="rp-scene">🎬 {scn.setting}</div>
+      <div className="rp-scene">{scn.setting}</div>
       <div className="rp-wrap">
         {history.map((h,i)=>(
           <div key={i} className={"bubble-row "+(h.me?"me":"")}>
@@ -1379,7 +1408,7 @@ function Listen({setListenBest, addXp, prog, toast}){
       <div className="quiz-meta" style={{marginTop:16}}><span>#{idx+1} of {round.length}</span><span>Score {score}</span></div>
       <div className="quiz-bar"><div style={{width:(idx/round.length*100)+"%"}}/></div>
       <div className="listen-card">
-        <button className={"big-speak "+(playing?"playing":"")} onClick={play}>🔊</button>
+        <button className={"big-speak "+(playing?"playing":"")} onClick={play}><Icon name="speaker" size={46}/></button>
         <div className="listen-hint">{playing?"Listen…":"Tap to replay"}</div>
         <div className="speed-toggle">
           <button className={!slow?"on":""} onClick={()=>setSlow(false)}>Normal</button>
@@ -1639,7 +1668,7 @@ function ResetLink({reset, toast}){
       localStorage.removeItem(KEY); location.reload();
     }
   }}>
-    <div className="li" style={{background:"var(--bad-soft)"}}>🗑️</div>
+    <div className="li" style={{color:"var(--bad)"}}><Icon name="trash"/></div>
     <div><div className="lt">Reset progress</div><div className="ld">Clear streak, XP and card history</div></div>
     <div className="chev">›</div>
   </button>;
@@ -1649,7 +1678,7 @@ function ResetLink({reset, toast}){
 function App(){
   const P = useProg();
   const [tab, setTab] = useState("home");
-  const [theme, setTheme] = useState(()=> localStorage.getItem("hablar_theme") || "light");
+  const [theme, setTheme] = useState(()=> localStorage.getItem("hablar_theme") || "dark");
   const [toastMsg, setToastMsg] = useState("");
   const toastTimer = useRef(null);
   const toast = (m)=>{ setToastMsg(m); clearTimeout(toastTimer.current); toastTimer.current=setTimeout(()=>setToastMsg(""),1900); };
@@ -1662,7 +1691,7 @@ function App(){
     return all[day % all.length];
   },[]);
 
-  const nav = [["home","Home","🏠"],["learn","Cards","🗂️"],["scenarios","Talk","🎬"],["listen","Listen","👂"],["quiz","Quiz","🎯"]];
+  const nav = [["home","Home","home"],["learn","Cards","cards"],["scenarios","Talk","talk"],["listen","Listen","listen"],["quiz","Quiz","quiz"]];
   const showTab = (tab==="verbs"||tab==="pron"||tab==="browse"||tab==="myphrases") ? "home" : tab;
 
   return (
@@ -1673,8 +1702,8 @@ function App(){
           <div className="brand-name">Hablar<small>Spanish for real life</small></div>
         </div>
         <div className="topbar-right">
-          <div className="streak-chip">🔥 {P.prog.streak||0}</div>
-          <button className="icon-btn" onClick={()=>setTheme(theme==="light"?"dark":"light")}>{theme==="light"?"🌙":"☀️"}</button>
+          <div className="streak-chip"><Icon name="flame" size={15}/> {P.prog.streak||0}</div>
+          <button className="icon-btn" aria-label="Toggle theme" onClick={()=>setTheme(theme==="light"?"dark":"light")}>{theme==="light"?<Icon name="moon"/>:<Icon name="sun"/>}</button>
         </div>
       </div>
 
@@ -1693,7 +1722,7 @@ function App(){
       <div className="bottomnav">
         {nav.map(([k,l,ic])=>(
           <button key={k} className={"navbtn "+(showTab===k?"on":"")} onClick={()=>setTab(k)}>
-            <span className="ni">{ic}</span>{l}
+            <span className="ni"><Icon name={ic}/></span>{l}
           </button>
         ))}
       </div>
