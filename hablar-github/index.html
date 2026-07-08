@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>Hablar · Learn Spanish for Real Life</title>
-<meta name="theme-color" content="#e0533d"/>
+<meta name="theme-color" content="#1f2122"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -18,12 +18,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f6f5f2; --surface:#ffffff; --surface-2:#f2f0ec; --elevated:#ffffff;
-  --text:#191714; --text-soft:#6b6660; --text-faint:#9a948c; --line:#e8e4dd;
-  --accent:#e0533d; --accent-soft:#fce9e4; --accent-ink:#b93c29;
-  --cuba:#d1495b; --cuba-soft:#fbe6e9; --colombia:#e9b949; --colombia-soft:#fdf3d8;
-  --teal:#2a9d8f; --teal-soft:#dcf0ed; --violet:#7b6cd9; --violet-soft:#eae7fb;
-  --good:#2f9e6f; --good-soft:#dcf1e8; --bad:#d1495b; --bad-soft:#fbe6e9;
+  --bg:#f3f1ea; --surface:#fbfaf6; --surface-2:#eae7dd; --elevated:#ffffff;
+  --text:#2a2824; --text-soft:#6a655c; --text-faint:#9a948a; --line:#e3e0d5;
+  --accent:#22b378; --accent-soft:#dff4ea; --accent-ink:#1c8a5d;
+  --coral:#ff5757; --coral-soft:#ffe7e5;
+  --cuba:#d06a5b; --cuba-soft:#f7e6e3; --colombia:#b3924a; --colombia-soft:#f2ecd9;
+  --teal:#3aa596; --teal-soft:#e0efec; --violet:#3aa596; --violet-soft:#e0efec;
+  --good:#22b378; --good-soft:#dff4ea; --bad:#ff5757; --bad-soft:#ffe7e5;
   --shadow:0 1px 2px rgba(25,23,20,.04),0 8px 24px rgba(25,23,20,.06);
   --shadow-lg:0 4px 12px rgba(25,23,20,.08),0 24px 48px rgba(25,23,20,.12);
   --r:18px; --r-lg:26px; --r-sm:12px;
@@ -31,14 +32,15 @@
   --serif:'Fraunces',Georgia,serif;
 }
 [data-theme="dark"]{
-  --bg:#141310; --surface:#1e1c19; --surface-2:#252220; --elevated:#26231f;
-  --text:#f3efe8; --text-soft:#a8a29a; --text-faint:#6f6a62; --line:#302c27;
-  --accent:#f2765f; --accent-soft:#3a2420; --accent-ink:#f2765f;
-  --cuba:#e86b7c; --cuba-soft:#3a2126; --colombia:#e9b949; --colombia-soft:#37301b;
-  --teal:#3bb4a4; --teal-soft:#16302c; --violet:#9a8dea; --violet-soft:#241f3a;
-  --good:#41b483; --good-soft:#173028; --bad:#e86b7c; --bad-soft:#3a2126;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
-  --shadow-lg:0 4px 12px rgba(0,0,0,.4),0 24px 48px rgba(0,0,0,.5);
+  --bg:#1f2122; --surface:#282a2b; --surface-2:#323436; --elevated:#2a2c2d;
+  --text:#f2f2f0; --text-soft:#a8aaa9; --text-faint:#767a7b; --line:#383b3d;
+  --accent:#58df9d; --accent-soft:#173026; --accent-ink:#7cebb4;
+  --coral:#ff5757; --coral-soft:#3a2220;
+  --cuba:#ff8a7a; --cuba-soft:#3a2220; --colombia:#e9b95e; --colombia-soft:#33290f;
+  --teal:#54d3c4; --teal-soft:#123029; --violet:#54d3c4; --violet-soft:#123029;
+  --good:#58df9d; --good-soft:#173026; --bad:#ff5757; --bad-soft:#3a2220;
+  --shadow:0 1px 2px rgba(0,0,0,.28),0 10px 28px rgba(0,0,0,.38);
+  --shadow-lg:0 4px 14px rgba(0,0,0,.42),0 24px 52px rgba(0,0,0,.55);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg);color:var(--text);font-family:var(--sans);
@@ -56,14 +58,14 @@ input{font-family:inherit}
   backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line);
   padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px}
-.brand-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(140deg,var(--accent),var(--cuba));
-  display:grid;place-items:center;color:#fff;font-weight:800;font-size:17px;box-shadow:var(--shadow)}
+.brand-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(140deg,#7cebb4,#33c88a);
+  display:grid;place-items:center;color:#12281f;font-weight:800;font-size:17px;box-shadow:var(--shadow)}
 .brand-name{font-family:var(--serif);font-weight:600;font-size:19px;letter-spacing:-.01em}
 .brand-name small{font-family:var(--sans);font-weight:500;font-size:11px;color:var(--text-faint);
   display:block;letter-spacing:.02em;margin-top:-2px}
 .topbar-right{display:flex;align-items:center;gap:8px}
-.streak-chip{display:flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--line);
-  border-radius:999px;padding:6px 12px;font-weight:700;font-size:13px;box-shadow:var(--shadow)}
+.streak-chip{display:flex;align-items:center;gap:5px;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));
+  border-radius:999px;padding:6px 12px;font-weight:800;font-size:13px;color:var(--accent);box-shadow:var(--shadow)}
 .icon-btn{width:38px;height:38px;border-radius:12px;background:var(--surface);border:1px solid var(--line);
   display:grid;place-items:center;font-size:16px;box-shadow:var(--shadow);transition:transform .15s}
 .icon-btn:active{transform:scale(.92)}
@@ -92,32 +94,32 @@ input{font-family:inherit}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 12px;box-shadow:var(--shadow)}
 .stat .n{font-family:var(--serif);font-size:26px;font-weight:700;line-height:1}
 .stat .l{font-size:11px;color:var(--text-soft);margin-top:5px;font-weight:600}
-.goal-card{margin-top:14px;padding:18px;background:linear-gradient(140deg,var(--accent),var(--cuba));
-  border-radius:var(--r-lg);color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
-.goal-card::after{content:"";position:absolute;right:-30px;top:-30px;width:130px;height:130px;
-  background:rgba(255,255,255,.13);border-radius:50%}
+.goal-card{margin-top:14px;padding:18px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r-lg);color:var(--text);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.goal-card::after{content:"";position:absolute;right:-40px;top:-40px;width:130px;height:130px;
+  background:radial-gradient(circle,color-mix(in srgb,var(--accent) 20%,transparent),transparent 70%);border-radius:50%}
 .goal-card h3{font-family:var(--serif);font-size:19px;font-weight:600;margin-bottom:3px}
-.goal-card p{font-size:13px;opacity:.92;margin-bottom:14px}
-.goal-bar{height:9px;background:rgba(255,255,255,.28);border-radius:99px;overflow:hidden}
-.goal-bar>div{height:100%;background:#fff;border-radius:99px;transition:width .6s cubic-bezier(.2,.7,.3,1)}
-.goal-meta{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-top:9px;opacity:.95}
+.goal-card p{font-size:13px;color:var(--text-soft);margin-bottom:14px}
+.goal-bar{height:9px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.goal-bar>div{height:100%;background:var(--accent);border-radius:99px;transition:width .6s cubic-bezier(.2,.7,.3,1)}
+.goal-meta{display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-top:9px;color:var(--text-soft)}
 .quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
 .quick{padding:16px;border-radius:var(--r);text-align:left;box-shadow:var(--shadow);border:1px solid var(--line);
   background:var(--surface);transition:transform .15s,box-shadow .2s;display:flex;flex-direction:column;gap:8px;min-height:112px}
 .quick:active{transform:scale(.97)}
-.quick .qi{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:20px}
+.quick .qi{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-size:22px;border:1px solid color-mix(in srgb,currentColor 30%,transparent)}
 .quick .qt{font-weight:700;font-size:15px;letter-spacing:-.01em}
 .quick .qd{font-size:12px;color:var(--text-soft);line-height:1.4}
 .list-link{display:flex;align-items:center;gap:13px;padding:14px 16px;background:var(--surface);
   border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-top:10px;transition:transform .15s}
 .list-link:active{transform:scale(.98)}
-.list-link .li{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;flex-shrink:0}
+.list-link .li{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;flex-shrink:0;border:1px solid color-mix(in srgb,currentColor 28%,transparent)}
 .list-link .lt{font-weight:700;font-size:15px}
 .list-link .ld{font-size:12.5px;color:var(--text-soft);margin-top:2px}
 .list-link .chev{margin-left:auto;color:var(--text-faint);font-size:18px}
 .phrase-of-day{margin-top:14px;padding:18px;border-radius:var(--r-lg);background:var(--surface);
-  border:1px solid var(--line);box-shadow:var(--shadow)}
-.phrase-of-day .es{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:-.01em;cursor:pointer}
+  border:1px solid var(--line);border-top:2px solid var(--accent);box-shadow:var(--shadow)}
+.phrase-of-day .es{font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.01em;cursor:pointer}
 .phrase-of-day .en{color:var(--text-soft);font-size:14px;margin-top:4px}
 .phrase-of-day .note{font-size:12.5px;color:var(--text-soft);margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);line-height:1.5}
 
@@ -127,10 +129,10 @@ input{font-family:inherit}
 .chips.wrap{flex-wrap:wrap;overflow:visible}
 .chip{white-space:nowrap;padding:8px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line);
   font-weight:600;font-size:13px;color:var(--text-soft);transition:all .18s;flex-shrink:0}
-.chip.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.chip.on{background:var(--accent);color:#12281f;border-color:var(--accent)}
 .seg{display:flex;background:var(--surface-2);border-radius:999px;padding:4px;gap:4px;margin:4px 0 4px}
 .seg button{flex:1;padding:9px;border-radius:999px;font-weight:700;font-size:13px;color:var(--text-soft);transition:all .18s}
-.seg button.on{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+.seg button.on{background:var(--surface);color:var(--accent);box-shadow:var(--shadow)}
 
 /* ---------- Search ---------- */
 .search{position:relative;margin:4px 0 6px}
@@ -168,7 +170,7 @@ input{font-family:inherit}
 .fc-btn.again{background:var(--bad-soft);color:var(--bad);border-color:color-mix(in srgb,var(--bad) 25%,transparent)}
 .fc-btn.got{background:var(--good-soft);color:var(--good);border-color:color-mix(in srgb,var(--good) 25%,transparent)}
 .fc-progress{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:2px 0 14px}
-.fc-progress>div{height:100%;background:linear-gradient(90deg,var(--teal),var(--good));transition:width .4s}
+.fc-progress>div{height:100%;background:linear-gradient(90deg,#33c88a,var(--accent));transition:width .4s}
 .done-card{text-align:center;padding:44px 24px}
 .done-card .big{font-size:60px;margin-bottom:10px}
 .done-card h2{font-family:var(--serif);font-size:26px;font-weight:600;margin-bottom:8px}
@@ -220,15 +222,15 @@ input{font-family:inherit}
 .rp-feedback{padding:14px 16px;border-radius:16px;font-size:13.5px;line-height:1.5;margin-bottom:14px}
 .rp-feedback.ok{background:var(--good-soft);color:var(--good)}
 .rp-feedback.no{background:var(--bad-soft);color:var(--bad)}
-.rp-cta{width:100%;padding:15px;border-radius:16px;background:var(--text);color:var(--bg);font-weight:800;font-size:15px;
+.rp-cta{width:100%;padding:15px;border-radius:16px;background:var(--accent);color:#12281f;font-weight:800;font-size:15px;
   margin-top:4px;transition:transform .12s}
 .rp-cta:active{transform:scale(.98)}
 
 /* ---------- Listening ---------- */
 .listen-card{text-align:center;padding:8px 4px}
 .big-speak{width:118px;height:118px;border-radius:50%;margin:14px auto 8px;
-  background:linear-gradient(140deg,var(--teal),#1c7d72);color:#fff;display:grid;place-items:center;
-  font-size:46px;box-shadow:0 12px 30px color-mix(in srgb,var(--teal) 40%,transparent);transition:transform .15s}
+  background:linear-gradient(140deg,#7cebb4,#33c88a);color:#12281f;display:grid;place-items:center;
+  font-size:46px;box-shadow:0 12px 30px color-mix(in srgb,var(--accent) 30%,transparent);transition:transform .15s}
 .big-speak:active{transform:scale(.94)}
 .big-speak.playing{animation:pulse 1s ease infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
@@ -248,7 +250,7 @@ input{font-family:inherit}
 /* ---------- Verbs / reference ---------- */
 .verb-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
   overflow:hidden;margin-bottom:14px}
-.verb-h{padding:16px 18px;background:linear-gradient(135deg,var(--teal),#1c7d72);color:#fff;cursor:pointer;
+.verb-h{padding:16px 18px;background:linear-gradient(135deg,#33b3a3,#1c6b62);color:#fff;cursor:pointer;
   display:flex;align-items:center;justify-content:between;gap:10px}
 .verb-h .vt{font-family:var(--serif);font-size:22px;font-weight:700;letter-spacing:.01em}
 .verb-h .vm{font-size:13px;opacity:.92;margin-top:1px}
@@ -293,7 +295,7 @@ input{font-family:inherit}
 .quiz-wrap{padding:6px 0}
 .quiz-meta{display:flex;justify-content:space-between;font-size:12.5px;color:var(--text-soft);font-weight:700;margin-bottom:8px}
 .quiz-bar{height:7px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-bottom:20px}
-.quiz-bar>div{height:100%;background:linear-gradient(90deg,var(--accent),var(--cuba));transition:width .4s}
+.quiz-bar>div{height:100%;background:linear-gradient(90deg,#33c88a,#bfecac);transition:width .4s}
 .quiz-q{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.3;margin-bottom:18px;letter-spacing:-.01em}
 .quiz-hint{background:var(--colombia-soft);border-radius:14px;padding:13px 15px;margin-top:14px;font-size:13px;line-height:1.5}
 
@@ -376,6 +378,24 @@ input{font-family:inherit}
 .mp-editrow input{flex:1;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font-size:14px;outline:none}
 .mp-editrow button{padding:0 14px;border-radius:10px;background:var(--text);color:var(--bg);font-weight:700;font-size:13px}
 .wp-src{font-size:11px;color:var(--text-faint);font-weight:600}
+
+.pod-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.pod-badge{background:var(--accent);color:#12281f;font-size:11px;font-weight:800;letter-spacing:.04em;border-radius:999px;padding:4px 11px;white-space:nowrap}
+.pod-hear{margin-top:14px;display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#12281f;font-weight:800;font-size:14px;border-radius:999px;padding:10px 18px;box-shadow:var(--shadow);transition:transform .12s}
+.pod-hear:active{transform:scale(.97)}
+.cont-card{width:100%;display:flex;align-items:center;gap:14px;margin-top:14px;padding:15px 16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);transition:transform .12s;text-align:left}
+.cont-card:active{transform:scale(.99)}
+.cont-ic{width:46px;height:46px;border-radius:13px;background:var(--surface-2);color:var(--accent);display:grid;place-items:center;font-size:22px;flex-shrink:0;border:1px solid var(--line)}
+.cont-body{flex:1;min-width:0}
+.cont-t{font-weight:700;font-size:14.5px;margin-bottom:9px}
+.cont-bar{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.cont-bar>div{height:100%;background:linear-gradient(90deg,#33c88a,var(--accent));border-radius:99px}
+.cont-n{font-size:12.5px;color:var(--text-soft);font-weight:800;flex-shrink:0}
+
+.home-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.home-pills{display:flex;gap:8px;flex-shrink:0;padding-top:4px}
+.hp{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-weight:800;font-size:14px;white-space:nowrap;box-shadow:var(--shadow)}
+.hp small{color:var(--text-faint);font-weight:700;font-size:11px}
 </style>
 </head>
 <body>
@@ -1544,51 +1564,70 @@ function Home({
   go,
   phraseOfDay
 }) {
-  const goal = 40;
-  const pct = Math.min(100, Math.round((prog.dayXpDate === todayStr() ? prog.dayXp : 0) / goal * 100));
   const learned = Object.values(prog.boxes || {}).filter(b => b >= 4).length;
+  const total = Object.values(DECKS).reduce((a, d) => a + d.items.length, 0);
+  const contPct = Math.round(learned / total * 100);
   const hour = new Date().getHours();
   const greet = hour < 12 ? "Buenos días" : hour < 19 ? "Buenas tardes" : "Buenas noches";
   return /*#__PURE__*/React.createElement("div", {
     className: "page"
   }, /*#__PURE__*/React.createElement("div", {
+    className: "home-top"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "eyebrow"
-  }, greet, ", Jenna 👋"), /*#__PURE__*/React.createElement("div", {
+  }, greet), /*#__PURE__*/React.createElement("div", {
     className: "h-hello",
     style: {
-      marginTop: 6
+      marginTop: 4
     }
-  }, "Let's talk to his family."), /*#__PURE__*/React.createElement("div", {
-    className: "stat-row"
+  }, "Buenas, Jenna")), /*#__PURE__*/React.createElement("div", {
+    className: "home-pills"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "hp"
+  }, "🔥 ", prog.streak || 0), /*#__PURE__*/React.createElement("span", {
+    className: "hp"
+  }, prog.xp || 0, " ", /*#__PURE__*/React.createElement("small", null, "XP")))), /*#__PURE__*/React.createElement("div", {
+    className: "phrase-of-day",
+    style: {
+      marginTop: 16
+    }
   }, /*#__PURE__*/React.createElement("div", {
-    className: "stat"
+    className: "pod-head"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "eyebrow"
+  }, "Frase del día"), /*#__PURE__*/React.createElement("span", {
+    className: "pod-badge"
+  }, phraseOfDay.badge)), /*#__PURE__*/React.createElement("div", {
+    className: "es spk",
+    onClick: () => speak(phraseOfDay.es)
+  }, phraseOfDay.es), /*#__PURE__*/React.createElement("div", {
+    className: "en"
+  }, phraseOfDay.en), /*#__PURE__*/React.createElement("button", {
+    className: "pod-hear",
+    onClick: () => speak(phraseOfDay.es)
+  }, "▶ Hear it"), /*#__PURE__*/React.createElement("div", {
+    className: "note"
+  }, phraseOfDay.note), /*#__PURE__*/React.createElement(BreakItDown, {
+    key: phraseOfDay.es,
+    item: phraseOfDay
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "cont-card",
+    onClick: () => go("learn")
   }, /*#__PURE__*/React.createElement("div", {
-    className: "n"
-  }, prog.streak || 0, "🔥"), /*#__PURE__*/React.createElement("div", {
-    className: "l"
-  }, "Day streak")), /*#__PURE__*/React.createElement("div", {
-    className: "stat"
+    className: "cont-ic"
+  }, "🗂️"), /*#__PURE__*/React.createElement("div", {
+    className: "cont-body"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "n"
-  }, prog.xp || 0), /*#__PURE__*/React.createElement("div", {
-    className: "l"
-  }, "Total XP")), /*#__PURE__*/React.createElement("div", {
-    className: "stat"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "n"
-  }, learned), /*#__PURE__*/React.createElement("div", {
-    className: "l"
-  }, "Phrases mastered"))), /*#__PURE__*/React.createElement("div", {
-    className: "goal-card"
-  }, /*#__PURE__*/React.createElement("h3", null, "Today's goal"), /*#__PURE__*/React.createElement("p", null, pct >= 100 ? "¡Lo lograste! Goal smashed 🎉" : "A few minutes a day adds up fast."), /*#__PURE__*/React.createElement("div", {
-    className: "goal-bar"
+    className: "cont-t"
+  }, "Pick up where you left off"), /*#__PURE__*/React.createElement("div", {
+    className: "cont-bar"
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      width: pct + "%"
+      width: contPct + "%"
     }
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "goal-meta"
-  }, /*#__PURE__*/React.createElement("span", null, prog.dayXpDate === todayStr() ? prog.dayXp : 0, " / ", goal, " XP"), /*#__PURE__*/React.createElement("span", null, pct, "%"))), /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "cont-n"
+  }, learned, "/", total)), /*#__PURE__*/React.createElement("div", {
     className: "sec-title"
   }, "Jump in"), /*#__PURE__*/React.createElement("div", {
     className: "quick-grid"
@@ -1598,7 +1637,8 @@ function Home({
   }, /*#__PURE__*/React.createElement("div", {
     className: "qi",
     style: {
-      background: "var(--teal-soft)"
+      background: "var(--surface-2)",
+      color: "var(--accent)"
     }
   }, "🗂️"), /*#__PURE__*/React.createElement("div", {
     className: "qt"
@@ -1610,19 +1650,21 @@ function Home({
   }, /*#__PURE__*/React.createElement("div", {
     className: "qi",
     style: {
-      background: "var(--accent-soft)"
+      background: "var(--surface-2)",
+      color: "var(--coral)"
     }
   }, "🎬"), /*#__PURE__*/React.createElement("div", {
     className: "qt"
   }, "Scenarios"), /*#__PURE__*/React.createElement("div", {
     className: "qd"
-  }, "Roleplay real situations with his family.")), /*#__PURE__*/React.createElement("button", {
+  }, "Roleplay real situations, family to everyday.")), /*#__PURE__*/React.createElement("button", {
     className: "quick",
     onClick: () => go("listen")
   }, /*#__PURE__*/React.createElement("div", {
     className: "qi",
     style: {
-      background: "var(--violet-soft)"
+      background: "var(--surface-2)",
+      color: "var(--teal)"
     }
   }, "👂"), /*#__PURE__*/React.createElement("div", {
     className: "qt"
@@ -1634,7 +1676,8 @@ function Home({
   }, /*#__PURE__*/React.createElement("div", {
     className: "qi",
     style: {
-      background: "var(--cuba-soft)"
+      background: "var(--surface-2)",
+      color: "var(--colombia)"
     }
   }, "🎯"), /*#__PURE__*/React.createElement("div", {
     className: "qt"
@@ -1642,38 +1685,20 @@ function Home({
     className: "qd"
   }, "Test yourself · best ", prog.quizBest || 0, "/10"))), /*#__PURE__*/React.createElement("div", {
     className: "sec-title"
-  }, "Phrase of the day"), /*#__PURE__*/React.createElement("div", {
-    className: "phrase-of-day"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "be",
-    style: {
-      fontSize: 26
-    }
-  }, phraseOfDay.e), /*#__PURE__*/React.createElement("div", {
-    className: "es spk",
-    onClick: () => speak(phraseOfDay.es)
-  }, phraseOfDay.es, " 🔊"), /*#__PURE__*/React.createElement("div", {
-    className: "en"
-  }, phraseOfDay.en), /*#__PURE__*/React.createElement("div", {
-    className: "note"
-  }, phraseOfDay.note)), /*#__PURE__*/React.createElement(BreakItDown, {
-    key: phraseOfDay.es,
-    item: phraseOfDay
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "sec-title"
   }, "Reference"), /*#__PURE__*/React.createElement("button", {
     className: "list-link",
     onClick: () => go("verbs")
   }, /*#__PURE__*/React.createElement("div", {
     className: "li",
     style: {
-      background: "var(--teal-soft)"
+      background: "var(--surface-2)",
+      color: "var(--teal)"
     }
   }, "📘"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "lt"
   }, "Verbs & tenses"), /*#__PURE__*/React.createElement("div", {
     className: "ld"
-  }, "The 12 verbs you'll use most, conjugated")), /*#__PURE__*/React.createElement("div", {
+  }, "Conjugations + a quick fill-in-the-blank test")), /*#__PURE__*/React.createElement("div", {
     className: "chev"
   }, "›")), /*#__PURE__*/React.createElement("button", {
     className: "list-link",
@@ -1681,13 +1706,14 @@ function Home({
   }, /*#__PURE__*/React.createElement("div", {
     className: "li",
     style: {
-      background: "var(--colombia-soft)"
+      background: "var(--surface-2)",
+      color: "var(--colombia)"
     }
   }, "🗣️"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "lt"
   }, "Pronunciation"), /*#__PURE__*/React.createElement("div", {
     className: "ld"
-  }, "Sound out any word · Cuban vs Colombian accents")), /*#__PURE__*/React.createElement("div", {
+  }, "Cuban vs Colombian accents, side by side")), /*#__PURE__*/React.createElement("div", {
     className: "chev"
   }, "›")), /*#__PURE__*/React.createElement("button", {
     className: "list-link",
@@ -1695,7 +1721,8 @@ function Home({
   }, /*#__PURE__*/React.createElement("div", {
     className: "li",
     style: {
-      background: "var(--violet-soft)"
+      background: "var(--surface-2)",
+      color: "var(--accent)"
     }
   }, "📚"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "lt"
@@ -1709,7 +1736,8 @@ function Home({
   }, /*#__PURE__*/React.createElement("div", {
     className: "li",
     style: {
-      background: "var(--accent-soft)"
+      background: "var(--surface-2)",
+      color: "var(--coral)"
     }
   }, "📌"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "lt"
@@ -1719,8 +1747,6 @@ function Home({
     className: "chev"
   }, "›")));
 }
-
-/* ================= LEARN (flashcards + spaced repetition) ================= */
 function buildQueue(deckKey, prog) {
   if (deckKey === "needs" || deckKey === "saved") {
     const src = deckKey === "needs" ? prog.struggling || {} : prog.saved || {};
@@ -1993,6 +2019,11 @@ function Browse() {
 
 /* ================= SCENARIOS ================= */
 const SCN_CATS = [["family", "👨‍👩‍👧 Family & friends"], ["couple", "💞 You & him"], ["world", "🌎 Out & about"]];
+const CATGRAD = {
+  family: "linear-gradient(140deg,#2f3a24,#20281a)",
+  couple: "linear-gradient(140deg,#3a2624,#2a1c1b)",
+  world: "linear-gradient(140deg,#173430,#0f2521)"
+};
 function Scenarios({
   prog,
   finishScenario,
@@ -2044,7 +2075,7 @@ function Scenarios({
   }, /*#__PURE__*/React.createElement("div", {
     className: "scn-top",
     style: {
-      background: s.grad
+      background: CATGRAD[s.cat] || s.grad
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "lvl"
@@ -2112,7 +2143,7 @@ function Roleplay({
   }, "‹ All scenarios"), /*#__PURE__*/React.createElement("div", {
     className: "scn-top",
     style: {
-      background: scn.grad,
+      background: CATGRAD[scn.cat] || scn.grad,
       borderRadius: "var(--r-lg)",
       marginBottom: 14
     }
@@ -2874,7 +2905,7 @@ function ResetLink({
 function App() {
   const P = useProg();
   const [tab, setTab] = useState("home");
-  const [theme, setTheme] = useState(() => localStorage.getItem("hablar_theme") || "light");
+  const [theme, setTheme] = useState(() => localStorage.getItem("hablar_theme2") || "dark");
   const [toastMsg, setToastMsg] = useState("");
   const toastTimer = useRef(null);
   const toast = m => {
@@ -2884,12 +2915,28 @@ function App() {
   };
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("hablar_theme", theme);
+    localStorage.setItem("hablar_theme2", theme);
   }, [theme]);
   const potd = useMemo(() => {
-    const all = Object.values(DECKS).flatMap(d => d.items);
+    const flat = [];
+    Object.keys(DECKS).forEach(k => DECKS[k].items.forEach(it => flat.push({
+      ...it,
+      _dk: k
+    })));
     const day = Math.floor(Date.now() / 864e5);
-    return all[day % all.length];
+    const it = flat[day % flat.length];
+    const BADGE = {
+      cuban: "🇨🇺 Cubano",
+      colombian: "🇨🇴 Colombiano",
+      everyday: "Esencial",
+      meals: "🍽 Comida",
+      couple: "💞 Amor",
+      feelings: "🎭 Ánimo"
+    };
+    return {
+      ...it,
+      badge: BADGE[it._dk] || "Frase"
+    };
   }, []);
   const nav = [["home", "Home", "🏠"], ["learn", "Cards", "🗂️"], ["scenarios", "Talk", "🎬"], ["listen", "Listen", "👂"], ["quiz", "Quiz", "🎯"]];
   const showTab = tab === "verbs" || tab === "pron" || tab === "browse" || tab === "myphrases" ? "home" : tab;
@@ -2903,9 +2950,7 @@ function App() {
     className: "brand-name"
   }, "Hablar", /*#__PURE__*/React.createElement("small", null, "Spanish for real life"))), /*#__PURE__*/React.createElement("div", {
     className: "topbar-right"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "streak-chip"
-  }, "🔥 ", P.prog.streak || 0), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("button", {
     className: "icon-btn",
     onClick: () => setTheme(theme === "light" ? "dark" : "light")
   }, theme === "light" ? "🌙" : "☀️"))), tab === "home" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Home, {
