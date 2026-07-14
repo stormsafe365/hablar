@@ -570,7 +570,7 @@ def build_index():
     body = []
     body.append('<div class="cover" style="min-height:auto;padding-bottom:8px">'
         '<div class="flag">🇺🇸 🇨🇺</div>'
-        '<h1 style="font-size:46px">Spanish for Your Real Life</h1>'
+        '<h1 style="font-size:clamp(30px,8vw,46px)">Spanish for Your Real Life</h1>'
         '<div class="sub">Your personalized workbook — the beach, your dogs, coffee, '
         'cooking, the gym, and the Cuban Spanish your boyfriend actually speaks.</div>'
         '<div class="who">Personalized for Celeste · Florida</div></div>')
@@ -671,7 +671,7 @@ ARTIFACT_EXTRA_CSS = r"""
 .wb-bar{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
 .wb-brand{font-family:var(--serif);font-weight:700;font-size:17px;white-space:nowrap;color:var(--ink)}
 .wb-brand .dot{color:var(--accent)}
-.wb-tabs{display:flex;gap:4px;overflow-x:auto;margin-left:auto;scrollbar-width:none}
+.wb-tabs{display:flex;gap:4px;overflow-x:auto;margin-left:auto;scrollbar-width:none;min-width:0}
 .wb-tabs::-webkit-scrollbar{display:none}
 .wb-tab{font-family:var(--round);font-weight:800;font-size:12.5px;letter-spacing:.01em;
   padding:8px 13px;border-radius:999px;color:var(--soft);white-space:nowrap;
@@ -683,8 +683,45 @@ ARTIFACT_EXTRA_CSS = r"""
 .tab.on{display:block;animation:fade .18s ease}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.tab.on{animation:none}}
-.page{margin-top:20px;margin-bottom:40px}
+html,body{overflow-x:hidden;max-width:100%}
+.page{margin-top:20px;margin-bottom:40px;max-width:min(820px,100%)}
+h1,h2,h3{overflow-wrap:break-word}
+.cover h1{text-wrap:balance}
 details summary{cursor:pointer}
+
+/* header slow-speed toggle */
+.slow-btn{font-family:var(--round);font-weight:800;font-size:13px;padding:7px 11px;
+  border-radius:999px;border:1px solid var(--line);background:var(--paper);
+  color:var(--soft);cursor:pointer;white-space:nowrap;flex:0 0 auto}
+.slow-btn.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+
+/* tap-to-hear hint bar */
+.say-bar{display:flex;align-items:center;gap:8px;max-width:900px;margin:0 auto;
+  padding:9px 16px;font-size:13px;color:var(--soft);border-bottom:1px solid var(--line)}
+.say-bar .ic{font-size:16px}
+.say-bar b{color:var(--accent);font-weight:700}
+.say-bar .x{margin-left:auto;background:none;border:none;color:var(--faint);
+  font-size:18px;cursor:pointer;padding:0 4px;line-height:1}
+
+/* what's tappable */
+.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.chip,
+.card .front{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.vocab td:first-child,.conj .v,.ex .es,.dlg .es,p.es{
+  text-decoration:underline dotted color-mix(in srgb,var(--accent) 50%,transparent);
+  text-underline-offset:3px;text-decoration-thickness:1px}
+.conj .v::after,.card .front::after,.chip::after{content:"🔊";font-size:.72em;
+  margin-left:5px;opacity:.4;vertical-align:middle}
+.speaking{background:var(--accent-soft);border-radius:6px;
+  box-shadow:0 0 0 4px var(--accent-soft);transition:background .1s}
+
+/* stress popup (dark in both themes for consistent contrast) */
+.stress-pop{position:absolute;z-index:100;background:#232726;color:#f1f1ef;
+  padding:8px 13px;border-radius:11px;font-family:var(--round);font-weight:700;
+  font-size:17px;box-shadow:0 8px 24px rgba(0,0,0,.3);pointer-events:none;
+  white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+.stress-pop b{color:#5fe0a3;font-weight:800}
+.stress-pop .dot2{opacity:.35;margin:0 1px}
+.stress-pop .sp-ic{margin-right:6px}
 """
 
 TAB_ORDER = [
@@ -713,29 +750,238 @@ def build_artifact(bodies):
         sections.append(f'<section class="tab" id="tab-{k}">'
                         f'<div class="page">{inner}</div></section>')
 
-    js = """
+    js = r"""
 (function(){
+  // ---------- tabs ----------
   function show(name){
     document.querySelectorAll('.tab').forEach(function(s){
       s.classList.toggle('on', s.id==='tab-'+name); });
     document.querySelectorAll('.wb-tab').forEach(function(b){
       b.classList.toggle('on', b.dataset.tab===name); });
     window.scrollTo({top:0,behavior:'instant'});
+    hidePop();
   }
+
+  // ---------- Spanish syllabifier + stress (rule-based) ----------
+  var VOWELS='aeiouáéíóúü', ACCENTED='áéíóú', STRONG='aeoáéó';
+  var CLUSTERS=['ch','ll','rr','pr','pl','br','bl','cr','cl','dr','tr','gr','gl','fr','fl'];
+  function isV(c){return VOWELS.indexOf(c)>=0;}
+  function syllabify(word){
+    var w=word.toLowerCase(), nuclei=[], i=0;
+    while(i<w.length){
+      if(isV(w[i])){
+        var j=i;
+        while(j+1<w.length && isV(w[j+1])){
+          var a=w[j], b=w[j+1];
+          var hiatus=(STRONG.indexOf(a)>=0&&STRONG.indexOf(b)>=0)||
+                     ('íú'.indexOf(a)>=0)||('íú'.indexOf(b)>=0);
+          if(hiatus) break; j++;
+        }
+        nuclei.push([i,j]); i=j+1;
+      } else i++;
+    }
+    if(nuclei.length<=1) return [word];
+    var bounds=[0];
+    for(var n=0;n<nuclei.length-1;n++){
+      var cStart=nuclei[n][1]+1, cEnd=nuclei[n+1][0]-1, cons=w.slice(cStart,cEnd+1), L=cons.length, splitAt;
+      if(L===0) splitAt=nuclei[n+1][0];
+      else if(L===1) splitAt=cStart;
+      else if(L===2) splitAt=CLUSTERS.indexOf(cons)>=0?cStart:cStart+1;
+      else if(L===3) splitAt=CLUSTERS.indexOf(cons.slice(1))>=0?cStart+1:cStart+2;
+      else splitAt=cStart+2;
+      bounds.push(splitAt);
+    }
+    var syl=[];
+    for(var b2=0;b2<bounds.length;b2++){
+      var st=bounds[b2], en=(b2+1<bounds.length)?bounds[b2+1]:word.length;
+      syl.push(word.slice(st,en));
+    }
+    return syl;
+  }
+  function stressIndex(s){
+    for(var k=0;k<s.length;k++){var t=s[k].toLowerCase();
+      for(var c=0;c<t.length;c++) if(ACCENTED.indexOf(t[c])>=0) return k;}
+    if(s.length===1) return 0;
+    var last=s[s.length-1].toLowerCase(), lc=last[last.length-1];
+    return ('aeiouns'.indexOf(lc)>=0)?s.length-2:s.length-1;
+  }
+  function markHTML(word){
+    var s=syllabify(word), idx=stressIndex(s), out=[];
+    for(var k=0;k<s.length;k++)
+      out.push(k===idx?('<b>'+s[k].toUpperCase()+'</b>'):s[k].toLowerCase());
+    return out.join('<span class="dot2">·</span>');
+  }
+  function markPhrase(text){
+    return text.trim().split(/\s+/).map(function(tok){
+      var m=tok.match(/^([¿¡"'(]*)([\wáéíóúüñ]+)([.,!?;:"')]*)$/i);
+      return m ? (m[1]+markHTML(m[2])+m[3]) : tok;
+    }).join(' ');
+  }
+
+  // ---------- speech (phone's built-in Spanish voice) ----------
+  var VOICE=null, SLOW=false;
+  function loadVoices(){
+    if(!('speechSynthesis' in window)) return;
+    var vs=speechSynthesis.getVoices()||[];
+    var order=['es-us','es-mx','es-419','es-co','es-ar','es-es','es'];
+    VOICE=null;
+    for(var i=0;i<order.length&&!VOICE;i++)
+      VOICE=vs.filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf(order[i])===0;})[0]||null;
+    if(!VOICE) VOICE=vs.filter(function(v){return /^es/i.test(v.lang||'');})[0]||null;
+  }
+  if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
+  function speak(text, el){
+    if(!('speechSynthesis' in window)||!text) return;
+    try{
+      speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(text);
+      if(VOICE){u.voice=VOICE; u.lang=VOICE.lang;} else u.lang='es-US';
+      u.rate=SLOW?0.6:0.92;
+      if(el){el.classList.add('speaking');
+        u.onend=u.onerror=function(){el.classList.remove('speaking');};}
+      speechSynthesis.speak(u);
+    }catch(e){}
+  }
+
+  // ---------- stress popup ----------
+  var pop=null;
+  function ensurePop(){ if(!pop){pop=document.createElement('div');
+    pop.className='stress-pop';pop.style.display='none';document.body.appendChild(pop);} return pop; }
+  function hidePop(){ if(pop) pop.style.display='none'; }
+  function showPop(html, rect){
+    var p=ensurePop();
+    p.innerHTML='<span class="sp-ic">🔊</span>'+html;
+    p.style.left='0px'; p.style.top='0px'; p.style.display='block';
+    var pw=p.offsetWidth, ph=p.offsetHeight, cw=document.documentElement.clientWidth;
+    var top=rect.top+window.scrollY-ph-10;
+    if(top<window.scrollY+4) top=rect.bottom+window.scrollY+10;
+    var left=rect.left+window.scrollX+rect.width/2-pw/2;
+    left=Math.max(window.scrollX+8, Math.min(left, window.scrollX+cw-pw-8));
+    p.style.top=top+'px'; p.style.left=left+'px';
+    clearTimeout(p._t); p._t=setTimeout(hidePop, 4500);
+  }
+
+  function esText(el){
+    var c=el.cloneNode(true);
+    c.querySelectorAll('.en,.ipa,.small').forEach(function(n){n.remove();});
+    return (c.textContent||'').replace(/🔊/g,'').trim();
+  }
+
+  var SEL='.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.chip,.card .front';
   document.addEventListener('click', function(e){
-    var el = e.target.closest('[data-tab]');
-    if(el){ e.preventDefault(); show(el.getAttribute('data-tab')); }
+    if(e.target.closest('[data-tab]')){ e.preventDefault(); show(e.target.closest('[data-tab]').getAttribute('data-tab')); return; }
+    if(e.target.closest('.slow-btn')||e.target.closest('.say-bar')) return;
+    var t=e.target.closest(SEL);
+    if(!t){ hidePop(); return; }
+    var text=esText(t);
+    if(!text) return;
+    speak(text, t);
+    var words=text.split(/\s+/);
+    if(words.length<=3 && /[a-záéíóúñü]/i.test(text)) showPop(markPhrase(text), t.getBoundingClientRect());
+    else hidePop();
   });
+  window.addEventListener('scroll', hidePop, {passive:true});
+
+  // ---------- controls ----------
+  var sb=document.getElementById('slowBtn');
+  if(sb) sb.addEventListener('click', function(){ SLOW=!SLOW; sb.classList.toggle('on',SLOW);
+    sb.setAttribute('aria-pressed', SLOW?'true':'false'); });
+  var hx=document.getElementById('hintX');
+  if(hx) hx.addEventListener('click', function(){ var b=document.getElementById('sayBar'); if(b) b.style.display='none'; });
+
   show('contents');
 })();
 """
     body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}</style>'
             '<div class="wb-header"><div class="wb-bar">'
             '<span class="wb-brand">Hablar<span class="dot">.</span></span>'
+            '<button id="slowBtn" class="slow-btn" title="Slow speech" '
+            'aria-pressed="false">🐢 Slow</button>'
             f'<nav class="wb-tabs">{nav}</nav></div></div>'
+            '<div class="say-bar" id="sayBar"><span class="ic">🔊</span>'
+            '<span>Tap any <b>green Spanish</b> word or sentence to hear it '
+            '&amp; see the stressed syllable.</span>'
+            '<button class="x" id="hintX" title="Dismiss" aria-label="Dismiss">&times;</button></div>'
             + "".join(sections)
             + f'<script>{js}</script>')
     w("hablar-workbook.html", body)
+    return body
+
+
+# ══════════════════════════════════════════════════════════════════════════
+# STANDALONE INSTALLABLE APP  (full-screen PWA, offline, home-screen icon)
+# ══════════════════════════════════════════════════════════════════════════
+PWA_MANIFEST = """{
+  "name": "Spanish for Your Real Life",
+  "short_name": "Mi Español",
+  "description": "Celeste's personalized Spanish workbook — beach life, dogs, coffee, cooking, and Cuban Spanish.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f1ea",
+  "theme_color": "#1c8a5d",
+  "lang": "en",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}
+  ]
+}
+"""
+
+PWA_SW = """/* Offline cache for the standalone workbook app */
+const CACHE = 'hablar-workbook-v1';
+const ASSETS = ['./', './index.html', './manifest.webmanifest',
+  './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+});
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(ks =>
+    Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+});
+self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+  e.respondWith(caches.match(e.request).then(hit => hit || fetch(e.request).then(res => {
+    const copy = res.clone();
+    caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {});
+    return res;
+  }).catch(() => caches.match('./index.html'))));
+});
+"""
+
+def build_pwa(body):
+    sw_reg = ("if('serviceWorker' in navigator){window.addEventListener('load',"
+              "function(){navigator.serviceWorker.register('sw.js').catch(function(){})});}")
+    doc = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Mi Español · Personalized Workbook</title>
+<meta name="description" content="Celeste's personalized Spanish workbook."/>
+<meta name="theme-color" content="#1c8a5d"/>
+<link rel="manifest" href="manifest.webmanifest"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Mi Español"/>
+<link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+<link rel="icon" type="image/png" href="icon-192.png"/>
+</head>
+<body>
+{body}
+<script>{sw_reg}</script>
+</body>
+</html>"""
+    with open(os.path.join(OUT, "app", "index.html"), "w", encoding="utf-8") as f:
+        f.write(doc)
+    with open(os.path.join(OUT, "app", "manifest.webmanifest"), "w", encoding="utf-8") as f:
+        f.write(PWA_MANIFEST)
+    with open(os.path.join(OUT, "app", "sw.js"), "w", encoding="utf-8") as f:
+        f.write(PWA_SW)
+    print("wrote app/index.html, app/manifest.webmanifest, app/sw.js "
+          f"({len(doc)//1024} KB)")
 
 
 if __name__ == "__main__":
@@ -750,5 +996,6 @@ if __name__ == "__main__":
         "tests":       build_tests(),
     }
     bodies["contents"] = bodies["index"]
-    build_artifact(bodies)
-    print("\n✅ Workbook built (7 print files + 1 combined artifact).")
+    combined = build_artifact(bodies)
+    build_pwa(combined)
+    print("\n✅ Workbook built (7 print files + combined artifact + installable app).")

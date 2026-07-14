@@ -52,19 +52,28 @@ def part1_foundations():
     h.append('<p>Good news: Spanish is spelled how it sounds. Learn these and you can '
              'pronounce almost any word on sight. Vowels are <em>pure and short</em> — '
              'they never glide the way English vowels do.</p>')
-    h.append(vocab_table([
-        ("a", "ah — like 'father'", "casa (KAH-sah)"),
-        ("e", "eh — like 'bed'", "café (kah-FEH)"),
-        ("i", "ee — like 'see'", "sí (see)"),
-        ("o", "oh — like 'go' (short)", "sol (sohl)"),
-        ("u", "oo — like 'food'", "luna (LOO-nah)"),
-        ("h", "always silent", "hola (OH-lah)"),
-        ("j", "harsh 'h' from the throat", "jardín (har-DEEN)"),
-        ("ll / y", "like 'y' in yes", "playa (PLAH-yah)"),
-        ("ñ", "'ny' like canyon", "mañana (mah-NYAH-nah)"),
-        ("v", "soft, almost like 'b'", "vamos (BAH-mos)"),
-        ("z / c(e,i)", "like 's' in Latin America", "azúcar (ah-SOO-car)"),
-    ]))
+    # tappable example words (audio + auto stress) — direct answer to "hear it"
+    _pron = [
+        ("a", "ah — like 'father'", "casa", "KAH-sah"),
+        ("e", "eh — like 'bed'", "café", "kah-FEH"),
+        ("i", "ee — like 'see'", "sí", "SEE"),
+        ("o", "oh — like 'go' (short)", "sol", "SOHL"),
+        ("u", "oo — like 'food'", "luna", "LOO-nah"),
+        ("h", "always silent", "hola", "OH-lah"),
+        ("j", "harsh 'h' from the throat", "jardín", "har-DEEN"),
+        ("ll / y", "like 'y' in yes", "playa", "PLAH-yah"),
+        ("ñ", "'ny' like canyon", "mañana", "mah-NYAH-nah"),
+        ("v", "soft, almost like 'b'", "vamos", "BAH-mos"),
+        ("z / c(e,i)", "like 's' in Latin America", "azúcar", "ah-SOO-car"),
+    ]
+    rows = ['<table class="vocab"><thead><tr><th>Letter</th><th>Sound</th>'
+            '<th>Example <span class="small">(tap&nbsp;🔊)</span></th></tr></thead><tbody>']
+    for letter, sound, word, hint in _pron:
+        rows.append(f'<tr><td>{esc(letter)}</td><td>{esc(sound)}</td>'
+                    f'<td><span class="es">{esc(word)}</span> '
+                    f'<span class="small">({esc(hint)})</span></td></tr>')
+    rows.append('</tbody></table>')
+    h.append("".join(rows))
     h.append(box('cuba', 'Cuban note', (
         '<p>In Cuban Spanish, the <strong>s</strong> at the end of a syllable often '
         'softens or disappears: <span class="es">¿Cómo estás?</span> can sound like '
