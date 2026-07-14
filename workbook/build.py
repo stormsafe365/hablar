@@ -16,6 +16,7 @@ import os
 
 from content.theme import (shell, box, examples, dialogue, vocab_table,
     conj_table, chips, write_lines, questions, drill, blank, esc)
+from content.theme import CSS as THEME_CSS
 from content.verbs import VERBS
 from content.vocab import THEMES
 from content import extras
@@ -194,8 +195,10 @@ def build_book():
         'and above all, <strong>speak</strong>. Every mistake is a rep. '
         '<span class="es">¡Dale, tú puedes!</span></p>')
 
-    w("book.html", shell("Hablar Workbook · The Book", "".join(parts),
+    body = "".join(parts)
+    w("book.html", shell("Hablar Workbook · The Book", body,
                          subtitle="Parts I–VII"))
+    return body
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -301,8 +304,10 @@ def build_practice():
         '<p>Describe your last weekend in 5–6 sentences, in the past tense.</p>'
         + write_lines(7)))
 
-    w("practice.html", shell("Hablar Workbook · Practice", "".join(parts),
+    body = "".join(parts)
+    w("practice.html", shell("Hablar Workbook · Practice", body,
                              subtitle="Practice Workbook"))
+    return body
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -381,8 +386,10 @@ def build_answers():
     ]:
         parts.append(_ans_row(esc(en), es))
 
-    w("answers.html", shell("Hablar Workbook · Answers", "".join(parts),
+    body = "".join(parts)
+    w("answers.html", shell("Hablar Workbook · Answers", body,
                             subtitle="Answer Book"))
+    return body
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -413,8 +420,10 @@ def build_flashcards():
         cards = [(es, en, note) for es, en, note in t["vocab"]]
         parts.append(_cards(cards))
 
-    w("flashcards.html", shell("Hablar Workbook · Flashcards", "".join(parts),
+    body = "".join(parts)
+    w("flashcards.html", shell("Hablar Workbook · Flashcards", body,
                                subtitle="Flashcards"))
+    return body
 
 
 def _cards(items):
@@ -527,16 +536,20 @@ def build_tests():
     parts.append('<p class="small">¡Dale! = okay/go for it · ¿Qué bolá? = what\'s up '
         '· asere = buddy · ¡Qué rico! = how delicious/nice</p>')
 
-    w("tests.html", shell("Hablar Workbook · Tests", "".join(parts),
+    body = "".join(parts)
+    w("tests.html", shell("Hablar Workbook · Tests", body,
                           subtitle="Progress Tests & Final Exam"))
+    return body
 
 
 # ══════════════════════════════════════════════════════════════════════════
 # CHEAT SHEETS + INDEX
 # ══════════════════════════════════════════════════════════════════════════
 def build_cheats():
+    body = extras.cheat_sheets()
     w("cheatsheets.html", shell("Hablar Workbook · Cheat Sheets",
-        extras.cheat_sheets(), subtitle="Cheat Sheets"))
+        body, subtitle="Cheat Sheets"))
+    return body
 
 
 def build_index():
@@ -609,16 +622,133 @@ def build_index():
         'method · personalized for your life in Florida · '
         '<span class="es">¡Dale, tú puedes!</span></p>')
 
-    w("index.html", shell("Hablar · Personalized Spanish Workbook", "".join(body),
+    html_body = "".join(body)
+    w("index.html", shell("Hablar · Personalized Spanish Workbook", html_body,
                           subtitle="Contents", show_nav=True))
+    return html_body
+
+
+# ══════════════════════════════════════════════════════════════════════════
+# COMBINED SINGLE-PAGE ARTIFACT  (self-contained, tabbed, light + dark)
+# ══════════════════════════════════════════════════════════════════════════
+ARTIFACT_EXTRA_CSS = r"""
+/* dark theme — mirrors the Hablar app */
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#1f2122; --paper:#282a2b; --sand:#1f2122; --sand2:#323436;
+    --ink:#f2f2f0; --soft:#a8aaa9; --faint:#767a7b; --line:#383b3d;
+    --accent:#58df9d; --accent2:#22b378; --accent-soft:#173026;
+    --cuba:#ff8a7a; --cuba-soft:#3a2220; --sea:#54d3c4; --sea-soft:#123029;
+    --sun:#e9b95e; --sun-soft:#33290f; --coral:#ff8f8c; --coral-soft:#3a2220;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#fbfaf6; --paper:#ffffff; --sand:#f3f1ea; --sand2:#eae7dd;
+  --ink:#2a2824; --soft:#6a655c; --faint:#9a948a; --line:#e3e0d5;
+  --accent:#1c8a5d; --accent2:#22b378; --accent-soft:#e6f5ee;
+  --cuba:#c85a49; --cuba-soft:#f7e6e3; --sea:#2f8f9e; --sea-soft:#e2f0f2;
+  --sun:#c68a2e; --sun-soft:#f6ecd7; --coral:#e0524f; --coral-soft:#fbe7e6;
+}
+:root[data-theme="dark"]{
+  --bg:#1f2122; --paper:#282a2b; --sand:#1f2122; --sand2:#323436;
+  --ink:#f2f2f0; --soft:#a8aaa9; --faint:#767a7b; --line:#383b3d;
+  --accent:#58df9d; --accent2:#22b378; --accent-soft:#173026;
+  --cuba:#ff8a7a; --cuba-soft:#3a2220; --sea:#54d3c4; --sea-soft:#123029;
+  --sun:#e9b95e; --sun-soft:#33290f; --coral:#ff8f8c; --coral-soft:#3a2220;
+}
+/* in dark mode the hardcoded pale borders should track the line token */
+@media (prefers-color-scheme: dark){
+  .tip,.trick,.warn,.cuba,.sea{border-color:var(--line)}
+  .card{border-color:var(--faint)}
+}
+:root[data-theme="dark"] .tip,:root[data-theme="dark"] .trick,
+:root[data-theme="dark"] .warn,:root[data-theme="dark"] .cuba,
+:root[data-theme="dark"] .sea{border-color:var(--line)}
+
+/* sticky header + tabs */
+.wb-header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--sand) 88%,transparent);
+  border-bottom:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.wb-bar{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
+.wb-brand{font-family:var(--serif);font-weight:700;font-size:17px;white-space:nowrap;color:var(--ink)}
+.wb-brand .dot{color:var(--accent)}
+.wb-tabs{display:flex;gap:4px;overflow-x:auto;margin-left:auto;scrollbar-width:none}
+.wb-tabs::-webkit-scrollbar{display:none}
+.wb-tab{font-family:var(--round);font-weight:800;font-size:12.5px;letter-spacing:.01em;
+  padding:8px 13px;border-radius:999px;color:var(--soft);white-space:nowrap;
+  border:1px solid transparent;background:none;cursor:pointer;transition:.12s}
+.wb-tab:hover{color:var(--ink);background:var(--sand2)}
+.wb-tab.on{background:var(--accent-soft);color:var(--accent);border-color:var(--line)}
+.wb-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tab{display:none}
+.tab.on{display:block;animation:fade .18s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.tab.on{animation:none}}
+.page{margin-top:20px;margin-bottom:40px}
+details summary{cursor:pointer}
+"""
+
+TAB_ORDER = [
+    ("contents", "Contents"), ("book", "The Book"), ("practice", "Practice"),
+    ("answers", "Answers"), ("flashcards", "Flashcards"),
+    ("cheatsheets", "Cheat Sheets"), ("tests", "Tests"),
+]
+
+def _to_tabs(html):
+    """Rewrite cross-file links into in-page tab switches."""
+    m = {"index.html": "contents", "book.html": "book", "practice.html": "practice",
+         "answers.html": "answers", "flashcards.html": "flashcards",
+         "cheatsheets.html": "cheatsheets", "tests.html": "tests"}
+    for f, tab in m.items():
+        html = html.replace(f'href="{f}"', f'href="#{tab}" data-tab="{tab}"')
+    return html
+
+
+def build_artifact(bodies):
+    nav = "".join(
+        f'<button class="wb-tab" data-tab="{k}">{esc(label)}</button>'
+        for k, label in TAB_ORDER)
+    sections = []
+    for k, _ in TAB_ORDER:
+        inner = _to_tabs(bodies[k])
+        sections.append(f'<section class="tab" id="tab-{k}">'
+                        f'<div class="page">{inner}</div></section>')
+
+    js = """
+(function(){
+  function show(name){
+    document.querySelectorAll('.tab').forEach(function(s){
+      s.classList.toggle('on', s.id==='tab-'+name); });
+    document.querySelectorAll('.wb-tab').forEach(function(b){
+      b.classList.toggle('on', b.dataset.tab===name); });
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('[data-tab]');
+    if(el){ e.preventDefault(); show(el.getAttribute('data-tab')); }
+  });
+  show('contents');
+})();
+"""
+    body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}</style>'
+            '<div class="wb-header"><div class="wb-bar">'
+            '<span class="wb-brand">Hablar<span class="dot">.</span></span>'
+            f'<nav class="wb-tabs">{nav}</nav></div></div>'
+            + "".join(sections)
+            + f'<script>{js}</script>')
+    w("hablar-workbook.html", body)
 
 
 if __name__ == "__main__":
-    build_index()
-    build_book()
-    build_practice()
-    build_answers()
-    build_flashcards()
-    build_cheats()
-    build_tests()
-    print("\n✅ Workbook built.")
+    bodies = {
+        "index":       build_index(),
+        "contents":    None,   # filled below (alias of index)
+        "book":        build_book(),
+        "practice":    build_practice(),
+        "answers":     build_answers(),
+        "flashcards":  build_flashcards(),
+        "cheatsheets": build_cheats(),
+        "tests":       build_tests(),
+    }
+    bodies["contents"] = bodies["index"]
+    build_artifact(bodies)
+    print("\n✅ Workbook built (7 print files + 1 combined artifact).")
