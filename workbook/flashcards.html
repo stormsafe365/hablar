@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hablar Workbook · Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbfaf6; --paper:#ffffff; --sand:#f3f1ea; --sand2:#eae7dd;
+  --ink:#2a2824; --soft:#6a655c; --faint:#9a948a; --line:#e3e0d5;
+  --accent:#1c8a5d; --accent2:#22b378; --accent-soft:#e6f5ee;
+  --cuba:#c85a49; --cuba-soft:#f7e6e3;
+  --sea:#2f8f9e; --sea-soft:#e2f0f2;
+  --sun:#c68a2e; --sun-soft:#f6ecd7;
+  --coral:#e0524f; --coral-soft:#fbe7e6;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+  --round:'Nunito',var(--sans);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--sand);color:var(--ink);font-family:var(--sans);
+  line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+.page{background:var(--paper);max-width:820px;margin:26px auto;padding:56px 64px;
+  box-shadow:0 1px 2px rgba(25,23,20,.05),0 18px 44px rgba(25,23,20,.09);
+  border-radius:6px;position:relative}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.15;color:var(--ink)}
+h1{font-size:40px;font-weight:700;letter-spacing:-.02em}
+h2{font-size:28px;margin:34px 0 12px;letter-spacing:-.01em}
+h3{font-size:21px;margin:26px 0 8px}
+h4{font-size:17px;margin:18px 0 6px;font-family:var(--sans);font-weight:700}
+p{margin:10px 0}
+a{color:var(--accent);text-decoration:none}
+strong{font-weight:700}
+em{font-style:italic}
+ul,ol{margin:10px 0 10px 24px}
+li{margin:4px 0}
+.small{font-size:13px;color:var(--soft)}
+.muted{color:var(--soft)}
+.center{text-align:center}
+.es{color:var(--accent);font-weight:600}            /* spanish text */
+.en{color:var(--soft)}                               /* english gloss */
+hr{border:none;border-top:1px solid var(--line);margin:26px 0}
+
+/* eyebrow / part label */
+.eyebrow{font-family:var(--round);font-weight:800;text-transform:uppercase;
+  letter-spacing:.14em;font-size:12px;color:var(--accent);margin-bottom:6px}
+
+/* callout boxes */
+.box{border-radius:14px;padding:16px 20px;margin:16px 0;border:1px solid var(--line);
+  background:var(--bg)}
+.box .lead{font-family:var(--round);font-weight:800;font-size:12px;
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:block}
+.tip{background:var(--accent-soft);border-color:#cfe9dd}
+.tip .lead{color:var(--accent)}
+.trick{background:var(--sun-soft);border-color:#eaddbf}
+.trick .lead{color:var(--sun)}
+.warn{background:var(--coral-soft);border-color:#f3cfcd}
+.warn .lead{color:var(--coral)}
+.cuba{background:var(--cuba-soft);border-color:#eecfc9}
+.cuba .lead{color:var(--cuba)}
+.sea{background:var(--sea-soft);border-color:#c9e4e8}
+.sea .lead{color:var(--sea)}
+
+/* conjugation table */
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:15px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--round);font-weight:800;font-size:12px;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--soft);background:var(--bg)}
+.conj{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.conj td:first-child{color:var(--soft);width:34%}
+.conj .v{color:var(--accent);font-weight:700}
+.conj tr:last-child td{border-bottom:none}
+
+/* vocab table */
+.vocab td:first-child{font-weight:600;color:var(--accent);width:38%}
+.vocab td:nth-child(2){color:var(--ink)}
+.vocab .ipa{color:var(--faint);font-size:13px}
+
+/* example list */
+.ex{list-style:none;margin:12px 0;padding:0}
+.ex li{padding:7px 0;border-bottom:1px dashed var(--line)}
+.ex li:last-child{border-bottom:none}
+.ex .n{color:var(--faint);font-size:12px;font-family:var(--round);
+  font-weight:800;margin-right:8px}
+.ex .es{display:inline}
+.ex .en{display:block;margin-left:22px;font-size:14px}
+
+/* dialogue */
+.dlg{margin:14px 0;border-left:3px solid var(--accent-soft);padding-left:16px}
+.dlg .line{margin:8px 0}
+.dlg .who{font-family:var(--round);font-weight:800;font-size:12px;
+  color:var(--accent);display:inline-block;min-width:64px}
+.dlg .en{display:block;margin-left:64px;font-size:14px}
+
+/* exercises */
+.drill{background:var(--bg);border:1px solid var(--line);border-radius:14px;
+  padding:18px 22px;margin:18px 0}
+.drill h4{margin-top:0}
+.q{margin:9px 0;padding-left:30px;position:relative}
+.q .num{position:absolute;left:0;top:0;font-family:var(--round);font-weight:800;
+  color:var(--accent);font-size:14px}
+.blank{display:inline-block;min-width:120px;border-bottom:1.5px solid var(--faint);
+  margin:0 3px}
+.write-lines{margin:10px 0}
+.write-lines .ln{border-bottom:1px solid var(--line);height:26px}
+
+/* pills / chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip{background:var(--sand);border:1px solid var(--line);border-radius:999px;
+  padding:5px 13px;font-size:14px;font-weight:600}
+.chip .en{color:var(--soft);font-weight:400;margin-left:5px}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.card{border:1px dashed var(--faint);padding:16px;min-height:118px;
+  display:flex;flex-direction:column;justify-content:center;text-align:center}
+.card .front{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--accent)}
+.card .ipa{color:var(--faint);font-size:13px;margin-top:3px}
+.card .back{font-size:15px;color:var(--ink);margin-top:6px}
+.card .tag{font-size:11px;color:var(--faint);font-family:var(--round);
+  font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+
+/* toc */
+.toc{list-style:none;margin:18px 0;padding:0}
+.toc li{display:flex;align-items:baseline;gap:8px;padding:7px 0;
+  border-bottom:1px solid var(--line)}
+.toc .t{font-weight:600}
+.toc .d{color:var(--soft);font-size:14px;flex:1}
+.toc .pg{color:var(--faint);font-size:13px;font-family:var(--round);font-weight:800}
+
+/* cover */
+.cover{min-height:78vh;display:flex;flex-direction:column;justify-content:center}
+.cover h1{font-size:58px;font-weight:900;letter-spacing:-.03em;line-height:1.02}
+.cover .sub{font-size:20px;color:var(--soft);margin-top:14px;max-width:30em}
+.cover .who{margin-top:36px;font-family:var(--round);font-weight:800;
+  text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--accent)}
+.cover .flag{font-size:40px;margin-bottom:18px;letter-spacing:6px}
+
+/* footer running head */
+.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;color:var(--faint);font-size:12px;
+  font-family:var(--round);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+
+/* index landing grid */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+.tile{display:block;border:1px solid var(--line);border-radius:16px;padding:20px 22px;
+  background:var(--bg);transition:transform .1s}
+.tile:hover{transform:translateY(-2px)}
+.tile .ic{font-size:26px}
+.tile .tt{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);
+  margin:6px 0 4px}
+.tile .dd{font-size:14px;color:var(--soft)}
+
+@media (max-width:640px){
+  .page{padding:32px 22px;margin:10px}
+  .grid,.cards{grid-template-columns:1fr}
+  .cover h1{font-size:40px}
+  h1{font-size:32px}
+}
+
+@media print{
+  @page{size:letter;margin:16mm 15mm}
+  body{background:#fff;font-size:11.5pt;line-height:1.5}
+  .page{box-shadow:none;margin:0;padding:0;max-width:none;border-radius:0}
+  .no-print{display:none!important}
+  h2{page-break-after:avoid}
+  h3,h4{page-break-after:avoid}
+  table,.drill,.box,.dlg,.card,.conj{page-break-inside:avoid}
+  .page-break{page-break-before:always}
+  a{color:var(--ink);text-decoration:none}
+  .cards{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="no-print" style="max-width:820px;margin:0 auto;padding:10px 16px;
+  display:flex;gap:14px;flex-wrap:wrap;font-family:var(--round);font-weight:700;
+  font-size:13px">
+  <a href="index.html">&larr; Contents</a>
+  <a href="book.html">Book</a>
+  <a href="practice.html">Practice</a>
+  <a href="answers.html">Answers</a>
+  <a href="cheatsheets.html">Cheat&nbsp;Sheets</a>
+  <a href="flashcards.html">Flashcards</a>
+  <a href="tests.html">Tests</a>
+</div>
+
+<div class="page">
+<div class="cover"><div class="flag">🃏</div><h1>Flashcards</h1><div class="sub">Every vocabulary word in the workbook. Print, cut along the dashed lines, and drill 5 minutes a day.</div><div class="who">Spanish → English · fold or cut</div></div><div class="page-break"></div><h1>Deck 1 · The 16 Verbs</h1><div class="cards"><div class="card"><div class="front">ser</div><div class="back">to be</div><div class="tag">yo → soy</div></div><div class="card"><div class="front">estar</div><div class="back">to be</div><div class="tag">yo → estoy</div></div><div class="card"><div class="front">ir</div><div class="back">to go</div><div class="tag">yo → voy</div></div><div class="card"><div class="front">tener</div><div class="back">to have</div><div class="tag">yo → tengo</div></div><div class="card"><div class="front">hacer</div><div class="back">to do / to make</div><div class="tag">yo → hago</div></div><div class="card"><div class="front">ver</div><div class="back">to see / to watch</div><div class="tag">yo → veo</div></div><div class="card"><div class="front">venir</div><div class="back">to come</div><div class="tag">yo → vengo</div></div><div class="card"><div class="front">decir</div><div class="back">to say / to tell</div><div class="tag">yo → digo</div></div><div class="card"><div class="front">dar</div><div class="back">to give</div><div class="tag">yo → doy</div></div><div class="card"><div class="front">poner</div><div class="back">to put / to set / to turn on</div><div class="tag">yo → pongo</div></div><div class="card"><div class="front">salir</div><div class="back">to leave / to go out</div><div class="tag">yo → salgo</div></div><div class="card"><div class="front">oír</div><div class="back">to hear</div><div class="tag">yo → oigo</div></div><div class="card"><div class="front">querer</div><div class="back">to want / to love</div><div class="tag">yo → quiero</div></div><div class="card"><div class="front">poder</div><div class="back">can / to be able to</div><div class="tag">yo → puedo</div></div><div class="card"><div class="front">saber</div><div class="back">to know</div><div class="tag">yo → sé</div></div><div class="card"><div class="front">conocer</div><div class="back">to know</div><div class="tag">yo → conozco</div></div></div><div class="page-break"></div><h1>🏖 The Beach</h1><div class="cards"><div class="card"><div class="front">la playa</div><div class="back">the beach</div></div><div class="card"><div class="front">el mar</div><div class="back">the sea</div></div><div class="card"><div class="front">la arena</div><div class="back">the sand</div></div><div class="card"><div class="front">la ola</div><div class="back">the wave</div><div class="tag">las olas = the waves</div></div><div class="card"><div class="front">la marea</div><div class="back">the tide</div><div class="tag">marea alta/baja = high/low tide</div></div><div class="card"><div class="front">el traje de baño</div><div class="back">the swimsuit</div></div><div class="card"><div class="front">la toalla</div><div class="back">the towel</div></div><div class="card"><div class="front">las gafas de sol</div><div class="back">the sunglasses</div></div><div class="card"><div class="front">la crema solar</div><div class="back">the sunscreen</div><div class="tag">also el protector solar</div></div><div class="card"><div class="front">la sombrilla</div><div class="back">the beach umbrella</div></div><div class="card"><div class="front">la concha</div><div class="back">the seashell</div></div><div class="card"><div class="front">el atardecer</div><div class="back">the sunset</div></div><div class="card"><div class="front">nadar</div><div class="back">to swim</div></div><div class="card"><div class="front">broncearse</div><div class="back">to tan / sunbathe</div></div><div class="card"><div class="front">la brisa</div><div class="back">the breeze</div></div><div class="card"><div class="front">mojado / mojada</div><div class="back">wet</div></div></div><div class="page-break"></div><h1>🌊 Paddleboarding &amp; Water</h1><div class="cards"><div class="card"><div class="front">la tabla de paddle</div><div class="back">the paddleboard</div><div class="tag">or tabla de remo</div></div><div class="card"><div class="front">el remo</div><div class="back">the paddle</div></div><div class="card"><div class="front">remar</div><div class="back">to paddle</div></div><div class="card"><div class="front">el chaleco salvavidas</div><div class="back">the life vest</div></div><div class="card"><div class="front">el equilibrio</div><div class="back">the balance</div><div class="tag">mantener el equilibrio</div></div><div class="card"><div class="front">de pie</div><div class="back">standing</div></div><div class="card"><div class="front">arrodillarse</div><div class="back">to kneel</div></div><div class="card"><div class="front">la corriente</div><div class="back">the current</div></div><div class="card"><div class="front">el delfín</div><div class="back">the dolphin</div><div class="tag">los delfines</div></div><div class="card"><div class="front">el manglar</div><div class="back">the mangrove</div></div><div class="card"><div class="front">tranquilo / tranquila</div><div class="back">calm</div></div><div class="card"><div class="front">caerse</div><div class="back">to fall (off)</div><div class="tag">me caigo = I fall</div></div><div class="card"><div class="front">flotar</div><div class="back">to float</div></div><div class="card"><div class="front">la orilla</div><div class="back">the shore</div></div><div class="card"><div class="front">el amanecer</div><div class="back">the sunrise</div></div><div class="card"><div class="front">mojarse</div><div class="back">to get wet</div></div></div><div class="page-break"></div><h1>🌴 Florida &amp; Weather</h1><div class="cards"><div class="card"><div class="front">Florida</div><div class="back">Florida</div></div><div class="card"><div class="front">el calor</div><div class="back">the heat</div><div class="tag">hace calor = it&#x27;s hot</div></div><div class="card"><div class="front">la humedad</div><div class="back">the humidity</div></div><div class="card"><div class="front">el sol</div><div class="back">the sun</div><div class="tag">hace sol</div></div><div class="card"><div class="front">la lluvia</div><div class="back">the rain</div><div class="tag">llueve = it rains</div></div><div class="card"><div class="front">la tormenta</div><div class="back">the storm</div></div><div class="card"><div class="front">el huracán</div><div class="back">the hurricane</div></div><div class="card"><div class="front">el trueno</div><div class="back">the thunder</div></div><div class="card"><div class="front">el relámpago</div><div class="back">the lightning</div></div><div class="card"><div class="front">la palmera</div><div class="back">the palm tree</div></div><div class="card"><div class="front">el cocodrilo</div><div class="back">the alligator/croc</div></div><div class="card"><div class="front">el mosquito</div><div class="back">the mosquito</div></div><div class="card"><div class="front">húmedo / húmeda</div><div class="back">humid / damp</div></div><div class="card"><div class="front">soleado / soleada</div><div class="back">sunny</div></div><div class="card"><div class="front">nublado / nublada</div><div class="back">cloudy</div></div><div class="card"><div class="front">el verano</div><div class="back">the summer</div></div></div><div class="page-break"></div><h1>🌺 Tropical Plants</h1><div class="cards"><div class="card"><div class="front">la flor</div><div class="back">the flower</div><div class="tag">las flores</div></div><div class="card"><div class="front">la palmera</div><div class="back">the palm tree</div></div><div class="card"><div class="front">el hibisco</div><div class="back">the hibiscus</div></div><div class="card"><div class="front">la buganvilla</div><div class="back">the bougainvillea</div></div><div class="card"><div class="front">la orquídea</div><div class="back">the orchid</div></div><div class="card"><div class="front">la hoja</div><div class="back">the leaf</div><div class="tag">las hojas</div></div><div class="card"><div class="front">el tronco</div><div class="back">the trunk</div></div><div class="card"><div class="front">la raíz</div><div class="back">the root</div><div class="tag">las raíces</div></div><div class="card"><div class="front">el helecho</div><div class="back">the fern</div></div><div class="card"><div class="front">la maceta</div><div class="back">the flowerpot</div></div><div class="card"><div class="front">florecer</div><div class="back">to bloom</div></div><div class="card"><div class="front">crecer</div><div class="back">to grow</div></div><div class="card"><div class="front">verde</div><div class="back">green</div></div><div class="card"><div class="front">colorido / colorida</div><div class="back">colorful</div></div><div class="card"><div class="front">la sombra</div><div class="back">the shade</div></div><div class="card"><div class="front">el aroma</div><div class="back">the scent</div></div></div><div class="page-break"></div><h1>🌱 Gardening</h1><div class="cards"><div class="card"><div class="front">el jardín</div><div class="back">the garden</div></div><div class="card"><div class="front">la tierra</div><div class="back">the soil / earth</div></div><div class="card"><div class="front">la semilla</div><div class="back">the seed</div><div class="tag">las semillas</div></div><div class="card"><div class="front">regar</div><div class="back">to water</div><div class="tag">riego = I water</div></div><div class="card"><div class="front">plantar</div><div class="back">to plant</div></div><div class="card"><div class="front">sembrar</div><div class="back">to sow</div></div><div class="card"><div class="front">podar</div><div class="back">to prune / trim</div></div><div class="card"><div class="front">la pala</div><div class="back">the shovel</div></div><div class="card"><div class="front">la manguera</div><div class="back">the hose</div></div><div class="card"><div class="front">el abono</div><div class="back">the fertilizer</div></div><div class="card"><div class="front">la mala hierba</div><div class="back">the weed</div></div><div class="card"><div class="front">cosechar</div><div class="back">to harvest</div></div><div class="card"><div class="front">los guantes</div><div class="back">the gloves</div></div><div class="card"><div class="front">húmedo / húmeda</div><div class="back">moist</div></div><div class="card"><div class="front">crecer</div><div class="back">to grow</div></div><div class="card"><div class="front">cuidar</div><div class="back">to take care of</div></div></div><div class="page-break"></div><h1>🐶 Dogs</h1><div class="cards"><div class="card"><div class="front">el perro</div><div class="back">the dog</div><div class="tag">la perra = female dog</div></div><div class="card"><div class="front">el cachorro</div><div class="back">the puppy</div></div><div class="card"><div class="front">la correa</div><div class="back">the leash</div></div><div class="card"><div class="front">el collar</div><div class="back">the collar</div></div><div class="card"><div class="front">pasear</div><div class="back">to walk (a dog)</div></div><div class="card"><div class="front">ladrar</div><div class="back">to bark</div></div><div class="card"><div class="front">la cola</div><div class="back">the tail</div></div><div class="card"><div class="front">la pata</div><div class="back">the paw</div></div><div class="card"><div class="front">morder</div><div class="back">to bite</div></div><div class="card"><div class="front">el hueso</div><div class="back">the bone</div></div><div class="card"><div class="front">la comida para perros</div><div class="back">dog food</div></div><div class="card"><div class="front">obediente</div><div class="back">obedient</div></div><div class="card"><div class="front">cariñoso / cariñosa</div><div class="back">affectionate</div></div><div class="card"><div class="front">¡Ven!</div><div class="back">Come!</div><div class="tag">command</div></div><div class="card"><div class="front">¡Siéntate!</div><div class="back">Sit!</div><div class="tag">command</div></div><div class="card"><div class="front">¡Quieto!</div><div class="back">Stay!</div><div class="tag">command</div></div></div><div class="page-break"></div><h1>🏋 The Gym</h1><div class="cards"><div class="card"><div class="front">el gimnasio</div><div class="back">the gym</div></div><div class="card"><div class="front">entrenar</div><div class="back">to train / work out</div></div><div class="card"><div class="front">el ejercicio</div><div class="back">the exercise</div><div class="tag">hacer ejercicio</div></div><div class="card"><div class="front">las pesas</div><div class="back">the weights</div><div class="tag">levantar pesas</div></div><div class="card"><div class="front">la cinta de correr</div><div class="back">the treadmill</div></div><div class="card"><div class="front">el músculo</div><div class="back">the muscle</div></div><div class="card"><div class="front">sudar</div><div class="back">to sweat</div></div><div class="card"><div class="front">estirar</div><div class="back">to stretch</div></div><div class="card"><div class="front">el calentamiento</div><div class="back">the warm-up</div></div><div class="card"><div class="front">la repetición</div><div class="back">the rep</div></div><div class="card"><div class="front">cansado / cansada</div><div class="back">tired</div></div><div class="card"><div class="front">fuerte</div><div class="back">strong</div></div><div class="card"><div class="front">el descanso</div><div class="back">the rest / break</div></div><div class="card"><div class="front">respirar</div><div class="back">to breathe</div></div><div class="card"><div class="front">la rutina</div><div class="back">the routine</div></div><div class="card"><div class="front">el yoga</div><div class="back">yoga</div></div></div><div class="page-break"></div><h1>🎵 Music</h1><div class="cards"><div class="card"><div class="front">la música</div><div class="back">the music</div></div><div class="card"><div class="front">la canción</div><div class="back">the song</div><div class="tag">las canciones</div></div><div class="card"><div class="front">la salsa</div><div class="back">salsa (music/dance)</div></div><div class="card"><div class="front">el reguetón</div><div class="back">reggaeton</div></div><div class="card"><div class="front">bailar</div><div class="back">to dance</div></div><div class="card"><div class="front">cantar</div><div class="back">to sing</div></div><div class="card"><div class="front">la letra</div><div class="back">the lyrics</div></div><div class="card"><div class="front">el ritmo</div><div class="back">the rhythm</div></div><div class="card"><div class="front">el cantante</div><div class="back">the singer</div><div class="tag">la cantante</div></div><div class="card"><div class="front">la banda</div><div class="back">the band</div></div><div class="card"><div class="front">el altavoz</div><div class="back">the speaker</div></div><div class="card"><div class="front">la guitarra</div><div class="back">the guitar</div></div><div class="card"><div class="front">el tambor</div><div class="back">the drum</div></div><div class="card"><div class="front">pegadizo / pegadiza</div><div class="back">catchy</div></div><div class="card"><div class="front">subir el volumen</div><div class="back">to turn up the volume</div></div><div class="card"><div class="front">la pista de baile</div><div class="back">the dance floor</div></div></div><div class="page-break"></div><h1>❤️ Relationships</h1><div class="cards"><div class="card"><div class="front">el novio</div><div class="back">the boyfriend</div></div><div class="card"><div class="front">la novia</div><div class="back">the girlfriend</div></div><div class="card"><div class="front">la pareja</div><div class="back">the couple / partner</div></div><div class="card"><div class="front">el amor</div><div class="back">love</div><div class="tag">mi amor = my love</div></div><div class="card"><div class="front">querer</div><div class="back">to love / want</div><div class="tag">te quiero</div></div><div class="card"><div class="front">amar</div><div class="back">to love (deeply)</div><div class="tag">te amo</div></div><div class="card"><div class="front">el beso</div><div class="back">the kiss</div></div><div class="card"><div class="front">el abrazo</div><div class="back">the hug</div></div><div class="card"><div class="front">extrañar</div><div class="back">to miss (someone)</div><div class="tag">te extraño</div></div><div class="card"><div class="front">cariño</div><div class="back">sweetheart / affection</div></div><div class="card"><div class="front">juntos / juntas</div><div class="back">together</div></div><div class="card"><div class="front">la cita</div><div class="back">the date</div></div><div class="card"><div class="front">enamorado / enamorada</div><div class="back">in love</div></div><div class="card"><div class="front">confiar</div><div class="back">to trust</div></div><div class="card"><div class="front">cuidar</div><div class="back">to care for</div></div><div class="card"><div class="front">feliz</div><div class="back">happy</div></div></div><div class="page-break"></div><h1>🍳 Cooking</h1><div class="cards"><div class="card"><div class="front">cocinar</div><div class="back">to cook</div></div><div class="card"><div class="front">la cocina</div><div class="back">the kitchen</div></div><div class="card"><div class="front">el arroz</div><div class="back">the rice</div></div><div class="card"><div class="front">los frijoles</div><div class="back">the beans</div><div class="tag">arroz con frijoles</div></div><div class="card"><div class="front">el pollo</div><div class="back">the chicken</div></div><div class="card"><div class="front">los plátanos</div><div class="back">the plantains</div><div class="tag">tostones, maduros</div></div><div class="card"><div class="front">cortar</div><div class="back">to cut</div></div><div class="card"><div class="front">freír</div><div class="back">to fry</div></div><div class="card"><div class="front">hervir</div><div class="back">to boil</div></div><div class="card"><div class="front">probar</div><div class="back">to taste / try</div></div><div class="card"><div class="front">la sartén</div><div class="back">the frying pan</div></div><div class="card"><div class="front">la olla</div><div class="back">the pot</div></div><div class="card"><div class="front">la receta</div><div class="back">the recipe</div></div><div class="card"><div class="front">el ajo</div><div class="back">the garlic</div></div><div class="card"><div class="front">la cebolla</div><div class="back">the onion</div></div><div class="card"><div class="front">sabroso / sabrosa</div><div class="back">tasty</div></div></div><div class="page-break"></div><h1>🛒 Grocery Shopping</h1><div class="cards"><div class="card"><div class="front">el supermercado</div><div class="back">the supermarket</div></div><div class="card"><div class="front">el mercado</div><div class="back">the market</div></div><div class="card"><div class="front">la lista</div><div class="back">the list</div></div><div class="card"><div class="front">comprar</div><div class="back">to buy</div></div><div class="card"><div class="front">el carrito</div><div class="back">the shopping cart</div></div><div class="card"><div class="front">la fruta</div><div class="back">the fruit</div></div><div class="card"><div class="front">la verdura</div><div class="back">the vegetable</div></div><div class="card"><div class="front">la leche</div><div class="back">the milk</div></div><div class="card"><div class="front">el pan</div><div class="back">the bread</div></div><div class="card"><div class="front">el huevo</div><div class="back">the egg</div><div class="tag">los huevos</div></div><div class="card"><div class="front">la caja</div><div class="back">the checkout / box</div></div><div class="card"><div class="front">el precio</div><div class="back">the price</div></div><div class="card"><div class="front">caro / cara</div><div class="back">expensive</div></div><div class="card"><div class="front">barato / barata</div><div class="back">cheap</div></div><div class="card"><div class="front">pagar</div><div class="back">to pay</div></div><div class="card"><div class="front">la bolsa</div><div class="back">the bag</div></div></div><div class="page-break"></div><h1>🏡 Home</h1><div class="cards"><div class="card"><div class="front">la casa</div><div class="back">the house</div></div><div class="card"><div class="front">el cuarto</div><div class="back">the room / bedroom</div><div class="tag">la habitación</div></div><div class="card"><div class="front">la cocina</div><div class="back">the kitchen</div></div><div class="card"><div class="front">el baño</div><div class="back">the bathroom</div></div><div class="card"><div class="front">la sala</div><div class="back">the living room</div></div><div class="card"><div class="front">el jardín</div><div class="back">the yard / garden</div></div><div class="card"><div class="front">la cama</div><div class="back">the bed</div></div><div class="card"><div class="front">el sofá</div><div class="back">the couch</div></div><div class="card"><div class="front">la mesa</div><div class="back">the table</div></div><div class="card"><div class="front">la silla</div><div class="back">the chair</div></div><div class="card"><div class="front">la puerta</div><div class="back">the door</div></div><div class="card"><div class="front">la ventana</div><div class="back">the window</div></div><div class="card"><div class="front">limpiar</div><div class="back">to clean</div></div><div class="card"><div class="front">ordenar</div><div class="back">to tidy up</div></div><div class="card"><div class="front">descansar</div><div class="back">to rest</div></div><div class="card"><div class="front">cómodo / cómoda</div><div class="back">comfortable</div></div></div><div class="page-break"></div><h1>☕ Coffee</h1><div class="cards"><div class="card"><div class="front">el café</div><div class="back">the coffee</div></div><div class="card"><div class="front">el cafecito</div><div class="back">little (Cuban) coffee</div><div class="tag">small &amp; strong</div></div><div class="card"><div class="front">el colador</div><div class="back">the coffee strainer</div></div><div class="card"><div class="front">la cafetera</div><div class="back">the coffee maker</div><div class="tag">moka pot</div></div><div class="card"><div class="front">el azúcar</div><div class="back">the sugar</div></div><div class="card"><div class="front">la leche</div><div class="back">the milk</div></div><div class="card"><div class="front">el café con leche</div><div class="back">coffee with milk</div></div><div class="card"><div class="front">la cortadito</div><div class="back">espresso w/ a little milk</div><div class="tag">un cortadito</div></div><div class="card"><div class="front">caliente</div><div class="back">hot</div></div><div class="card"><div class="front">fuerte</div><div class="back">strong</div></div><div class="card"><div class="front">dulce</div><div class="back">sweet</div></div><div class="card"><div class="front">amargo / amarga</div><div class="back">bitter</div></div><div class="card"><div class="front">la taza</div><div class="back">the cup / mug</div></div><div class="card"><div class="front">colar</div><div class="back">to brew (strain)</div></div><div class="card"><div class="front">despertarse</div><div class="back">to wake up</div></div><div class="card"><div class="front">por la mañana</div><div class="back">in the morning</div></div></div><div class="page-break"></div><h1>💼 Work</h1><div class="cards"><div class="card"><div class="front">el trabajo</div><div class="back">the work / job</div></div><div class="card"><div class="front">trabajar</div><div class="back">to work</div></div><div class="card"><div class="front">la oficina</div><div class="back">the office</div></div><div class="card"><div class="front">el jefe</div><div class="back">the boss</div><div class="tag">la jefa</div></div><div class="card"><div class="front">el compañero</div><div class="back">the coworker</div><div class="tag">la compañera</div></div><div class="card"><div class="front">la reunión</div><div class="back">the meeting</div></div><div class="card"><div class="front">el correo</div><div class="back">the email</div></div><div class="card"><div class="front">la computadora</div><div class="back">the computer</div></div><div class="card"><div class="front">el horario</div><div class="back">the schedule</div></div><div class="card"><div class="front">ocupado / ocupada</div><div class="back">busy</div></div><div class="card"><div class="front">el sueldo</div><div class="back">the salary</div></div><div class="card"><div class="front">el descanso</div><div class="back">the break</div></div><div class="card"><div class="front">empezar</div><div class="back">to start</div></div><div class="card"><div class="front">terminar</div><div class="back">to finish</div></div><div class="card"><div class="front">cansado / cansada</div><div class="back">tired</div></div><div class="card"><div class="front">el proyecto</div><div class="back">the project</div></div></div><div class="page-break"></div><h1>📱 Texting</h1><div class="cards"><div class="card"><div class="front">el mensaje</div><div class="back">the message</div></div><div class="card"><div class="front">escribir</div><div class="back">to write / text</div></div><div class="card"><div class="front">el teléfono</div><div class="back">the phone</div><div class="tag">el celular</div></div><div class="card"><div class="front">llamar</div><div class="back">to call</div></div><div class="card"><div class="front">contestar</div><div class="back">to answer / reply</div></div><div class="card"><div class="front">q / que</div><div class="back">that / what</div><div class="tag">&#x27;q&#x27; in texts</div></div><div class="card"><div class="front">xq / porq</div><div class="back">because / why</div><div class="tag">porque</div></div><div class="card"><div class="front">tqm</div><div class="back">love you lots</div><div class="tag">te quiero mucho</div></div><div class="card"><div class="front">bn</div><div class="back">good / fine</div><div class="tag">bien</div></div><div class="card"><div class="front">tb</div><div class="back">also</div><div class="tag">también</div></div><div class="card"><div class="front">finde</div><div class="back">weekend</div><div class="tag">fin de semana</div></div><div class="card"><div class="front">¿qué tal?</div><div class="back">how&#x27;s it going?</div></div><div class="card"><div class="front">jaja</div><div class="back">haha</div></div><div class="card"><div class="front">ahora</div><div class="back">now</div></div><div class="card"><div class="front">luego</div><div class="back">later</div><div class="tag">&#x27;lue-go&#x27;</div></div><div class="card"><div class="front">nos vemos</div><div class="back">see you</div></div></div>
+<div class="foot"><span>Hablar &middot; Personalized Spanish Workbook</span>
+<span>Flashcards</span></div>
+</div>
+</body>
+</html>

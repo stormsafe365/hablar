@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hablar Workbook · Cheat Sheets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbfaf6; --paper:#ffffff; --sand:#f3f1ea; --sand2:#eae7dd;
+  --ink:#2a2824; --soft:#6a655c; --faint:#9a948a; --line:#e3e0d5;
+  --accent:#1c8a5d; --accent2:#22b378; --accent-soft:#e6f5ee;
+  --cuba:#c85a49; --cuba-soft:#f7e6e3;
+  --sea:#2f8f9e; --sea-soft:#e2f0f2;
+  --sun:#c68a2e; --sun-soft:#f6ecd7;
+  --coral:#e0524f; --coral-soft:#fbe7e6;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+  --round:'Nunito',var(--sans);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--sand);color:var(--ink);font-family:var(--sans);
+  line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+.page{background:var(--paper);max-width:820px;margin:26px auto;padding:56px 64px;
+  box-shadow:0 1px 2px rgba(25,23,20,.05),0 18px 44px rgba(25,23,20,.09);
+  border-radius:6px;position:relative}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.15;color:var(--ink)}
+h1{font-size:40px;font-weight:700;letter-spacing:-.02em}
+h2{font-size:28px;margin:34px 0 12px;letter-spacing:-.01em}
+h3{font-size:21px;margin:26px 0 8px}
+h4{font-size:17px;margin:18px 0 6px;font-family:var(--sans);font-weight:700}
+p{margin:10px 0}
+a{color:var(--accent);text-decoration:none}
+strong{font-weight:700}
+em{font-style:italic}
+ul,ol{margin:10px 0 10px 24px}
+li{margin:4px 0}
+.small{font-size:13px;color:var(--soft)}
+.muted{color:var(--soft)}
+.center{text-align:center}
+.es{color:var(--accent);font-weight:600}            /* spanish text */
+.en{color:var(--soft)}                               /* english gloss */
+hr{border:none;border-top:1px solid var(--line);margin:26px 0}
+
+/* eyebrow / part label */
+.eyebrow{font-family:var(--round);font-weight:800;text-transform:uppercase;
+  letter-spacing:.14em;font-size:12px;color:var(--accent);margin-bottom:6px}
+
+/* callout boxes */
+.box{border-radius:14px;padding:16px 20px;margin:16px 0;border:1px solid var(--line);
+  background:var(--bg)}
+.box .lead{font-family:var(--round);font-weight:800;font-size:12px;
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:block}
+.tip{background:var(--accent-soft);border-color:#cfe9dd}
+.tip .lead{color:var(--accent)}
+.trick{background:var(--sun-soft);border-color:#eaddbf}
+.trick .lead{color:var(--sun)}
+.warn{background:var(--coral-soft);border-color:#f3cfcd}
+.warn .lead{color:var(--coral)}
+.cuba{background:var(--cuba-soft);border-color:#eecfc9}
+.cuba .lead{color:var(--cuba)}
+.sea{background:var(--sea-soft);border-color:#c9e4e8}
+.sea .lead{color:var(--sea)}
+
+/* conjugation table */
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:15px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--round);font-weight:800;font-size:12px;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--soft);background:var(--bg)}
+.conj{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.conj td:first-child{color:var(--soft);width:34%}
+.conj .v{color:var(--accent);font-weight:700}
+.conj tr:last-child td{border-bottom:none}
+
+/* vocab table */
+.vocab td:first-child{font-weight:600;color:var(--accent);width:38%}
+.vocab td:nth-child(2){color:var(--ink)}
+.vocab .ipa{color:var(--faint);font-size:13px}
+
+/* example list */
+.ex{list-style:none;margin:12px 0;padding:0}
+.ex li{padding:7px 0;border-bottom:1px dashed var(--line)}
+.ex li:last-child{border-bottom:none}
+.ex .n{color:var(--faint);font-size:12px;font-family:var(--round);
+  font-weight:800;margin-right:8px}
+.ex .es{display:inline}
+.ex .en{display:block;margin-left:22px;font-size:14px}
+
+/* dialogue */
+.dlg{margin:14px 0;border-left:3px solid var(--accent-soft);padding-left:16px}
+.dlg .line{margin:8px 0}
+.dlg .who{font-family:var(--round);font-weight:800;font-size:12px;
+  color:var(--accent);display:inline-block;min-width:64px}
+.dlg .en{display:block;margin-left:64px;font-size:14px}
+
+/* exercises */
+.drill{background:var(--bg);border:1px solid var(--line);border-radius:14px;
+  padding:18px 22px;margin:18px 0}
+.drill h4{margin-top:0}
+.q{margin:9px 0;padding-left:30px;position:relative}
+.q .num{position:absolute;left:0;top:0;font-family:var(--round);font-weight:800;
+  color:var(--accent);font-size:14px}
+.blank{display:inline-block;min-width:120px;border-bottom:1.5px solid var(--faint);
+  margin:0 3px}
+.write-lines{margin:10px 0}
+.write-lines .ln{border-bottom:1px solid var(--line);height:26px}
+
+/* pills / chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip{background:var(--sand);border:1px solid var(--line);border-radius:999px;
+  padding:5px 13px;font-size:14px;font-weight:600}
+.chip .en{color:var(--soft);font-weight:400;margin-left:5px}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.card{border:1px dashed var(--faint);padding:16px;min-height:118px;
+  display:flex;flex-direction:column;justify-content:center;text-align:center}
+.card .front{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--accent)}
+.card .ipa{color:var(--faint);font-size:13px;margin-top:3px}
+.card .back{font-size:15px;color:var(--ink);margin-top:6px}
+.card .tag{font-size:11px;color:var(--faint);font-family:var(--round);
+  font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+
+/* toc */
+.toc{list-style:none;margin:18px 0;padding:0}
+.toc li{display:flex;align-items:baseline;gap:8px;padding:7px 0;
+  border-bottom:1px solid var(--line)}
+.toc .t{font-weight:600}
+.toc .d{color:var(--soft);font-size:14px;flex:1}
+.toc .pg{color:var(--faint);font-size:13px;font-family:var(--round);font-weight:800}
+
+/* cover */
+.cover{min-height:78vh;display:flex;flex-direction:column;justify-content:center}
+.cover h1{font-size:58px;font-weight:900;letter-spacing:-.03em;line-height:1.02}
+.cover .sub{font-size:20px;color:var(--soft);margin-top:14px;max-width:30em}
+.cover .who{margin-top:36px;font-family:var(--round);font-weight:800;
+  text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--accent)}
+.cover .flag{font-size:40px;margin-bottom:18px;letter-spacing:6px}
+
+/* footer running head */
+.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;color:var(--faint);font-size:12px;
+  font-family:var(--round);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+
+/* index landing grid */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+.tile{display:block;border:1px solid var(--line);border-radius:16px;padding:20px 22px;
+  background:var(--bg);transition:transform .1s}
+.tile:hover{transform:translateY(-2px)}
+.tile .ic{font-size:26px}
+.tile .tt{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);
+  margin:6px 0 4px}
+.tile .dd{font-size:14px;color:var(--soft)}
+
+@media (max-width:640px){
+  .page{padding:32px 22px;margin:10px}
+  .grid,.cards{grid-template-columns:1fr}
+  .cover h1{font-size:40px}
+  h1{font-size:32px}
+}
+
+@media print{
+  @page{size:letter;margin:16mm 15mm}
+  body{background:#fff;font-size:11.5pt;line-height:1.5}
+  .page{box-shadow:none;margin:0;padding:0;max-width:none;border-radius:0}
+  .no-print{display:none!important}
+  h2{page-break-after:avoid}
+  h3,h4{page-break-after:avoid}
+  table,.drill,.box,.dlg,.card,.conj{page-break-inside:avoid}
+  .page-break{page-break-before:always}
+  a{color:var(--ink);text-decoration:none}
+  .cards{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="no-print" style="max-width:820px;margin:0 auto;padding:10px 16px;
+  display:flex;gap:14px;flex-wrap:wrap;font-family:var(--round);font-weight:700;
+  font-size:13px">
+  <a href="index.html">&larr; Contents</a>
+  <a href="book.html">Book</a>
+  <a href="practice.html">Practice</a>
+  <a href="answers.html">Answers</a>
+  <a href="cheatsheets.html">Cheat&nbsp;Sheets</a>
+  <a href="flashcards.html">Flashcards</a>
+  <a href="tests.html">Tests</a>
+</div>
+
+<div class="page">
+<div class="eyebrow">Quick Reference</div><h1>Cheat Sheets</h1><p class="muted">Tear these out (or keep them on your phone). Everything you reach for most, in one place.</p><h2>Survival Phrases</h2><table class="vocab"><thead><tr><th>Español</th><th>English</th><th>Note</th></tr></thead><tbody><tr><td>Hola / Buenas</td><td>Hi / Hello</td><td class="small"></td></tr><tr><td>Buenos días</td><td>Good morning</td><td class="small"></td></tr><tr><td>Buenas tardes / noches</td><td>Good afternoon / evening</td><td class="small"></td></tr><tr><td>¿Cómo estás?</td><td>How are you?</td><td class="small"></td></tr><tr><td>Bien, gracias. ¿Y tú?</td><td>Good, thanks. And you?</td><td class="small"></td></tr><tr><td>Por favor / Gracias</td><td>Please / Thank you</td><td class="small"></td></tr><tr><td>De nada</td><td>You&#x27;re welcome</td><td class="small"></td></tr><tr><td>Perdón / Disculpa</td><td>Sorry / Excuse me</td><td class="small"></td></tr><tr><td>Sí / No</td><td>Yes / No</td><td class="small"></td></tr><tr><td>No entiendo</td><td>I don&#x27;t understand</td><td class="small"></td></tr><tr><td>¿Cómo se dice…?</td><td>How do you say…?</td><td class="small"></td></tr><tr><td>Más despacio, por favor</td><td>Slower, please</td><td class="small"></td></tr><tr><td>Nos vemos</td><td>See you</td><td class="small"></td></tr><tr><td>Hasta luego</td><td>See you later</td><td class="small"></td></tr></tbody></table><h2>The 16 Verbs — Present Tense (yo / tú / él)</h2><table class="vocab"><thead><tr><th>Español</th><th>English</th><th>Note</th></tr></thead><tbody><tr><td>ser</td><td>soy · eres · es</td><td class="small">to be</td></tr><tr><td>estar</td><td>estoy · estás · está</td><td class="small">to be</td></tr><tr><td>ir</td><td>voy · vas · va</td><td class="small">to go</td></tr><tr><td>tener</td><td>tengo · tienes · tiene</td><td class="small">to have</td></tr><tr><td>hacer</td><td>hago · haces · hace</td><td class="small">to do / to make</td></tr><tr><td>ver</td><td>veo · ves · ve</td><td class="small">to see / to watch</td></tr><tr><td>venir</td><td>vengo · vienes · viene</td><td class="small">to come</td></tr><tr><td>decir</td><td>digo · dices · dice</td><td class="small">to say / to tell</td></tr><tr><td>dar</td><td>doy · das · da</td><td class="small">to give</td></tr><tr><td>poner</td><td>pongo · pones · pone</td><td class="small">to put / to set / to turn on</td></tr><tr><td>salir</td><td>salgo · sales · sale</td><td class="small">to leave / to go out</td></tr><tr><td>oír</td><td>oigo · oyes · oye</td><td class="small">to hear</td></tr><tr><td>querer</td><td>quiero · quieres · quiere</td><td class="small">to want / to love</td></tr><tr><td>poder</td><td>puedo · puedes · puede</td><td class="small">can / to be able to</td></tr><tr><td>saber</td><td>sé · sabes · sabe</td><td class="small">to know</td></tr><tr><td>conocer</td><td>conozco · conoces · conoce</td><td class="small">to know</td></tr></tbody></table><h2>Ser vs Estar (both = “to be”)</h2><div style="display:flex;gap:16px;flex-wrap:wrap"><div style="flex:1;min-width:230px"><div class="box tip"><span class="lead">SER — permanent</span><ul><li>Identity: soy Celeste</li><li>Origin: es de Cuba</li><li>Traits: el café es fuerte</li><li>Time: son las ocho</li></ul></div></div><div style="flex:1;min-width:230px"><div class="box sea"><span class="lead">ESTAR — temporary</span><ul><li>Feelings: estoy cansada</li><li>Location: está en la playa</li><li>Conditions: el café está frío</li><li>-ing: estoy cocinando</li></ul></div></div></div><h2>Numbers</h2><table class="vocab"><thead><tr><th>Español</th><th>English</th><th>Note</th></tr></thead><tbody><tr><td>0–10</td><td>cero, uno, dos, tres, cuatro, cinco, seis, siete, ocho, nueve, diez</td><td class="small"></td></tr><tr><td>11–15</td><td>once, doce, trece, catorce, quince</td><td class="small"></td></tr><tr><td>16–20</td><td>dieciséis, diecisiete, dieciocho, diecinueve, veinte</td><td class="small"></td></tr><tr><td>30 / 40 / 50</td><td>treinta, cuarenta, cincuenta</td><td class="small"></td></tr><tr><td>100 / 1000</td><td>cien, mil</td><td class="small"></td></tr></tbody></table><h2>Days, Months & Time</h2><div class="chips"><span class="chip">lunes<span class="en">Mon</span></span><span class="chip">martes<span class="en">Tue</span></span><span class="chip">miércoles<span class="en">Wed</span></span><span class="chip">jueves<span class="en">Thu</span></span><span class="chip">viernes<span class="en">Fri</span></span><span class="chip">sábado<span class="en">Sat</span></span><span class="chip">domingo<span class="en">Sun</span></span></div><div class="chips"><span class="chip">enero<span class="en">Jan</span></span><span class="chip">febrero<span class="en">Feb</span></span><span class="chip">marzo<span class="en">Mar</span></span><span class="chip">abril<span class="en">Apr</span></span><span class="chip">mayo<span class="en">May</span></span><span class="chip">junio<span class="en">Jun</span></span><span class="chip">julio<span class="en">Jul</span></span><span class="chip">agosto<span class="en">Aug</span></span><span class="chip">septiembre<span class="en">Sep</span></span><span class="chip">octubre<span class="en">Oct</span></span><span class="chip">noviembre<span class="en">Nov</span></span><span class="chip">diciembre<span class="en">Dec</span></span></div><table class="vocab"><thead><tr><th>Español</th><th>English</th><th>Note</th></tr></thead><tbody><tr><td>¿Qué hora es?</td><td>What time is it?</td><td class="small"></td></tr><tr><td>Es la una</td><td>It&#x27;s one o&#x27;clock</td><td class="small">singular for 1</td></tr><tr><td>Son las dos / tres…</td><td>It&#x27;s two / three…</td><td class="small">plural for 2+</td></tr><tr><td>y media</td><td>half past</td><td class="small">son las dos y media</td></tr><tr><td>y cuarto / menos cuarto</td><td>quarter past / to</td><td class="small"></td></tr><tr><td>de la mañana / tarde / noche</td><td>AM / afternoon / evening</td><td class="small"></td></tr></tbody></table><h2>Question Words</h2><div class="chips"><span class="chip">¿Qué?<span class="en">What?</span></span><span class="chip">¿Quién?<span class="en">Who?</span></span><span class="chip">¿Dónde?<span class="en">Where?</span></span><span class="chip">¿Cuándo?<span class="en">When?</span></span><span class="chip">¿Por qué?<span class="en">Why?</span></span><span class="chip">¿Cómo?<span class="en">How?</span></span><span class="chip">¿Cuánto?<span class="en">How much?</span></span><span class="chip">¿Cuál?<span class="en">Which?</span></span><span class="chip">¿Adónde?<span class="en">Where to?</span></span></div><h2>Connector Words (make sentences longer)</h2><div class="chips"><span class="chip">y<span class="en">and</span></span><span class="chip">pero<span class="en">but</span></span><span class="chip">porque<span class="en">because</span></span><span class="chip">también<span class="en">also</span></span><span class="chip">entonces<span class="en">so/then</span></span><span class="chip">después<span class="en">after</span></span><span class="chip">primero<span class="en">first</span></span><span class="chip">por eso<span class="en">that&#x27;s why</span></span><span class="chip">aunque<span class="en">although</span></span><span class="chip">cuando<span class="en">when</span></span></div>
+<div class="foot"><span>Hablar &middot; Personalized Spanish Workbook</span>
+<span>Cheat Sheets</span></div>
+</div>
+</body>
+</html>
