@@ -20,9 +20,15 @@ PRONOUNS = ["yo", "tú", "él / ella / usted", "nosotros",
 # short pronoun labels for compact reference tables
 PRON_SHORT = ["yo", "tú", "él/ella/ud.", "nosotros", "vosotros", "ellos/uds."]
 
+# Which of the six persons to actually SHOW. Celeste is learning Cuban /
+# Latin-American Spanish, which uses "ustedes" for "you all" — so vosotros
+# (index 4, Spain only) is left out everywhere. The data keeps all six forms
+# as the source of truth; only the display drops the vosotros slot.
+SHOW = [0, 1, 2, 3, 5]
+
 
 def _zip(forms):
-    return list(zip(PRONOUNS, forms))
+    return [(PRONOUNS[i], forms[i]) for i in SHOW]
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -103,7 +109,7 @@ REGULAR_MODELS = [
     },
     {
         "inf": "vivir", "en": "to live", "fam": "-ir",
-        "note": "The model for regular -ir verbs. Endings match -er except nosotros/vosotros.",
+        "note": "The model for regular -ir verbs. Endings match -er except the nosotros form.",
         "examples": [
             ("Vivo en Florida, cerca del mar.", "I live in Florida, near the sea."),
             ("¿Dónde vives tú?", "Where do you live?"),
@@ -375,7 +381,7 @@ REFLEXIVE = [
 # GUSTAR AND FRIENDS  (backwards verbs)
 # ══════════════════════════════════════════════════════════════════════════
 GUSTAR_PRON = [("me", "to me"), ("te", "to you"), ("le", "to him/her/you-formal"),
-               ("nos", "to us"), ("os", "to you-all (Spain)"), ("les", "to them/you-all")]
+               ("nos", "to us"), ("les", "to them/you-all")]
 GUSTAR_LIKE = [
     ("gustar", "to like (lit. to be pleasing)", "Me gusta la playa. Me gustan los perros.",
      "I like the beach. I like dogs."),

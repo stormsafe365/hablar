@@ -95,11 +95,12 @@ def eyebrow(text):
 
 
 def grid_conj(verbs, boot=False):
-    """verbs: list of (title, [6 forms]). Rows = pronouns.
-    If boot=True, highlight all rows except nosotros(3) & vosotros(4)."""
+    """verbs: list of (title, [6 forms]). Rows = the shown pronouns (no vosotros).
+    If boot=True, highlight every shown row except nosotros (the flat one)."""
     head = "<tr><th></th>" + "".join(f"<th>{esc(t)}</th>" for t, _ in verbs) + "</tr>"
     rows = []
-    for i, pro in enumerate(vb.PRON_SHORT):
+    for i in vb.SHOW:
+        pro = vb.PRON_SHORT[i]
         cls = ' class="boot"' if boot and i not in (3, 4) else ""
         cells = "".join(f'<td class="v"{cls}>{esc(f[i])}</td>' for _, f in verbs)
         rows.append(f'<tr><td{cls}>{esc(pro)}</td>{cells}</tr>')
@@ -175,9 +176,10 @@ def build_index():
         '</ol>')
     b.append(box("cuba", "Your Latin-American reality",
         "<p>Your boyfriend's family speaks Cuban Spanish. They use <span class='es'>"
-        "ustedes</span> for “you all” — the <span class='es'>vosotros</span> "
-        "column (Spain only) is shown so you can <em>recognize</em> it, but you'll "
-        "speak with <span class='es'>ustedes</span>.</p>"))
+        "ustedes</span> for “you all,” so every table in this book uses the "
+        "five persons you'll actually speak with. Spain's "
+        "<span class='es'>vosotros</span> is left out on purpose — one less form "
+        "to learn.</p>"))
 
     b.append('<div class="page-break"></div>')
     b.append(eyebrow("Contents"))
@@ -240,18 +242,18 @@ def build_book():
         "That's why Spanish can drop the pronoun: <span class='es'>hablo</span> already "
         "means <em>I</em> speak.</p>"))
 
-    b.append("<h3>The six people (subject pronouns)</h3>")
+    b.append("<h3>The five people you'll use (subject pronouns)</h3>")
     b.append(conj_table("", [
         ("yo", "I"), ("tú", "you (friendly)"),
         ("él / ella / usted", "he / she / you (polite)"),
-        ("nosotros", "we"), ("vosotros", "you all (Spain)"),
+        ("nosotros", "we"),
         ("ellos / ellas / ustedes", "they / you all")]))
     b.append(box("cuba", "Two quick notes for real life",
         "<p><b>tú vs usted:</b> use <span class='es'>tú</span> with friends, family, "
         "your boyfriend; <span class='es'>usted</span> to be respectful with strangers "
         "or elders. <br><b>ustedes:</b> in Cuba and all of Latin America this is the "
-        "only “you all.” You'll see <span class='es'>vosotros</span> in the "
-        "tables — just recognize it.</p>"))
+        "only “you all,” so this book leaves out Spain's "
+        "<span class='es'>vosotros</span> entirely — one less form to learn.</p>"))
 
     b.append("<h3>The four questions to ask every new verb</h3>")
     b.append('<p>This is the checklist from your notes, and it\'s the whole game. When '
@@ -282,8 +284,8 @@ def build_book():
 
     b.append("<h3>Just the endings (memorize this grid)</h3>")
     b.append('<div class="legend"><span><b>-ar</b> is the biggest family.</span>'
-             '<span><b>-er</b> and <b>-ir</b> are twins except for '
-             '<span class="es">nosotros / vosotros</span>.</span></div>')
+             '<span><b>-er</b> and <b>-ir</b> are twins except for the '
+             '<span class="es">nosotros</span> form.</span></div>')
     b.append(grid_conj([("-ar", ["-o", "-as", "-a", "-amos", "-áis", "-an"]),
                         ("-er", ["-o", "-es", "-e", "-emos", "-éis", "-en"]),
                         ("-ir", ["-o", "-es", "-e", "-imos", "-ís", "-en"])]))
@@ -320,16 +322,17 @@ def build_book():
     b.append('<span class="pattern-badge">Pattern B · the stem changes</span>')
     b.append('<p>In these verbs the vowel inside the stem changes — but <b>only</b> in '
              'the forms that fall inside the “boot.” The '
-             '<span class="es">nosotros</span> and <span class="es">vosotros</span> '
-             'forms sit outside the boot and stay flat.</p>')
-    b.append(box("trick", "Why they call it the boot",
-        "<p>Write the six forms in two columns. Shade every form that changes and the "
-        "shaded shape looks like a boot — everything except the two "
-        "<span class='es'>nosotros / vosotros</span> forms in the bottom-left.</p>"))
+             '<span class="es">nosotros</span> form sits outside the boot and stays '
+             'flat. (Teachers call it the “boot” because with all six persons written '
+             'out, the changed forms trace a boot shape.)</p>')
+    b.append(box("trick", "The rule in one line",
+        "<p>The stem changes everywhere <b>except</b> <span class='es'>nosotros</span>. "
+        "So if you can conjugate <span class='es'>yo</span> and "
+        "<span class='es'>nosotros</span>, you know the whole verb.</p>"))
     b.append("<h3>The boot, shaded (querer, e→ie)</h3>")
     b.append(grid_conj([("querer", vb.STEM_CHANGING["e→ie"][0]["forms"])], boot=True))
     b.append('<p class="small">Shaded = inside the boot (changes). '
-             '<span class="es">queremos / queréis</span> stay regular.</p>')
+             'Only <span class="es">queremos</span> stays regular.</p>')
 
     groups = [("e→ie", "e becomes ie", "The most common change."),
               ("o→ue", "o becomes ue", "The second most common."),
@@ -405,13 +408,13 @@ def build_book():
              'you move that little pronoun to the front and conjugate normally.</p>')
     b.append(box("tip", "The reflexive pronouns",
         "<p><b>me</b> (myself) · <b>te</b> (yourself) · <b>se</b> (him/herself) · "
-        "<b>nos</b> (ourselves) · <b>os</b> (yourselves) · <b>se</b> (themselves)</p>"
+        "<b>nos</b> (ourselves) · <b>se</b> (themselves / yourselves)</p>"
         "<p>So <span class='es'>levantarse</span> → <span class='es'>me levanto</span> "
         "= “I get (myself) up.”</p>"))
     for inf, en, forms, es, eng in vb.REFLEXIVE:
         b.append(f'<h4 style="margin-top:18px">{esc(inf)} <span class="muted" '
                  f'style="font-weight:400">— {esc(en)}</span></h4>')
-        b.append(conj_table("", list(zip(vb.PRONOUNS, forms))))
+        b.append(conj_table("", [(vb.PRONOUNS[i], forms[i]) for i in vb.SHOW]))
         b.append(f'<ul class="ex"><li><span class="es">{esc(es)}</span>'
                  f'<span class="en">{esc(eng)}</span></li></ul>')
     b.append(box("cuba", "Put your morning in Spanish",
@@ -539,8 +542,9 @@ def build_book():
              '(will …)</h2>')
     b.append('<p>The neat one: you don\'t chop the infinitive — you add endings to the '
              '<b>whole thing</b>. The same endings for -ar, -er, and -ir:</p>')
+    _fe = ["-é", "-ás", "-á", "-emos", "-éis", "-án"]
     b.append(endings_table("Future endings (added to the infinitive)",
-        list(zip(vb.PRON_SHORT, ["-é", "-ás", "-á", "-emos", "-éis", "-án"]))))
+        [(vb.PRON_SHORT[i], _fe[i]) for i in vb.SHOW]))
     b.append(grid_conj([(inf, forms) for inf, forms in vb.FUT_REGULAR_MODEL]))
     b.append("<h3>Irregular futures — same endings, changed stem</h3>")
     b.append('<p>A short list changes the stem but keeps the identical endings:</p>')
@@ -1005,7 +1009,7 @@ def build_cheatsheets():
     # Boot diagram
     b.append("<h2>3 · The boot (stem-changers)</h2>")
     b.append('<p class="muted">The stem changes in the shaded forms — everywhere except '
-             '<span class="es">nosotros / vosotros</span>.</p>')
+             'the <span class="es">nosotros</span> form.</p>')
     b.append(grid_conj([("querer (e→ie)", vb.STEM_CHANGING["e→ie"][0]["forms"]),
                         ("poder (o→ue)", vb.STEM_CHANGING["o→ue"][0]["forms"]),
                         ("pedir (e→i)", vb.STEM_CHANGING["e→i"][0]["forms"])], boot=True))
@@ -1045,10 +1049,10 @@ def build_cheatsheets():
     b.append("<h2>6 · Little pronoun tables</h2>")
     b.append('<div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">')
     b.append(box("tip", "Reflexive (levantarse)",
-        "<p>me · te · se · nos · os · se<br>"
+        "<p>me · te · se · nos · se<br>"
         "<span class='es'>me levanto, te levantas, se levanta…</span></p>"))
     b.append(box("tip", "Gustar-type",
-        "<p>me · te · le · nos · os · les<br>"
+        "<p>me · te · le · nos · les<br>"
         "<span class='es'>me gusta</span> (one) / "
         "<span class='es'>me gustan</span> (many)</p>"))
     b.append("</div>")
