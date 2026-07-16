@@ -1188,6 +1188,8 @@ def build_combined_artifact():
 
     extra_inner = EXTRA_CSS.replace("<style>", "").replace("</style>", "")
     js = _ARTIFACT_JS
+    opts = "".join(f'<option value="{key}">{esc(label)}</option>'
+                   for key, label, _ in ART_TABS)
 
     body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}{extra_inner}</style>'
             '<div class="wb-header"><div class="wb-bar">'
@@ -1195,7 +1197,9 @@ def build_combined_artifact():
             '<button id="enBtn" class="slow-btn on" title="Show or hide English" '
             'aria-pressed="true">🌐 English</button>'
             '<button id="slowBtn" class="slow-btn" title="Slow speech" '
-            'aria-pressed="false">🐢 Slow</button>'
+            'aria-pressed="false">🐢 Slow</button></div>'
+            '<div class="wb-navrow">'
+            f'<select id="wbSelect" class="wb-select" aria-label="Jump to a section">{opts}</select>'
             f'<nav class="wb-tabs">{"".join(nav)}</nav></div></div>'
             '<div class="say-bar" id="sayBar"><span class="ic">🔊</span>'
             '<span>Tap any <b>green Spanish</b> word or sentence to hear it '
@@ -1220,6 +1224,10 @@ _ARTIFACT_JS = r"""
       s.classList.toggle('on', s.id==='tab-'+name); });
     document.querySelectorAll('.wb-tab').forEach(function(b){
       b.classList.toggle('on', b.dataset.tab===name); });
+    var sel=document.getElementById('wbSelect');
+    if(sel && sel.value!==name) sel.value=name;
+    var act=document.querySelector('.wb-tab[data-tab="'+name+'"]');
+    if(act && act.scrollIntoView){ try{ act.scrollIntoView({inline:'center',block:'nearest'}); }catch(e){} }
     window.scrollTo({top:0,behavior:'instant'}); hidePop();
   }
   var VOWELS='aeiouáéíóúü', ACCENTED='áéíóú', STRONG='aeoáéó';
@@ -1339,6 +1347,8 @@ _ARTIFACT_JS = r"""
     var off=document.body.classList.toggle('en-off');
     eb.classList.toggle('on', !off);
     eb.setAttribute('aria-pressed', off?'false':'true'); });
+  var wsel=document.getElementById('wbSelect');
+  if(wsel) wsel.addEventListener('change', function(){ show(wsel.value); });
   var hx=document.getElementById('hintX');
   if(hx) hx.addEventListener('click', function(){ var b=document.getElementById('sayBar'); if(b) b.style.display='none'; });
   show('home');

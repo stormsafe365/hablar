@@ -675,11 +675,23 @@ ARTIFACT_EXTRA_CSS = r"""
 /* sticky header + tabs */
 .wb-header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--sand) 88%,transparent);
   border-bottom:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.wb-bar{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
-.wb-brand{font-family:var(--serif);font-weight:700;font-size:17px;white-space:nowrap;color:var(--ink)}
+.wb-bar{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 16px}
+.wb-brand{font-family:var(--serif);font-weight:700;font-size:17px;white-space:nowrap;color:var(--ink);margin-right:auto}
 .wb-brand .dot{color:var(--accent)}
-.wb-tabs{display:flex;gap:4px;overflow-x:auto;margin-left:auto;scrollbar-width:none;min-width:0}
+/* navigation lives on its own full-width row */
+.wb-navrow{max-width:900px;margin:0 auto;padding:0 12px 9px}
+.wb-tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;min-width:0;
+  scroll-padding:0 40px}
 .wb-tabs::-webkit-scrollbar{display:none}
+/* dropdown menu — used on narrow screens, easiest to tap on a phone */
+.wb-select{display:none;width:100%;font-family:var(--round);font-weight:800;
+  font-size:16px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);
+  background:var(--paper);color:var(--ink)}
+.wb-select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:720px){
+  .wb-tabs{display:none}
+  .wb-select{display:block}
+}
 .wb-tab{font-family:var(--round);font-weight:800;font-size:12.5px;letter-spacing:.01em;
   padding:8px 13px;border-radius:999px;color:var(--soft);white-space:nowrap;
   border:1px solid transparent;background:none;cursor:pointer;transition:.12s}
@@ -826,6 +838,10 @@ def build_artifact(bodies):
       s.classList.toggle('on', s.id==='tab-'+name); });
     document.querySelectorAll('.wb-tab').forEach(function(b){
       b.classList.toggle('on', b.dataset.tab===name); });
+    var sel=document.getElementById('wbSelect');
+    if(sel && sel.value!==name) sel.value=name;
+    var act=document.querySelector('.wb-tab[data-tab="'+name+'"]');
+    if(act && act.scrollIntoView){ try{ act.scrollIntoView({inline:'center',block:'nearest'}); }catch(e){} }
     window.scrollTo({top:0,behavior:'instant'});
     hidePop();
   }
@@ -959,6 +975,8 @@ def build_artifact(bodies):
     var off=document.body.classList.toggle('en-off');
     eb.classList.toggle('on', !off);
     eb.setAttribute('aria-pressed', off?'false':'true'); });
+  var wsel=document.getElementById('wbSelect');
+  if(wsel) wsel.addEventListener('change', function(){ show(wsel.value); });
   var hx=document.getElementById('hintX');
   if(hx) hx.addEventListener('click', function(){ var b=document.getElementById('sayBar'); if(b) b.style.display='none'; });
 
@@ -969,13 +987,23 @@ def build_artifact(bodies):
                'margin:0 4px;align-self:center}'
                '.wb-tab-verb.on{background:var(--sea-soft);color:var(--sea);'
                'border-color:var(--line)}')
+    # dropdown options (mobile), grouped Workbook / Verbs
+    opts = ('<optgroup label="Workbook">'
+            + "".join(f'<option value="{k}">{esc(label)}</option>'
+                      for k, label in TAB_ORDER)
+            + '</optgroup><optgroup label="Verbs">'
+            + "".join(f'<option value="{k}">{esc(label.replace("Verbs · ", ""))}</option>'
+                      for k, label in VERB_TAB_ORDER)
+            + '</optgroup>')
     body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}{verb_css}{sep_css}</style>'
             '<div class="wb-header"><div class="wb-bar">'
             '<span class="wb-brand">Hablar<span class="dot">.</span></span>'
             '<button id="enBtn" class="slow-btn on" title="Show or hide English" '
             'aria-pressed="true">🌐 English</button>'
             '<button id="slowBtn" class="slow-btn" title="Slow speech" '
-            'aria-pressed="false">🐢 Slow</button>'
+            'aria-pressed="false">🐢 Slow</button></div>'
+            '<div class="wb-navrow">'
+            f'<select id="wbSelect" class="wb-select" aria-label="Jump to a section">{opts}</select>'
             f'<nav class="wb-tabs">{nav}</nav></div></div>'
             '<div class="say-bar" id="sayBar"><span class="ic">🔊</span>'
             '<span>Tap any <b>green Spanish</b> word or sentence to hear it '
