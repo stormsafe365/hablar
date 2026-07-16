@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Verb Book · Answers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbfaf6; --paper:#ffffff; --sand:#f3f1ea; --sand2:#eae7dd;
+  --ink:#2a2824; --soft:#6a655c; --faint:#9a948a; --line:#e3e0d5;
+  --accent:#1c8a5d; --accent2:#22b378; --accent-soft:#e6f5ee;
+  --cuba:#c85a49; --cuba-soft:#f7e6e3;
+  --sea:#2f8f9e; --sea-soft:#e2f0f2;
+  --sun:#c68a2e; --sun-soft:#f6ecd7;
+  --coral:#e0524f; --coral-soft:#fbe7e6;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+  --round:'Nunito',var(--sans);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--sand);color:var(--ink);font-family:var(--sans);
+  line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+.page{background:var(--paper);max-width:820px;margin:26px auto;padding:56px 64px;
+  box-shadow:0 1px 2px rgba(25,23,20,.05),0 18px 44px rgba(25,23,20,.09);
+  border-radius:6px;position:relative}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.15;color:var(--ink)}
+h1{font-size:40px;font-weight:700;letter-spacing:-.02em}
+h2{font-size:28px;margin:34px 0 12px;letter-spacing:-.01em}
+h3{font-size:21px;margin:26px 0 8px}
+h4{font-size:17px;margin:18px 0 6px;font-family:var(--sans);font-weight:700}
+p{margin:10px 0}
+a{color:var(--accent);text-decoration:none}
+strong{font-weight:700}
+em{font-style:italic}
+ul,ol{margin:10px 0 10px 24px}
+li{margin:4px 0}
+.small{font-size:13px;color:var(--soft)}
+.muted{color:var(--soft)}
+.center{text-align:center}
+.es{color:var(--accent);font-weight:600}            /* spanish text */
+.en{color:var(--soft)}                               /* english gloss */
+hr{border:none;border-top:1px solid var(--line);margin:26px 0}
+
+/* eyebrow / part label */
+.eyebrow{font-family:var(--round);font-weight:800;text-transform:uppercase;
+  letter-spacing:.14em;font-size:12px;color:var(--accent);margin-bottom:6px}
+
+/* callout boxes */
+.box{border-radius:14px;padding:16px 20px;margin:16px 0;border:1px solid var(--line);
+  background:var(--bg)}
+.box .lead{font-family:var(--round);font-weight:800;font-size:12px;
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:block}
+.tip{background:var(--accent-soft);border-color:#cfe9dd}
+.tip .lead{color:var(--accent)}
+.trick{background:var(--sun-soft);border-color:#eaddbf}
+.trick .lead{color:var(--sun)}
+.warn{background:var(--coral-soft);border-color:#f3cfcd}
+.warn .lead{color:var(--coral)}
+.cuba{background:var(--cuba-soft);border-color:#eecfc9}
+.cuba .lead{color:var(--cuba)}
+.sea{background:var(--sea-soft);border-color:#c9e4e8}
+.sea .lead{color:var(--sea)}
+
+/* conjugation table */
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:15px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--round);font-weight:800;font-size:12px;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--soft);background:var(--bg)}
+.conj{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.conj td:first-child{color:var(--soft);width:34%}
+.conj .v{color:var(--accent);font-weight:700}
+.conj tr:last-child td{border-bottom:none}
+
+/* vocab table */
+.vocab td:first-child{font-weight:600;color:var(--accent);width:38%}
+.vocab td:nth-child(2){color:var(--ink)}
+.vocab .ipa{color:var(--faint);font-size:13px}
+
+/* example list */
+.ex{list-style:none;margin:12px 0;padding:0}
+.ex li{padding:7px 0;border-bottom:1px dashed var(--line)}
+.ex li:last-child{border-bottom:none}
+.ex .n{color:var(--faint);font-size:12px;font-family:var(--round);
+  font-weight:800;margin-right:8px}
+.ex .es{display:inline}
+.ex .en{display:block;margin-left:22px;font-size:14px}
+
+/* dialogue */
+.dlg{margin:14px 0;border-left:3px solid var(--accent-soft);padding-left:16px}
+.dlg .line{margin:8px 0}
+.dlg .who{font-family:var(--round);font-weight:800;font-size:12px;
+  color:var(--accent);display:inline-block;min-width:64px}
+.dlg .en{display:block;margin-left:64px;font-size:14px}
+
+/* exercises */
+.drill{background:var(--bg);border:1px solid var(--line);border-radius:14px;
+  padding:18px 22px;margin:18px 0}
+.drill h4{margin-top:0}
+.q{margin:9px 0;padding-left:30px;position:relative}
+.q .num{position:absolute;left:0;top:0;font-family:var(--round);font-weight:800;
+  color:var(--accent);font-size:14px}
+.blank{display:inline-block;min-width:120px;border-bottom:1.5px solid var(--faint);
+  margin:0 3px}
+.write-lines{margin:10px 0}
+.write-lines .ln{border-bottom:1px solid var(--line);height:26px}
+
+/* pills / chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip{background:var(--sand);border:1px solid var(--line);border-radius:999px;
+  padding:5px 13px;font-size:14px;font-weight:600}
+.chip .en{color:var(--soft);font-weight:400;margin-left:5px}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.card{border:1px dashed var(--faint);padding:16px;min-height:118px;
+  display:flex;flex-direction:column;justify-content:center;text-align:center}
+.card .front{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--accent)}
+.card .ipa{color:var(--faint);font-size:13px;margin-top:3px}
+.card .back{font-size:15px;color:var(--ink);margin-top:6px}
+.card .tag{font-size:11px;color:var(--faint);font-family:var(--round);
+  font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+
+/* toc */
+.toc{list-style:none;margin:18px 0;padding:0}
+.toc li{display:flex;align-items:baseline;gap:8px;padding:7px 0;
+  border-bottom:1px solid var(--line)}
+.toc .t{font-weight:600}
+.toc .d{color:var(--soft);font-size:14px;flex:1}
+.toc .pg{color:var(--faint);font-size:13px;font-family:var(--round);font-weight:800}
+
+/* cover */
+.cover{min-height:78vh;display:flex;flex-direction:column;justify-content:center}
+.cover h1{font-size:58px;font-weight:900;letter-spacing:-.03em;line-height:1.02}
+.cover .sub{font-size:20px;color:var(--soft);margin-top:14px;max-width:30em}
+.cover .who{margin-top:36px;font-family:var(--round);font-weight:800;
+  text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--accent)}
+.cover .flag{font-size:40px;margin-bottom:18px;letter-spacing:6px}
+
+/* footer running head */
+.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;color:var(--faint);font-size:12px;
+  font-family:var(--round);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+
+/* index landing grid */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+.tile{display:block;border:1px solid var(--line);border-radius:16px;padding:20px 22px;
+  background:var(--bg);transition:transform .1s}
+.tile:hover{transform:translateY(-2px)}
+.tile .ic{font-size:26px}
+.tile .tt{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);
+  margin:6px 0 4px}
+.tile .dd{font-size:14px;color:var(--soft)}
+
+@media (max-width:640px){
+  .page{padding:32px 22px;margin:10px}
+  .grid,.cards{grid-template-columns:1fr}
+  .cover h1{font-size:40px}
+  h1{font-size:32px}
+}
+
+@media print{
+  @page{size:letter;margin:16mm 15mm}
+  body{background:#fff;font-size:11.5pt;line-height:1.5}
+  .page{box-shadow:none;margin:0;padding:0;max-width:none;border-radius:0}
+  .no-print{display:none!important}
+  h2{page-break-after:avoid}
+  h3,h4{page-break-after:avoid}
+  table,.drill,.box,.dlg,.card,.conj{page-break-inside:avoid}
+  .page-break{page-break-before:always}
+  a{color:var(--ink);text-decoration:none}
+  .cards{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<div class="no-print" style="max-width:820px;margin:0 auto;padding:10px 16px;
+  display:flex;gap:14px;flex-wrap:wrap;font-family:var(--round);font-weight:700;
+  font-size:13px">
+  <a href="../index.html">&larr; Main&nbsp;Workbook</a>
+  <a href="index.html">Verbs&nbsp;Home</a>
+  <a href="book.html">Learn</a>
+  <a href="practice.html">Practice</a>
+  <a href="answers.html">Answers</a>
+  <a href="quizzes.html">Quizzes</a>
+  <a href="cheatsheets.html">Cheat&nbsp;Sheets</a>
+  <a href="reference.html">Reference</a>
+</div>
+
+<style>
+.pattern-badge{display:inline-block;font-family:var(--round);font-weight:800;
+  font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:3px 10px;
+  border-radius:999px;background:var(--accent-soft);color:var(--accent);
+  border:1px solid #cfe9dd;margin-bottom:8px}
+.tense-tag{display:inline-block;font-family:var(--round);font-weight:800;
+  font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;
+  border-radius:6px;margin-right:6px}
+.tt-past{background:var(--sun-soft);color:var(--sun)}
+.tt-pres{background:var(--accent-soft);color:var(--accent)}
+.tt-fut{background:var(--sea-soft);color:var(--sea)}
+table.grid-conj{border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  border-collapse:separate;border-spacing:0;font-size:14.5px}
+table.grid-conj th{background:var(--bg);font-family:var(--round);font-weight:800;
+  font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--soft)}
+table.grid-conj td:first-child{color:var(--soft)}
+table.grid-conj .v{color:var(--accent);font-weight:700}
+table.grid-conj .boot{background:var(--sun-soft)}
+.endgrid td:first-child{color:var(--soft);width:28%}
+.endgrid .v{color:var(--cuba);font-weight:800;font-family:var(--round)}
+.timeline{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:16px 0}
+.timeline table{margin:0}
+.timeline .en{display:block;font-size:13px;color:var(--soft)}
+.steps{counter-reset:step;list-style:none;margin:14px 0;padding:0}
+.steps li{position:relative;padding:10px 0 10px 44px;border-bottom:1px solid var(--line)}
+.steps li:last-child{border-bottom:none}
+.steps li::before{counter-increment:step;content:counter(step);position:absolute;
+  left:0;top:8px;width:28px;height:28px;border-radius:50%;background:var(--accent);
+  color:#fff;font-family:var(--round);font-weight:800;display:flex;
+  align-items:center;justify-content:center;font-size:14px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--soft);margin:8px 0}
+.legend b{color:var(--ink)}
+</style>
+<div class="eyebrow">Answer key</div><h1>Answers</h1><p class="muted">Every answer, with a one-line <em>why</em>. Don't just check the letter — read the reason, because the reason is the learning.</p><h2>Set 1 · Regular present tense</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Fill in the present tense.</b></p><div class="q"><span class="num">1.</span>Yo <span class="es">hablo</span> español todos los días. (hablar)<div class="small" style="margin-left:4px">↳ Regular -ar, yo ending -o.</div></div><div class="q"><span class="num">2.</span>Nosotros <span class="es">nadamos</span> en la playa. (nadar)<div class="small" style="margin-left:4px">↳ Regular -ar, nosotros ending -amos.</div></div><div class="q"><span class="num">3.</span>Ella <span class="es">come</span> fruta antes del gimnasio. (comer)<div class="small" style="margin-left:4px">↳ Regular -er, él/ella ending -e.</div></div><div class="q"><span class="num">4.</span>¿Tú <span class="es">vives</span> cerca del mar? (vivir)<div class="small" style="margin-left:4px">↳ Regular -ir, tú ending -es.</div></div><div class="q"><span class="num">5.</span>Ellos <span class="es">escuchan</span> música cubana. (escuchar)<div class="small" style="margin-left:4px">↳ Regular -ar, ellos ending -an.</div></div><div class="q"><span class="num">6.</span>Yo <span class="es">leo</span> un libro en español. (leer)<div class="small" style="margin-left:4px">↳ Regular -er, yo ending -o.</div></div><div class="q"><span class="num">7.</span>Nosotros <span class="es">escribimos</span> cartas cuando llueve. (escribir)<div class="small" style="margin-left:4px">↳ Regular -ir, nosotros ending -imos.</div></div><div class="q"><span class="num">8.</span>El perro <span class="es">corre</span> mucho. (correr)<div class="small" style="margin-left:4px">↳ Regular -er, él ending -e.</div></div><p class="small" style="margin-top:10px"><b>Translate to Spanish (present tense).</b></p><div class="q"><span class="num">1.</span><span class="en">I cook dinner every night.</span><br><span class="es">Cocino la cena todas las noches.</span></div><div class="q"><span class="num">2.</span><span class="en">We swim in the sea.</span><br><span class="es">Nadamos en el mar.</span></div><div class="q"><span class="num">3.</span><span class="en">She drinks Cuban coffee.</span><br><span class="es">Ella bebe café cubano.</span></div><div class="q"><span class="num">4.</span><span class="en">They live in Florida.</span><br><span class="es">Ellos viven en Florida.</span></div></div><div class="page-break"></div><h2>Set 2 · Identify the pattern</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Choose: A) Regular · B) Yo-form irregular · C) Stem-changing · D) Completely irregular · E) Combination.</b></p><div class="q"><span class="num">1.</span>hablar &nbsp;→ <span class="es">A</span><div class="small" style="margin-left:4px">↳ Fully regular -ar verb.</div></div><div class="q"><span class="num">2.</span>hacer &nbsp;→ <span class="es">B</span><div class="small" style="margin-left:4px">↳ Only the yo form (hago) is irregular.</div></div><div class="q"><span class="num">3.</span>querer &nbsp;→ <span class="es">C</span><div class="small" style="margin-left:4px">↳ Stem changes e→ie (quiero).</div></div><div class="q"><span class="num">4.</span>ser &nbsp;→ <span class="es">D</span><div class="small" style="margin-left:4px">↳ Completely irregular (soy, eres, es…).</div></div><div class="q"><span class="num">5.</span>tener &nbsp;→ <span class="es">E</span><div class="small" style="margin-left:4px">↳ Combination: irregular yo (tengo) + e→ie stem change.</div></div><div class="q"><span class="num">6.</span>poder &nbsp;→ <span class="es">C</span><div class="small" style="margin-left:4px">↳ Stem changes o→ue (puedo).</div></div><div class="q"><span class="num">7.</span>conocer &nbsp;→ <span class="es">B</span><div class="small" style="margin-left:4px">↳ Only the yo form (conozco) is irregular.</div></div><div class="q"><span class="num">8.</span>ir &nbsp;→ <span class="es">D</span><div class="small" style="margin-left:4px">↳ Completely irregular (voy, vas, va…).</div></div><div class="q"><span class="num">9.</span>venir &nbsp;→ <span class="es">E</span><div class="small" style="margin-left:4px">↳ Combination: irregular yo (vengo) + e→ie (vienes).</div></div><div class="q"><span class="num">10.</span>comer &nbsp;→ <span class="es">A</span><div class="small" style="margin-left:4px">↳ Fully regular -er verb.</div></div></div><div class="page-break"></div><h2>Set 3 · Yo-form &amp; stem-changing verbs</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Fill in the present tense.</b></p><div class="q"><span class="num">1.</span>Yo <span class="es">hago</span> ejercicio en la playa. (hacer)<div class="small" style="margin-left:4px">↳ Only yo is irregular: hago.</div></div><div class="q"><span class="num">2.</span>Yo <span class="es">pongo</span> música cuando cocino. (poner)<div class="small" style="margin-left:4px">↳ Yo-go verb: pongo.</div></div><div class="q"><span class="num">3.</span>Yo <span class="es">conozco</span> a un café increíble. (conocer)<div class="small" style="margin-left:4px">↳ -cer verb → conozco.</div></div><div class="q"><span class="num">4.</span>Yo <span class="es">sé</span> nadar muy bien. (saber)<div class="small" style="margin-left:4px">↳ Irregular yo: sé (with accent).</div></div><div class="q"><span class="num">5.</span>Yo <span class="es">veo</span> delfines desde la tabla. (ver)<div class="small" style="margin-left:4px">↳ Yo form veo.</div></div><div class="q"><span class="num">6.</span>¿Tú <span class="es">quieres</span> ir a la playa? (querer)<div class="small" style="margin-left:4px">↳ e→ie in the boot: quieres.</div></div><div class="q"><span class="num">7.</span>Ella <span class="es">duerme</span> hasta las nueve. (dormir)<div class="small" style="margin-left:4px">↳ o→ue in the boot: duerme.</div></div><div class="q"><span class="num">8.</span>Yo <span class="es">pido</span> un café con leche. (pedir)<div class="small" style="margin-left:4px">↳ e→i: pido.</div></div><div class="q"><span class="num">9.</span>Nosotros <span class="es">empezamos</span> a las siete. (empezar)<div class="small" style="margin-left:4px">↳ nosotros is OUTSIDE the boot — no change.</div></div><div class="q"><span class="num">10.</span>Yo <span class="es">juego</span> con el perro en el jardín. (jugar)<div class="small" style="margin-left:4px">↳ u→ue: juego.</div></div></div><div class="page-break"></div><h2>Set 4 · Completely irregular &amp; combination</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Fill in the present tense.</b></p><div class="q"><span class="num">1.</span>Yo <span class="es">soy</span> de Florida. (ser)<div class="small" style="margin-left:4px">↳ ser: soy.</div></div><div class="q"><span class="num">2.</span>Mi novio <span class="es">es</span> cubano. (ser)<div class="small" style="margin-left:4px">↳ ser: es.</div></div><div class="q"><span class="num">3.</span>Yo <span class="es">estoy</span> en la playa ahora. (estar)<div class="small" style="margin-left:4px">↳ estar: estoy.</div></div><div class="q"><span class="num">4.</span>¿Cómo <span class="es">estás</span> tú? (estar)<div class="small" style="margin-left:4px">↳ estar: estás (accent).</div></div><div class="q"><span class="num">5.</span>Nosotros <span class="es">vamos</span> a bailar salsa. (ir)<div class="small" style="margin-left:4px">↳ ir: vamos.</div></div><div class="q"><span class="num">6.</span>Yo <span class="es">tengo</span> un perro cariñoso. (tener)<div class="small" style="margin-left:4px">↳ combo: irregular yo tengo.</div></div><div class="q"><span class="num">7.</span>¿Cuántos años <span class="es">tienes</span> tú? (tener)<div class="small" style="margin-left:4px">↳ combo: e→ie → tienes.</div></div><div class="q"><span class="num">8.</span>Yo <span class="es">vengo</span> de la playa. (venir)<div class="small" style="margin-left:4px">↳ combo: irregular yo vengo.</div></div><div class="q"><span class="num">9.</span>Ella <span class="es">dice</span> la verdad. (decir)<div class="small" style="margin-left:4px">↳ combo: e→i → dice.</div></div><div class="q"><span class="num">10.</span><span class="es">Hay</span> mucha gente en la playa. (haber → hay)<div class="small" style="margin-left:4px">↳ haber&#x27;s special form: hay = there is/are.</div></div></div><div class="page-break"></div><h2>Set 5 · Ser vs. Estar</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Choose SER or ESTAR and give the form.</b></p><div class="q"><span class="num">1.</span>Yo ___ de los Estados Unidos. &nbsp;→ <span class="es">soy</span><div class="small" style="margin-left:4px">↳ Origin → ser.</div></div><div class="q"><span class="num">2.</span>El café ___ caliente. &nbsp;→ <span class="es">está</span><div class="small" style="margin-left:4px">↳ Temporary state → estar.</div></div><div class="q"><span class="num">3.</span>Mi novio ___ simpático. &nbsp;→ <span class="es">es</span><div class="small" style="margin-left:4px">↳ Permanent trait → ser.</div></div><div class="q"><span class="num">4.</span>Nosotros ___ en el gimnasio. &nbsp;→ <span class="es">estamos</span><div class="small" style="margin-left:4px">↳ Location → estar.</div></div><div class="q"><span class="num">5.</span>___ las ocho de la mañana. &nbsp;→ <span class="es">Son</span><div class="small" style="margin-left:4px">↳ Time → ser.</div></div><div class="q"><span class="num">6.</span>Yo ___ cansada después de correr. &nbsp;→ <span class="es">estoy</span><div class="small" style="margin-left:4px">↳ Feeling → estar.</div></div><div class="q"><span class="num">7.</span>La tabla ___ de fibra de vidrio. &nbsp;→ <span class="es">es</span><div class="small" style="margin-left:4px">↳ Material → ser.</div></div><div class="q"><span class="num">8.</span>El agua ___ fría hoy. &nbsp;→ <span class="es">está</span><div class="small" style="margin-left:4px">↳ Temporary condition → estar.</div></div></div><div class="page-break"></div><h2>Set 6 · Reflexives &amp; gustar</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Reflexive verbs — fill in the pronoun + verb.</b></p><div class="q"><span class="num">1.</span>Yo <span class="es">me despierto</span> a las seis. (despertarse)<div class="small" style="margin-left:4px">↳ me + despierto (e→ie).</div></div><div class="q"><span class="num">2.</span>Yo <span class="es">me ducho</span> después de la playa. (ducharse)<div class="small" style="margin-left:4px">↳ me + ducho.</div></div><div class="q"><span class="num">3.</span>¿A qué hora <span class="es">te acuestas</span> tú? (acostarse)<div class="small" style="margin-left:4px">↳ te + acuestas (o→ue).</div></div><div class="q"><span class="num">4.</span>Nosotros <span class="es">nos levantamos</span> temprano. (levantarse)<div class="small" style="margin-left:4px">↳ nos + levantamos.</div></div><p class="small" style="margin-top:10px"><b>Gustar &amp; friends — gusta or gustan? (plus the pronoun)</b></p><div class="q"><span class="num">1.</span>A mí <span class="es">me gusta</span> la playa. (gustar)<div class="small" style="margin-left:4px">↳ One thing → gusta.</div></div><div class="q"><span class="num">2.</span>A mí <span class="es">me gustan</span> los perros. (gustar)<div class="small" style="margin-left:4px">↳ Plural → gustan.</div></div><div class="q"><span class="num">3.</span>A ti <span class="es">te encanta</span> el café cubano. (encantar)<div class="small" style="margin-left:4px">↳ One thing → encanta.</div></div><div class="q"><span class="num">4.</span>A mí <span class="es">me duelen</span> los pies después de correr. (doler)<div class="small" style="margin-left:4px">↳ Plural (feet) → duelen.</div></div></div><div class="page-break"></div><h2>Set 7 · Right now (present progressive)</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Fill with estar + the -ando/-iendo form.</b></p><div class="q"><span class="num">1.</span>Yo <span class="es">estoy nadando</span> en el mar. (nadar)<div class="small" style="margin-left:4px">↳ estoy + nadando.</div></div><div class="q"><span class="num">2.</span>Ella <span class="es">está cocinando</span> arroz. (cocinar)<div class="small" style="margin-left:4px">↳ está + cocinando.</div></div><div class="q"><span class="num">3.</span>Nosotros <span class="es">estamos escuchando</span> música. (escuchar)<div class="small" style="margin-left:4px">↳ estamos + escuchando.</div></div><div class="q"><span class="num">4.</span>El perro <span class="es">está durmiendo</span> en el sofá. (dormir)<div class="small" style="margin-left:4px">↳ -ir stem change o→u: durmiendo.</div></div><div class="q"><span class="num">5.</span>Yo <span class="es">estoy leyendo</span> un libro. (leer)<div class="small" style="margin-left:4px">↳ vowel+iendo → leyendo.</div></div></div><div class="page-break"></div><h2>Set 8 · Into the past (preterite)</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Fill in the preterite (completed past).</b></p><div class="q"><span class="num">1.</span>Ayer yo <span class="es">nadé</span> una hora. (nadar)<div class="small" style="margin-left:4px">↳ Regular -ar preterite yo: -é.</div></div><div class="q"><span class="num">2.</span>Anoche yo <span class="es">cociné</span> arroz con pollo. (cocinar)<div class="small" style="margin-left:4px">↳ Regular -ar preterite yo: -é.</div></div><div class="q"><span class="num">3.</span>Ella <span class="es">hizo</span> café esta mañana. (hacer → irregular)<div class="small" style="margin-left:4px">↳ Irregular: hizo (note the z).</div></div><div class="q"><span class="num">4.</span>Nosotros <span class="es">tuvimos</span> un día perfecto. (tener → irregular)<div class="small" style="margin-left:4px">↳ Irregular stem tuv-: tuvimos.</div></div><div class="q"><span class="num">5.</span>Yo <span class="es">fui</span> a la playa el sábado. (ir → irregular)<div class="small" style="margin-left:4px">↳ ir/ser preterite: fui.</div></div><div class="q"><span class="num">6.</span>¿Tú <span class="es">estuviste</span> en la fiesta anoche? (estar → irregular)<div class="small" style="margin-left:4px">↳ Irregular stem estuv-.</div></div><div class="q"><span class="num">7.</span>Ellos <span class="es">dijeron</span> la verdad. (decir → irregular)<div class="small" style="margin-left:4px">↳ Irregular stem dij- → dijeron.</div></div><div class="q"><span class="num">8.</span>Yo <span class="es">di</span> un beso a mi novio. (dar → irregular)<div class="small" style="margin-left:4px">↳ Irregular: di.</div></div></div><div class="page-break"></div><h2>Set 9 · Into the past (imperfect)</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Fill in the imperfect (used to / was ___-ing).</b></p><div class="q"><span class="num">1.</span>De niña, yo <span class="es">vivía</span> cerca del mar. (vivir)<div class="small" style="margin-left:4px">↳ Regular -ir imperfect: -ía.</div></div><div class="q"><span class="num">2.</span>Todos los veranos nosotros <span class="es">íbamos</span> a la playa. (ir → irregular)<div class="small" style="margin-left:4px">↳ Irregular imperfect: íbamos.</div></div><div class="q"><span class="num">3.</span>Mi abuela <span class="es">cocinaba</span> comida cubana. (cocinar)<div class="small" style="margin-left:4px">↳ Regular -ar imperfect: -aba.</div></div><div class="q"><span class="num">4.</span>Antes yo no <span class="es">hablaba</span> nada de español. (hablar)<div class="small" style="margin-left:4px">↳ Regular -ar imperfect: -aba.</div></div><div class="q"><span class="num">5.</span>El cielo <span class="es">estaba</span> gris. (estar)<div class="small" style="margin-left:4px">↳ Regular imperfect: estaba.</div></div><div class="q"><span class="num">6.</span>Cuando <span class="es">era</span> niña, me gustaba nadar. (ser → irregular)<div class="small" style="margin-left:4px">↳ Irregular imperfect: era.</div></div><p class="small" style="margin-top:10px"><b>Preterite or imperfect? Choose the tense that fits.</b></p><div class="q"><span class="num">1.</span>Ayer ___ a la playa. (ir) &nbsp;→ <span class="es">fui</span><div class="small" style="margin-left:4px">↳ Single finished action → preterite.</div></div><div class="q"><span class="num">2.</span>De niña ___ todos los días. (nadar) &nbsp;→ <span class="es">nadaba</span><div class="small" style="margin-left:4px">↳ Habit in the past → imperfect.</div></div><div class="q"><span class="num">3.</span>___ las ocho y hacía calor. (ser) &nbsp;→ <span class="es">Era</span><div class="small" style="margin-left:4px">↳ Time/background → imperfect.</div></div><div class="q"><span class="num">4.</span>Yo cocinaba cuando él ___. (llegar) &nbsp;→ <span class="es">llegó</span><div class="small" style="margin-left:4px">↳ The interrupting event → preterite.</div></div></div><div class="page-break"></div><h2>Set 10 · Into the future</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Near future — ir a + infinitive.</b></p><div class="q"><span class="num">1.</span>Esta tarde yo <span class="es">voy a</span> nadar. (ir a)<div class="small" style="margin-left:4px">↳ voy + a + infinitive.</div></div><div class="q"><span class="num">2.</span>¿Tú <span class="es">vas a</span> venir a la playa? (ir a)<div class="small" style="margin-left:4px">↳ vas + a.</div></div><div class="q"><span class="num">3.</span>Nosotros <span class="es">vamos a</span> cocinar juntos. (ir a)<div class="small" style="margin-left:4px">↳ vamos + a.</div></div><p class="small" style="margin-top:10px"><b>Future tense — add the endings to the infinitive (watch irregular stems).</b></p><div class="q"><span class="num">1.</span>Algún día yo <span class="es">hablaré</span> español con fluidez. (hablar)<div class="small" style="margin-left:4px">↳ Regular: infinitive + é.</div></div><div class="q"><span class="num">2.</span>El año que viene yo <span class="es">iré</span> a Cuba. (ir)<div class="small" style="margin-left:4px">↳ Regular future: iré.</div></div><div class="q"><span class="num">3.</span>Nosotros <span class="es">tendremos</span> una casa cerca del mar. (tener → irregular)<div class="small" style="margin-left:4px">↳ Irregular stem tendr-.</div></div><div class="q"><span class="num">4.</span>¿Qué <span class="es">harás</span> tú este verano? (hacer → irregular)<div class="small" style="margin-left:4px">↳ Irregular stem har-.</div></div><div class="q"><span class="num">5.</span>Mañana <span class="es">hará</span> sol. (hacer → irregular)<div class="small" style="margin-left:4px">↳ Irregular stem har-: hará.</div></div></div><div class="page-break"></div><h2>Set 11 · One verb across time</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Give the yo form: past (preterite) / present / future.</b></p><div class="q"><span class="num">1.</span>nadar — ayer, hoy, mañana<div class="small" style="margin-left:4px">↳ Preterite nadé, present nado, future nadaré.</div></div><div class="q"><span class="num">2.</span>comer — anoche, ahora, luego<div class="small" style="margin-left:4px">↳ Preterite comí, present como, future comeré.</div></div><div class="q"><span class="num">3.</span>hacer — ayer, hoy, mañana<div class="small" style="margin-left:4px">↳ Irregular in all three: hice / hago / haré.</div></div><div class="q"><span class="num">4.</span>ir — ayer, hoy, mañana<div class="small" style="margin-left:4px">↳ Preterite fui, present voy, future iré.</div></div></div><div class="page-break"></div><h2>Set 12 · Free writing</h2><div class="drill"><h4>Worked answers</h4><p class="small" style="margin-top:10px"><b>Write full sentences.</b></p><p class="small">Free writing — no answer key. Check that every verb agrees with its subject and sits in the right tense. Read each sentence aloud.</p></div>
+<div class="foot"><span>Hablar &middot; Personalized Spanish Workbook</span>
+<span>Answers</span></div>
+</div>
+</body>
+</html>
