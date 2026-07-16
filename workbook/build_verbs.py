@@ -1192,6 +1192,8 @@ def build_combined_artifact():
     body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}{extra_inner}</style>'
             '<div class="wb-header"><div class="wb-bar">'
             '<span class="wb-brand">The Verb Book<span class="dot">.</span></span>'
+            '<button id="enBtn" class="slow-btn on" title="Show or hide English" '
+            'aria-pressed="true">🌐 English</button>'
             '<button id="slowBtn" class="slow-btn" title="Slow speech" '
             'aria-pressed="false">🐢 Slow</button>'
             f'<nav class="wb-tabs">{"".join(nav)}</nav></div></div>'
@@ -1332,6 +1334,11 @@ _ARTIFACT_JS = r"""
   var sb=document.getElementById('slowBtn');
   if(sb) sb.addEventListener('click', function(){ SLOW=!SLOW; sb.classList.toggle('on',SLOW);
     sb.setAttribute('aria-pressed', SLOW?'true':'false'); });
+  var eb=document.getElementById('enBtn');
+  if(eb) eb.addEventListener('click', function(){
+    var off=document.body.classList.toggle('en-off');
+    eb.classList.toggle('on', !off);
+    eb.setAttribute('aria-pressed', off?'false':'true'); });
   var hx=document.getElementById('hintX');
   if(hx) hx.addEventListener('click', function(){ var b=document.getElementById('sayBar'); if(b) b.style.display='none'; });
   show('home');

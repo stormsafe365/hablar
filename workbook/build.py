@@ -702,6 +702,11 @@ details summary{cursor:pointer}
   color:var(--soft);cursor:pointer;white-space:nowrap;flex:0 0 auto}
 .slow-btn.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
 
+/* English on/off toggle — when off, hide the English translations for self-testing */
+body.en-off .ex .en, body.en-off .dlg .en, body.en-off .chip .en,
+body.en-off .timeline .en, body.en-off .card .back,
+body.en-off .vocab td:nth-child(2){visibility:hidden}
+
 /* tap-to-hear hint bar */
 .say-bar{display:flex;align-items:center;gap:8px;max-width:900px;margin:0 auto;
   padding:9px 16px;font-size:13px;color:var(--soft);border-bottom:1px solid var(--line)}
@@ -949,6 +954,11 @@ def build_artifact(bodies):
   var sb=document.getElementById('slowBtn');
   if(sb) sb.addEventListener('click', function(){ SLOW=!SLOW; sb.classList.toggle('on',SLOW);
     sb.setAttribute('aria-pressed', SLOW?'true':'false'); });
+  var eb=document.getElementById('enBtn');
+  if(eb) eb.addEventListener('click', function(){
+    var off=document.body.classList.toggle('en-off');
+    eb.classList.toggle('on', !off);
+    eb.setAttribute('aria-pressed', off?'false':'true'); });
   var hx=document.getElementById('hintX');
   if(hx) hx.addEventListener('click', function(){ var b=document.getElementById('sayBar'); if(b) b.style.display='none'; });
 
@@ -962,6 +972,8 @@ def build_artifact(bodies):
     body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}{verb_css}{sep_css}</style>'
             '<div class="wb-header"><div class="wb-bar">'
             '<span class="wb-brand">Hablar<span class="dot">.</span></span>'
+            '<button id="enBtn" class="slow-btn on" title="Show or hide English" '
+            'aria-pressed="true">🌐 English</button>'
             '<button id="slowBtn" class="slow-btn" title="Slow speech" '
             'aria-pressed="false">🐢 Slow</button>'
             f'<nav class="wb-tabs">{nav}</nav></div></div>'
