@@ -1131,6 +1131,211 @@ def build_reference():
 
 
 # ══════════════════════════════════════════════════════════════════════════
+#  COMBINED SINGLE-PAGE ARTIFACT  (self-contained, tabbed, light+dark, audio)
+# ══════════════════════════════════════════════════════════════════════════
+import re
+from content.theme import CSS as THEME_CSS
+from build import ARTIFACT_EXTRA_CSS  # dark-mode tokens + sticky header/tabs + audio styles
+
+# tab key, label, source file
+ART_TABS = [
+    ("home", "Home", "index.html"),
+    ("learn", "Learn", "book.html"),
+    ("practice", "Practice", "practice.html"),
+    ("answers", "Answers", "answers.html"),
+    ("quizzes", "Quizzes", "quizzes.html"),
+    ("cheat", "Cheat Sheets", "cheatsheets.html"),
+    ("reference", "Reference", "reference.html"),
+]
+_LINK_MAP = [  # order matters: longer/leading paths first
+    ('href="../index.html"', 'href="#home" data-tab="home"'),
+    ('href="index.html"', 'href="#home" data-tab="home"'),
+    ('href="book.html"', 'href="#learn" data-tab="learn"'),
+    ('href="practice.html"', 'href="#practice" data-tab="practice"'),
+    ('href="answers.html"', 'href="#answers" data-tab="answers"'),
+    ('href="quizzes.html"', 'href="#quizzes" data-tab="quizzes"'),
+    ('href="cheatsheets.html"', 'href="#cheat" data-tab="cheat"'),
+    ('href="reference.html"', 'href="#reference" data-tab="reference"'),
+]
+
+
+def _extract_page_body(html):
+    """Pull the content that lived inside <div class="page"> …, minus our
+    per-page NAV, the injected EXTRA_CSS <style>, and the footer."""
+    start = html.index('<div class="page">') + len('<div class="page">')
+    end = html.index('<div class="foot">', start)
+    inner = html[start:end]
+    inner = inner.replace(NAV, "")
+    inner = inner.replace(EXTRA_CSS, "")
+    for a, b in _LINK_MAP:
+        inner = inner.replace(a, b)
+    return inner.strip()
+
+
+def build_combined_artifact():
+    # read the freshly-built pages and turn each into a tab section
+    sections, nav = [], []
+    for key, label, fname in ART_TABS:
+        nav.append(f'<button class="wb-tab" data-tab="{key}">{esc(label)}</button>')
+        with open(os.path.join(OUT, fname), encoding="utf-8") as f:
+            inner = _extract_page_body(f.read())
+        sections.append(f'<section class="tab" id="tab-{key}">'
+                        f'<div class="page">{inner}</div></section>')
+
+    extra_inner = EXTRA_CSS.replace("<style>", "").replace("</style>", "")
+    js = _ARTIFACT_JS
+
+    body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}{extra_inner}</style>'
+            '<div class="wb-header"><div class="wb-bar">'
+            '<span class="wb-brand">The Verb Book<span class="dot">.</span></span>'
+            '<button id="slowBtn" class="slow-btn" title="Slow speech" '
+            'aria-pressed="false">🐢 Slow</button>'
+            f'<nav class="wb-tabs">{"".join(nav)}</nav></div></div>'
+            '<div class="say-bar" id="sayBar"><span class="ic">🔊</span>'
+            '<span>Tap any <b>green Spanish</b> word or sentence to hear it '
+            '&amp; see the stressed syllable.</span>'
+            '<button class="x" id="hintX" title="Dismiss" aria-label="Dismiss">'
+            '&times;</button></div>'
+            + "".join(sections)
+            + f'<script>{js}</script>')
+
+    path = os.path.join(OUT, "verb-book.html")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(body)
+    print("wrote verbs/verb-book.html (%d KB) — self-contained artifact" % (len(body) // 1024))
+    return path
+
+
+# tab switching + tap-to-hear (phone's Spanish voice) + stressed-syllable popup
+_ARTIFACT_JS = r"""
+(function(){
+  function show(name){
+    document.querySelectorAll('.tab').forEach(function(s){
+      s.classList.toggle('on', s.id==='tab-'+name); });
+    document.querySelectorAll('.wb-tab').forEach(function(b){
+      b.classList.toggle('on', b.dataset.tab===name); });
+    window.scrollTo({top:0,behavior:'instant'}); hidePop();
+  }
+  var VOWELS='aeiouáéíóúü', ACCENTED='áéíóú', STRONG='aeoáéó';
+  var CLUSTERS=['ch','ll','rr','pr','pl','br','bl','cr','cl','dr','tr','gr','gl','fr','fl'];
+  function isV(c){return VOWELS.indexOf(c)>=0;}
+  function syllabify(word){
+    var w=word.toLowerCase(), nuclei=[], i=0;
+    while(i<w.length){
+      if(isV(w[i])){ var j=i;
+        while(j+1<w.length && isV(w[j+1])){
+          var a=w[j], b=w[j+1];
+          var hiatus=(STRONG.indexOf(a)>=0&&STRONG.indexOf(b)>=0)||('íú'.indexOf(a)>=0)||('íú'.indexOf(b)>=0);
+          if(hiatus) break; j++; }
+        nuclei.push([i,j]); i=j+1;
+      } else i++;
+    }
+    if(nuclei.length<=1) return [word];
+    var bounds=[0];
+    for(var n=0;n<nuclei.length-1;n++){
+      var cStart=nuclei[n][1]+1, cEnd=nuclei[n+1][0]-1, cons=w.slice(cStart,cEnd+1), L=cons.length, splitAt;
+      if(L===0) splitAt=nuclei[n+1][0];
+      else if(L===1) splitAt=cStart;
+      else if(L===2) splitAt=CLUSTERS.indexOf(cons)>=0?cStart:cStart+1;
+      else if(L===3) splitAt=CLUSTERS.indexOf(cons.slice(1))>=0?cStart+1:cStart+2;
+      else splitAt=cStart+2;
+      bounds.push(splitAt);
+    }
+    var syl=[];
+    for(var b2=0;b2<bounds.length;b2++){
+      var st=bounds[b2], en=(b2+1<bounds.length)?bounds[b2+1]:word.length;
+      syl.push(word.slice(st,en));
+    }
+    return syl;
+  }
+  function stressIndex(s){
+    for(var k=0;k<s.length;k++){var t=s[k].toLowerCase();
+      for(var c=0;c<t.length;c++) if(ACCENTED.indexOf(t[c])>=0) return k;}
+    if(s.length===1) return 0;
+    var last=s[s.length-1].toLowerCase(), lc=last[last.length-1];
+    return ('aeiouns'.indexOf(lc)>=0)?s.length-2:s.length-1;
+  }
+  function markHTML(word){
+    var s=syllabify(word), idx=stressIndex(s), out=[];
+    for(var k=0;k<s.length;k++)
+      out.push(k===idx?('<b>'+s[k].toUpperCase()+'</b>'):s[k].toLowerCase());
+    return out.join('<span class="dot2">·</span>');
+  }
+  function markPhrase(text){
+    return text.trim().split(/\s+/).map(function(tok){
+      var m=tok.match(/^([¿¡"'(]*)([\wáéíóúüñ]+)([.,!?;:"')]*)$/i);
+      return m ? (m[1]+markHTML(m[2])+m[3]) : tok;
+    }).join(' ');
+  }
+  var VOICE=null, SLOW=false;
+  function loadVoices(){
+    if(!('speechSynthesis' in window)) return;
+    var vs=speechSynthesis.getVoices()||[];
+    var order=['es-us','es-mx','es-419','es-co','es-ar','es-es','es'];
+    VOICE=null;
+    for(var i=0;i<order.length&&!VOICE;i++)
+      VOICE=vs.filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf(order[i])===0;})[0]||null;
+    if(!VOICE) VOICE=vs.filter(function(v){return /^es/i.test(v.lang||'');})[0]||null;
+  }
+  if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
+  function speak(text, el){
+    if(!('speechSynthesis' in window)||!text) return;
+    try{
+      speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(text);
+      if(VOICE){u.voice=VOICE; u.lang=VOICE.lang;} else u.lang='es-US';
+      u.rate=SLOW?0.6:0.92;
+      if(el){el.classList.add('speaking');
+        u.onend=u.onerror=function(){el.classList.remove('speaking');};}
+      speechSynthesis.speak(u);
+    }catch(e){}
+  }
+  var pop=null;
+  function ensurePop(){ if(!pop){pop=document.createElement('div');
+    pop.className='stress-pop';pop.style.display='none';document.body.appendChild(pop);} return pop; }
+  function hidePop(){ if(pop) pop.style.display='none'; }
+  function showPop(html, rect){
+    var p=ensurePop();
+    p.innerHTML='<span class="sp-ic">🔊</span>'+html;
+    p.style.left='0px'; p.style.top='0px'; p.style.display='block';
+    var pw=p.offsetWidth, ph=p.offsetHeight, cw=document.documentElement.clientWidth;
+    var top=rect.top+window.scrollY-ph-10;
+    if(top<window.scrollY+4) top=rect.bottom+window.scrollY+10;
+    var left=rect.left+window.scrollX+rect.width/2-pw/2;
+    left=Math.max(window.scrollX+8, Math.min(left, window.scrollX+cw-pw-8));
+    p.style.top=top+'px'; p.style.left=left+'px';
+    clearTimeout(p._t); p._t=setTimeout(hidePop, 4500);
+  }
+  function esText(el){
+    var c=el.cloneNode(true);
+    c.querySelectorAll('.en,.ipa,.small').forEach(function(n){n.remove();});
+    return (c.textContent||'').replace(/🔊/g,'').trim();
+  }
+  var SEL='.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.grid-conj .v,.chip,.card .front';
+  document.addEventListener('click', function(e){
+    if(e.target.closest('[data-tab]')){ e.preventDefault(); show(e.target.closest('[data-tab]').getAttribute('data-tab')); return; }
+    if(e.target.closest('.slow-btn')||e.target.closest('.say-bar')) return;
+    var t=e.target.closest(SEL);
+    if(!t){ hidePop(); return; }
+    var text=esText(t);
+    if(!text) return;
+    speak(text, t);
+    var words=text.split(/\s+/);
+    if(words.length<=3 && /[a-záéíóúñü]/i.test(text)) showPop(markPhrase(text), t.getBoundingClientRect());
+    else hidePop();
+  });
+  window.addEventListener('scroll', hidePop, {passive:true});
+  var sb=document.getElementById('slowBtn');
+  if(sb) sb.addEventListener('click', function(){ SLOW=!SLOW; sb.classList.toggle('on',SLOW);
+    sb.setAttribute('aria-pressed', SLOW?'true':'false'); });
+  var hx=document.getElementById('hintX');
+  if(hx) hx.addEventListener('click', function(){ var b=document.getElementById('sayBar'); if(b) b.style.display='none'; });
+  show('home');
+})();
+"""
+
+
+# ══════════════════════════════════════════════════════════════════════════
 def main():
     build_index()
     build_book()
@@ -1139,6 +1344,7 @@ def main():
     build_quizzes()
     build_cheatsheets()
     build_reference()
+    build_combined_artifact()
     print("\nVerb workbook built into", OUT)
 
 
