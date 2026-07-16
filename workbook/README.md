@@ -20,6 +20,41 @@ Open **`index.html`** in any browser — it links to every piece:
 | `flashcards.html` | **Flashcards** — every vocab word, printable |
 | `cheatsheets.html` | **Cheat Sheets** — quick references |
 | `tests.html` | **Progress Tests** + **Final Exam** |
+| `verbs/index.html` | **★ The Verb Book** — a dedicated verb workbook (see below) |
+
+## The Verb Book (a verb-focused companion)
+
+A whole workbook just for **verbs**, in the same look and feel, living in
+`verbs/`. It deepens the **present tense** into a system and takes a gentle
+first step into the **past and future**.
+
+| File | What it is |
+|------|-----------|
+| `verbs/index.html` | Landing page + how-to-use + contents |
+| `verbs/book.html` | **Learn** — 13 chapters (see below) |
+| `verbs/practice.html` | **Practice** — 12 exercise sets, write directly in it |
+| `verbs/answers.html` | **Answers** — every exercise worked out, with the *why* |
+| `verbs/quizzes.html` | **Quizzes** — 6 quizzes + bonus, with an answer key |
+| `verbs/cheatsheets.html` | **Cheat Sheets** — endings for all four tenses, boot diagram, ser/estar, time-word signals |
+| `verbs/reference.html` | **Reference** — full conjugation tables for ~45 verbs |
+
+**Learn** covers: how Spanish verbs work · regular present tense · the four
+irregular patterns (yo-form irregular, stem-changing "boot" verbs, completely
+irregular, combination) · ser vs estar · reflexive verbs · gustar & friends ·
+present progressive · **stepping into the past** (preterite + imperfect and how
+to choose) · **stepping into the future** (`ir a` + infinitive and the future
+tense) · one verb across all three tenses.
+
+It's generated the same data-driven way:
+
+```bash
+cd workbook
+python3 build_verbs.py     # builds everything in verbs/
+```
+
+- Verb data + conjugators live in `content/verb_book.py`.
+- Renderers live in `build_verbs.py`.
+- Shared styling comes from the same `content/theme.py` as the main workbook.
 
 ### Print to PDF
 Open a page → **Print → Save as PDF**. The layout is tuned for letter-size

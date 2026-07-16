@@ -554,6 +554,9 @@ def build_cheats():
 
 def build_index():
     tiles = [
+        ("verbs/index.html", "🌊", "The Verb Book (new)", "A dedicated verb workbook: "
+         "present tense as patterns, ser vs estar, reflexives, gustar — plus your first "
+         "steps into the past and future. Learn · Practice · Quizzes · Reference."),
         ("book.html", "📘", "The Book", "Parts I–VII: foundations, the 16 core "
          "verbs, real-life vocabulary, past tense, reading, speaking & Cuban Spanish."),
         ("practice.html", "✍️", "Practice Workbook", "Thousands of exercises — "
@@ -605,6 +608,10 @@ def build_index():
         "culture — what your boyfriend actually says"))
     body.append('</ul>')
     body.append('<h3>Companion Books</h3><ul class="toc">')
+    body.append(toc("★ The Verb Book (new)", "A whole workbook just for verbs — the four "
+        "irregular patterns, ser/estar, reflexives, gustar, present progressive, and a "
+        "gentle on-ramp into the past & future. Its own Learn, Practice, Answers, "
+        "Quizzes, Cheat Sheets & Reference."))
     body.append(toc("Practice Workbook", "Verb drills, vocabulary drills, past-tense drills"))
     body.append(toc("Answer Book", "Full worked answers with explanations"))
     body.append(toc("Flashcards", "Verb deck + 16 themed vocabulary decks"))
