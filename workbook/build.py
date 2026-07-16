@@ -711,9 +711,9 @@ details summary{cursor:pointer}
   font-size:18px;cursor:pointer;padding:0 4px;line-height:1}
 
 /* what's tappable */
-.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.chip,
+.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.grid-conj .v,.chip,
 .card .front{cursor:pointer;-webkit-tap-highlight-color:transparent}
-.vocab td:first-child,.conj .v,.ex .es,.dlg .es,p.es{
+.vocab td:first-child,.conj .v,.grid-conj .v,.ex .es,.dlg .es,p.es{
   text-decoration:underline dotted color-mix(in srgb,var(--accent) 50%,transparent);
   text-underline-offset:3px;text-decoration-thickness:1px}
 .conj .v::after,.card .front::after,.chip::after{content:"🔊";font-size:.72em;
@@ -737,6 +737,52 @@ TAB_ORDER = [
     ("cheatsheets", "Cheat Sheets"), ("tests", "Tests"),
 ]
 
+# The Verb Book is merged in as its own run of tabs, after the main ones.
+VERB_TAB_ORDER = [
+    ("verblearn", "Verbs · Learn"), ("verbpractice", "Verbs · Practice"),
+    ("verbquiz", "Verbs · Quiz"), ("verbtables", "Verbs · Tables"),
+]
+
+# rewrite the verb pages' internal links onto the merged tab ids
+_VERB_LINKMAP = [
+    ('href="../index.html"', 'href="#contents" data-tab="contents"'),
+    ('href="index.html"', 'href="#verblearn" data-tab="verblearn"'),
+    ('href="book.html"', 'href="#verblearn" data-tab="verblearn"'),
+    ('href="practice.html"', 'href="#verbpractice" data-tab="verbpractice"'),
+    ('href="answers.html"', 'href="#verbpractice" data-tab="verbpractice"'),
+    ('href="quizzes.html"', 'href="#verbquiz" data-tab="verbquiz"'),
+    ('href="reference.html"', 'href="#verbtables" data-tab="verbtables"'),
+    ('href="cheatsheets.html"', 'href="#verbtables" data-tab="verbtables"'),
+]
+
+
+def _verb_sections():
+    """Build the verb pages, then return (sections dict, verb CSS) for merging
+    into the combined app. Four tabs group the six verb pages."""
+    import build_verbs as bv
+    bv.main()  # (re)generate verbs/*.html and the standalone artifact
+
+    def inner(fname):
+        html = open(os.path.join(bv.OUT, fname), encoding="utf-8").read()
+        s = html.index('<div class="page">') + len('<div class="page">')
+        e = html.index('<div class="foot">', s)
+        body = html[s:e].replace(bv.NAV, "").replace(bv.EXTRA_CSS, "")
+        for a, b in _VERB_LINKMAP:
+            body = body.replace(a, b)
+        return body.strip()
+
+    div = '<div class="page-break"></div>'
+    secs = {
+        "verblearn": inner("book.html"),
+        "verbpractice": inner("practice.html") + div
+            + '<div class="eyebrow">Verb answer key</div><h1>Verb Answers</h1>'
+            + inner("answers.html"),
+        "verbquiz": inner("quizzes.html"),
+        "verbtables": inner("reference.html") + div + inner("cheatsheets.html"),
+    }
+    verb_css = bv.EXTRA_CSS.replace("<style>", "").replace("</style>", "")
+    return secs, verb_css
+
 def _to_tabs(html):
     """Rewrite cross-file links into in-page tab switches."""
     m = {"index.html": "contents", "book.html": "book", "practice.html": "practice",
@@ -748,14 +794,24 @@ def _to_tabs(html):
 
 
 def build_artifact(bodies):
-    nav = "".join(
+    verb_secs, verb_css = _verb_sections()
+
+    nav_main = "".join(
         f'<button class="wb-tab" data-tab="{k}">{esc(label)}</button>'
         for k, label in TAB_ORDER)
+    nav_verb = "".join(
+        f'<button class="wb-tab wb-tab-verb" data-tab="{k}">{esc(label)}</button>'
+        for k, label in VERB_TAB_ORDER)
+    nav = nav_main + '<span class="wb-sep"></span>' + nav_verb
+
     sections = []
     for k, _ in TAB_ORDER:
         inner = _to_tabs(bodies[k])
         sections.append(f'<section class="tab" id="tab-{k}">'
                         f'<div class="page">{inner}</div></section>')
+    for k, _ in VERB_TAB_ORDER:
+        sections.append(f'<section class="tab" id="tab-{k}">'
+                        f'<div class="page">{verb_secs[k]}</div></section>')
 
     js = r"""
 (function(){
@@ -874,7 +930,7 @@ def build_artifact(bodies):
     return (c.textContent||'').replace(/🔊/g,'').trim();
   }
 
-  var SEL='.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.chip,.card .front';
+  var SEL='.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.grid-conj .v,.chip,.card .front';
   document.addEventListener('click', function(e){
     if(e.target.closest('[data-tab]')){ e.preventDefault(); show(e.target.closest('[data-tab]').getAttribute('data-tab')); return; }
     if(e.target.closest('.slow-btn')||e.target.closest('.say-bar')) return;
@@ -899,7 +955,11 @@ def build_artifact(bodies):
   show('contents');
 })();
 """
-    body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}</style>'
+    sep_css = ('.wb-sep{flex:0 0 auto;width:1px;height:20px;background:var(--line);'
+               'margin:0 4px;align-self:center}'
+               '.wb-tab-verb.on{background:var(--sea-soft);color:var(--sea);'
+               'border-color:var(--line)}')
+    body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}{verb_css}{sep_css}</style>'
             '<div class="wb-header"><div class="wb-bar">'
             '<span class="wb-brand">Hablar<span class="dot">.</span></span>'
             '<button id="slowBtn" class="slow-btn" title="Slow speech" '
