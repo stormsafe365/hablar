@@ -729,29 +729,34 @@ def build_index():
 # COMBINED SINGLE-PAGE ARTIFACT  (self-contained, tabbed, light + dark)
 # ══════════════════════════════════════════════════════════════════════════
 ARTIFACT_EXTRA_CSS = r"""
-/* dark theme — mirrors the Hablar app */
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#1f2122; --paper:#282a2b; --sand:#1f2122; --sand2:#323436;
-    --ink:#f2f2f0; --soft:#a8aaa9; --faint:#767a7b; --line:#383b3d;
-    --accent:#58df9d; --accent2:#22b378; --accent-soft:#173026;
-    --cuba:#ff8a7a; --cuba-soft:#3a2220; --sea:#54d3c4; --sea-soft:#123029;
-    --sun:#e9b95e; --sun-soft:#33290f; --coral:#ff8f8c; --coral-soft:#3a2220;
-  }
+/* warm greige — DARK is the default look (coral primary, teal secondary) */
+:root{
+  --bg:#262421; --paper:#302d29; --sand:#262421; --sand2:#3a352f;
+  --ink:#efe9df; --soft:#aca498; --faint:#7d7566; --line:#3d382f;
+  --accent:#ec7a5f; --accent2:#e0664a; --accent-soft:#3a2b25;
+  --cuba:#ec7a5f; --cuba-soft:#3a2b25; --sea:#6fb0a6; --sea-soft:#22322f;
+  --sun:#d9b45f; --sun-soft:#352f20; --coral:#ec7a5f; --coral-soft:#3a2b25;
 }
+@media (prefers-color-scheme: light){:root:not([data-theme]){
+  --bg:#f4f1eb; --paper:#ffffff; --sand:#f4f1eb; --sand2:#efe9df;
+  --ink:#2a2723; --soft:#6c655b; --faint:#9a9184; --line:#e7e0d4;
+  --accent:#e0533d; --accent2:#c9452f; --accent-soft:#fbe7e1;
+  --cuba:#c0503b; --cuba-soft:#f9e6e0; --sea:#2f9e8a; --sea-soft:#dcf1ec;
+  --sun:#b8933a; --sun-soft:#f6eecf; --coral:#e0533d; --coral-soft:#fbe7e1;
+}}
 :root[data-theme="light"]{
-  --bg:#fbfaf6; --paper:#ffffff; --sand:#f3f1ea; --sand2:#eae7dd;
-  --ink:#2a2824; --soft:#6a655c; --faint:#9a948a; --line:#e3e0d5;
-  --accent:#1c8a5d; --accent2:#22b378; --accent-soft:#e6f5ee;
-  --cuba:#c85a49; --cuba-soft:#f7e6e3; --sea:#2f8f9e; --sea-soft:#e2f0f2;
-  --sun:#c68a2e; --sun-soft:#f6ecd7; --coral:#e0524f; --coral-soft:#fbe7e6;
+  --bg:#f4f1eb; --paper:#ffffff; --sand:#f4f1eb; --sand2:#efe9df;
+  --ink:#2a2723; --soft:#6c655b; --faint:#9a9184; --line:#e7e0d4;
+  --accent:#e0533d; --accent2:#c9452f; --accent-soft:#fbe7e1;
+  --cuba:#c0503b; --cuba-soft:#f9e6e0; --sea:#2f9e8a; --sea-soft:#dcf1ec;
+  --sun:#b8933a; --sun-soft:#f6eecf; --coral:#e0533d; --coral-soft:#fbe7e1;
 }
 :root[data-theme="dark"]{
-  --bg:#1f2122; --paper:#282a2b; --sand:#1f2122; --sand2:#323436;
-  --ink:#f2f2f0; --soft:#a8aaa9; --faint:#767a7b; --line:#383b3d;
-  --accent:#58df9d; --accent2:#22b378; --accent-soft:#173026;
-  --cuba:#ff8a7a; --cuba-soft:#3a2220; --sea:#54d3c4; --sea-soft:#123029;
-  --sun:#e9b95e; --sun-soft:#33290f; --coral:#ff8f8c; --coral-soft:#3a2220;
+  --bg:#262421; --paper:#302d29; --sand:#262421; --sand2:#3a352f;
+  --ink:#efe9df; --soft:#aca498; --faint:#7d7566; --line:#3d382f;
+  --accent:#ec7a5f; --accent2:#e0664a; --accent-soft:#3a2b25;
+  --cuba:#ec7a5f; --cuba-soft:#3a2b25; --sea:#6fb0a6; --sea-soft:#22322f;
+  --sun:#d9b45f; --sun-soft:#352f20; --coral:#ec7a5f; --coral-soft:#3a2b25;
 }
 /* in dark mode the hardcoded pale borders should track the line token */
 @media (prefers-color-scheme: dark){
@@ -816,30 +821,30 @@ details summary{cursor:pointer}
   padding:8px 13px;border-radius:11px;font-family:var(--round);font-weight:700;
   font-size:17px;box-shadow:0 8px 24px rgba(0,0,0,.3);pointer-events:none;
   white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
-.stress-pop b{color:#5fe0a3;font-weight:800}
-.stress-pop .dot2{opacity:.35;margin:0 1px}
+.stress-pop b{color:#f3a892;font-weight:800}
+.stress-pop .dot2{opacity:.4;margin:0 1px}
 .stress-pop .sp-ic{margin-right:6px}
 
-/* ---------- gradient charcoal ground ---------- */
+/* ---------- gradient greige ground (dark default) ---------- */
 :root{
-  --bggrad:radial-gradient(1200px 760px at 50% -12%, #ffffff 0%, rgba(255,255,255,0) 55%),
-           linear-gradient(168deg, #f6f3ec 0%, #efece3 52%, #f4f1ea 100%);
-  --hover-shadow:0 1px 2px rgba(25,23,20,.07), 0 18px 38px rgba(25,23,20,.16);
+  --bggrad:radial-gradient(1200px 820px at 50% -14%, #38332d 0%, rgba(56,51,45,0) 60%),
+           linear-gradient(168deg, #221f1c 0%, #2b2824 46%, #1d1b18 100%);
+  --hover-shadow:0 1px 2px rgba(0,0,0,.4), 0 20px 44px rgba(0,0,0,.55);
 }
-@media (prefers-color-scheme: dark){:root{
-  --bggrad:radial-gradient(1200px 820px at 50% -14%, #2d3236 0%, rgba(45,50,54,0) 60%),
-           linear-gradient(168deg, #17191a 0%, #22262a 48%, #141617 100%);
-  --hover-shadow:0 1px 2px rgba(0,0,0,.45), 0 20px 44px rgba(0,0,0,.6);
+@media (prefers-color-scheme: light){:root:not([data-theme]){
+  --bggrad:radial-gradient(1200px 760px at 50% -12%, #ffffff 0%, rgba(255,255,255,0) 55%),
+           linear-gradient(168deg, #f7f3ed 0%, #efe9df 52%, #f4f0ea 100%);
+  --hover-shadow:0 1px 2px rgba(60,45,30,.06), 0 18px 38px rgba(60,45,30,.14);
 }}
 :root[data-theme="light"]{
   --bggrad:radial-gradient(1200px 760px at 50% -12%, #ffffff 0%, rgba(255,255,255,0) 55%),
-           linear-gradient(168deg, #f6f3ec 0%, #efece3 52%, #f4f1ea 100%);
-  --hover-shadow:0 1px 2px rgba(25,23,20,.07), 0 18px 38px rgba(25,23,20,.16);
+           linear-gradient(168deg, #f7f3ed 0%, #efe9df 52%, #f4f0ea 100%);
+  --hover-shadow:0 1px 2px rgba(60,45,30,.06), 0 18px 38px rgba(60,45,30,.14);
 }
 :root[data-theme="dark"]{
-  --bggrad:radial-gradient(1200px 820px at 50% -14%, #2d3236 0%, rgba(45,50,54,0) 60%),
-           linear-gradient(168deg, #17191a 0%, #22262a 48%, #141617 100%);
-  --hover-shadow:0 1px 2px rgba(0,0,0,.45), 0 20px 44px rgba(0,0,0,.6);
+  --bggrad:radial-gradient(1200px 820px at 50% -14%, #38332d 0%, rgba(56,51,45,0) 60%),
+           linear-gradient(168deg, #221f1c 0%, #2b2824 46%, #1d1b18 100%);
+  --hover-shadow:0 1px 2px rgba(0,0,0,.4), 0 20px 44px rgba(0,0,0,.55);
 }
 body{background-color:var(--sand);background-image:var(--bggrad);
   background-attachment:fixed;background-repeat:no-repeat;min-height:100vh}
@@ -1040,7 +1045,7 @@ def build_artifact(bodies):
             'aria-pressed="false">🐢 Slow</button>'
             f'<nav class="wb-tabs">{nav}</nav></div></div>'
             '<div class="say-bar" id="sayBar"><span class="ic">🔊</span>'
-            '<span>Tap any <b>green Spanish</b> word or sentence to hear it '
+            '<span>Tap any <b>Spanish word or sentence</b> to hear it '
             '&amp; see the stressed syllable.</span>'
             '<button class="x" id="hintX" title="Dismiss" aria-label="Dismiss">&times;</button></div>'
             + "".join(sections)
@@ -1060,8 +1065,8 @@ PWA_MANIFEST = """{
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f3f1ea",
-  "theme_color": "#1c8a5d",
+  "background_color": "#262421",
+  "theme_color": "#262421",
   "lang": "en",
   "icons": [
     {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
@@ -1101,7 +1106,7 @@ def build_pwa(body):
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Mi Español · Personalized Workbook</title>
 <meta name="description" content="Jenna's personalized Spanish workbook."/>
-<meta name="theme-color" content="#1c8a5d"/>
+<meta name="theme-color" content="#262421"/>
 <link rel="manifest" href="manifest.webmanifest"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>

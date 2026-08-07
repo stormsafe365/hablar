@@ -7,16 +7,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#fbfaf6; --paper:#ffffff; --sand:#f3f1ea; --sand2:#eae7dd;
-  --ink:#2a2824; --soft:#6a655c; --faint:#9a948a; --line:#e3e0d5;
-  --accent:#1c8a5d; --accent2:#22b378; --accent-soft:#e6f5ee;
-  --cuba:#c85a49; --cuba-soft:#f7e6e3;
-  --sea:#2f8f9e; --sea-soft:#e2f0f2;
-  --sun:#c68a2e; --sun-soft:#f6ecd7;
-  --coral:#e0524f; --coral-soft:#fbe7e6;
+  /* warm "greige" — light (print uses this; app dark palette lives in build.py) */
+  --bg:#f4f1eb; --paper:#ffffff; --sand:#f4f1eb; --sand2:#efe9df;
+  --ink:#2a2723; --soft:#6c655b; --faint:#9a9184; --line:#e7e0d4;
+  --accent:#e0533d; --accent2:#c9452f; --accent-soft:#fbe7e1;      /* coral — primary */
+  --cuba:#c0503b; --cuba-soft:#f9e6e0;
+  --sea:#2f9e8a; --sea-soft:#dcf1ec;                                /* teal — secondary */
+  --sun:#b8933a; --sun-soft:#f6eecf;                                /* gold */
+  --coral:#e0533d; --coral-soft:#fbe7e1;
   --serif:'Fraunces',Georgia,'Times New Roman',serif;
   --sans:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
-  --round:'Nunito',var(--sans);
+  --round:'Inter',var(--sans);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
@@ -52,15 +53,15 @@ hr{border:none;border-top:1px solid var(--line);margin:26px 0}
   background:var(--bg)}
 .box .lead{font-family:var(--round);font-weight:800;font-size:12px;
   text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:block}
-.tip{background:var(--accent-soft);border-color:#cfe9dd}
+.tip{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 32%,var(--line))}
 .tip .lead{color:var(--accent)}
-.trick{background:var(--sun-soft);border-color:#eaddbf}
+.trick{background:var(--sun-soft);border-color:color-mix(in srgb,var(--sun) 32%,var(--line))}
 .trick .lead{color:var(--sun)}
-.warn{background:var(--coral-soft);border-color:#f3cfcd}
+.warn{background:var(--coral-soft);border-color:color-mix(in srgb,var(--coral) 32%,var(--line))}
 .warn .lead{color:var(--coral)}
-.cuba{background:var(--cuba-soft);border-color:#eecfc9}
+.cuba{background:var(--cuba-soft);border-color:color-mix(in srgb,var(--cuba) 32%,var(--line))}
 .cuba .lead{color:var(--cuba)}
-.sea{background:var(--sea-soft);border-color:#c9e4e8}
+.sea{background:var(--sea-soft);border-color:color-mix(in srgb,var(--sea) 32%,var(--line))}
 .sea .lead{color:var(--sea)}
 
 /* conjugation table */
