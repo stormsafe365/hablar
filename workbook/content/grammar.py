@@ -26,10 +26,12 @@ def part_verb_forms():
     h = []
     h.append('<div class="eyebrow">Part III</div>')
     h.append('<h1>The Everyday Verb Forms</h1>')
-    h.append('<p class="muted">You already have the present tense. These few small '
-             'tools instantly double what you can say — and each takes about ten '
-             'minutes. The best news is hidden in all of them: <strong>only the '
-             'first verb ever changes.</strong></p>')
+    h.append('<p class="muted">Part II gave you the <strong>present</strong>. This '
+             'part gives you the <strong>future</strong> (two ways), the '
+             '<strong>-ing form</strong>, <strong>reflexives</strong>, and '
+             '<strong>stem-changers</strong> — each takes about ten minutes. The '
+             'best news is hidden in all of them: <strong>only the first verb ever '
+             'changes.</strong></p>')
 
     # the four forms at a glance
     h.append('<h2>1 · The four things a verb can do</h2>')
@@ -159,6 +161,32 @@ def part_verb_forms():
         ("Empiezo a trabajar a las nueve.", "I start work at nine."),
         ("Prefiero la playa por la mañana.", "I prefer the beach in the morning."),
     ]))
+
+    # the true future
+    h.append('<h2>6 · The “real” future — <span class="es">hablaré</span></h2>')
+    h.append('<p>Day to day you\'ll mostly say <span class="es">voy a + verb</span>. '
+             'But you\'ll hear the one-word future too, and here\'s the secret nobody '
+             'tells you: <strong>it\'s the easiest tense in Spanish.</strong> You '
+             'don\'t chop anything — take the <strong>whole verb</strong> and stick '
+             'the ending on. And there\'s only <strong>one set of endings</strong> '
+             'for -ar, -er, and -ir.</p>')
+    h.append(conj_table("hablar → will speak", _c(
+        "hablaré", "hablarás", "hablará", "hablaremos", "hablarán")))
+    h.append(box('tip', 'Same endings for every single verb', (
+        '<p><span class="es">comeré</span> (I\'ll eat) · <span class="es">viviré</span> '
+        '(I\'ll live) · <span class="es">iré</span> (I\'ll go) · '
+        '<span class="es">aprenderé</span> (I\'ll learn). Whole verb + é. '
+        'That\'s the entire lesson.</p>')))
+    h.append(examples([
+        ("Mañana hablaré con su abuela.", "Tomorrow I'll talk with his grandma."),
+        ("Este fin de semana iremos a la playa.", "This weekend we'll go to the beach."),
+        ("Aprenderé español, poco a poco.", "I'll learn Spanish, little by little."),
+        ("Joshua cocinará arroz con pollo el domingo.", "Joshua will cook chicken and rice on Sunday."),
+    ]))
+    h.append(box('sea', 'Which future should I use?', (
+        '<p>Speaking? Use <span class="es">voy a + verb</span> — it\'s what people '
+        'actually say. The <span class="es">-é</span> endings are mostly for '
+        'recognizing the future when you hear or read it.</p>')))
     return "".join(h)
 
 

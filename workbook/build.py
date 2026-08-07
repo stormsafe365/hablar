@@ -86,7 +86,7 @@ def render_verb_teach(v, n):
 def render_vocab_teach(t, n):
     h = ['<div class="page-break"></div>']
     h.append(f'<div class="eyebrow">Real-Life Vocabulary · Chapter {n}</div>')
-    h.append(f'<h1><span style="font-size:1.1em">{t["icon"]}</span> &nbsp;{esc(t["title"])}</h1>')
+    h.append(f'<h1>{esc(t["title"])}</h1>')
     h.append(f'<p class="muted">{esc(t["intro"])}</p>')
 
     h.append('<h3>Vocabulary</h3>')
@@ -129,24 +129,23 @@ def build_book():
     # cover
     parts.append(
         '<div class="cover">'
-        '<div class="flag">🇺🇸 🇨🇺 🇨🇴</div>'
-        '<h1>Spanish<br>for Your Real Life</h1>'
+        '<div class="eyebrow">Jenna · Boynton Beach, FL</div>'
+        '<h1>Spanish for<br><em>your real life.</em></h1>'
         '<div class="sub">A personalized workbook — built around the beach, '
         'Maggie, the gym, gardening, coffee, cooking, and the Cuban &amp; '
         'Colombian Spanish Joshua and his family actually speak.</div>'
-        '<div class="who">Personalized for Jenna · Boynton Beach, FL</div>'
         '</div>')
 
     # goals
     parts.append('<div class="page-break"></div>')
     parts.append('<h1>Your Goal</h1>')
     parts.append('<p>When we\'re finished, you will be able to:</p>')
-    parts.append('<ul style="list-style:none;margin-left:0">'
-        '<li>✅ Have a real 20–30 minute conversation in Spanish.</li>'
-        '<li>✅ Talk naturally with your boyfriend.</li>'
-        '<li>✅ Read simple books.</li>'
-        '<li>✅ Watch beginner Spanish YouTube.</li>'
-        '<li>✅ Think in Spanish instead of translating.</li>'
+    parts.append('<ul class="goals">'
+        '<li>Have a real 20–30 minute conversation in Spanish.</li>'
+        '<li>Talk naturally with Joshua.</li>'
+        '<li>Read simple books.</li>'
+        '<li>Watch beginner Spanish YouTube.</li>'
+        '<li>Think in Spanish instead of translating.</li>'
         '</ul>')
     parts.append(box('tip', 'How to use this book',
         '<ol><li>Work through the Parts in order — each builds on the last.</li>'
@@ -185,7 +184,7 @@ def build_book():
         'We learn <em>your</em> life first — the beach, Maggie, the garden, the '
         'gym, coffee, cooking, work, and love — so every word is one you\'ll '
         'actually use this week.</p>')
-    parts.append(chips([(t["icon"] + " " + t["title"], "") for t in THEMES]))
+    parts.append(chips([(t["title"], "") for t in THEMES]))
     for i, t in enumerate(THEMES, 1):
         parts.append(render_vocab_teach(t, i))
 
@@ -210,7 +209,7 @@ def build_book():
     parts.append(extras.part7_cuban())
 
     parts.append('<div class="page-break"></div>')
-    parts.append('<h1>¡Lo lograste! 🎉</h1>')
+    parts.append('<h1>¡Lo lograste!</h1>')
     parts.append('<p>You reached the end of the teaching book. Now the real work — '
         'and the fun — begins: use it. Do the practice pages, drill the flashcards, '
         'and above all, <strong>speak</strong>. Every mistake is a rep. '
@@ -257,7 +256,7 @@ def render_verb_practice(v, n):
 def render_vocab_practice(t, n):
     h = ['<div class="page-break"></div>']
     h.append(f'<div class="eyebrow">Practice · {t["title"]}</div>')
-    h.append(f'<h2>{t["icon"]} {esc(t["title"])}</h2>')
+    h.append(f'<h2>{esc(t["title"])}</h2>')
     h.append(drill('A · Fill in the blank',
         questions([f'{esc(s)} &nbsp; {blank()}' for s, _ in t["fill"]])))
     h.append(drill('B · Translate into Spanish',
@@ -275,7 +274,7 @@ def render_vocab_practice(t, n):
 def build_practice():
     parts = []
     parts.append('<div class="cover">'
-        '<div class="flag">✍️</div>'
+        '<div class="eyebrow">Práctica</div>'
         '<h1>The Practice<br>Workbook</h1>'
         '<div class="sub">Thousands of questions. Nearly every page is exercises. '
         'Write directly in it — that\'s the point.</div>'
@@ -373,7 +372,7 @@ def _ans_row(prompt, answer, why=""):
 
 def build_answers():
     parts = []
-    parts.append('<div class="cover"><div class="flag">🔑</div>'
+    parts.append('<div class="cover"><div class="eyebrow">Respuestas</div>'
         '<h1>The Answer<br>Book</h1>'
         '<div class="sub">Every answer — and the <em>why</em> behind it, not just '
         'right or wrong.</div>'
@@ -402,7 +401,7 @@ def build_answers():
     parts.append('<div class="page-break"></div>')
     parts.append('<h1>Vocabulary Answers</h1>')
     for t in THEMES:
-        parts.append(f'<h2>{t["icon"]} {esc(t["title"])}</h2>')
+        parts.append(f'<h2>{esc(t["title"])}</h2>')
         parts.append('<p class="small"><strong>A · Fill in the blank.</strong></p>')
         for s, a in t["fill"]:
             parts.append(_ans_row(esc(s.replace("___", "____")), a))
@@ -488,7 +487,7 @@ def build_answers():
 # ══════════════════════════════════════════════════════════════════════════
 def build_flashcards():
     parts = []
-    parts.append('<div class="cover"><div class="flag">🃏</div>'
+    parts.append('<div class="cover"><div class="eyebrow">Tarjetas</div>'
         '<h1>Flashcards</h1>'
         '<div class="sub">Every vocabulary word in the workbook. Print, cut along '
         'the dashed lines, and drill 5 minutes a day.</div>'
@@ -507,7 +506,7 @@ def build_flashcards():
     # vocab decks by theme
     for t in THEMES:
         parts.append('<div class="page-break"></div>')
-        parts.append(f'<h1>{t["icon"]} {esc(t["title"])}</h1>')
+        parts.append(f'<h1>{esc(t["title"])}</h1>')
         cards = [(es, en, note) for es, en, note in t["vocab"]]
         parts.append(_cards(cards))
 
@@ -532,7 +531,7 @@ def _cards(items):
 # ══════════════════════════════════════════════════════════════════════════
 def build_tests():
     parts = []
-    parts.append('<div class="cover"><div class="flag">📝</div>'
+    parts.append('<div class="cover"><div class="eyebrow">Exámenes</div>'
         '<h1>Progress Tests<br>& Final Exam</h1>'
         '<div class="sub">One test per unit, then a final exam that combines '
         'everything. No peeking — answers are in the Answer Book section below.</div>'
@@ -661,17 +660,18 @@ def build_index():
     ]
     body = []
     body.append('<div class="cover" style="min-height:auto;padding-bottom:8px">'
-        '<div class="flag">🇺🇸 🇨🇺 🇨🇴</div>'
-        '<h1 style="font-size:clamp(30px,8vw,46px)">Spanish for Your Real Life</h1>'
+        '<div class="eyebrow">Jenna · Boynton Beach, FL</div>'
+        '<h1 style="font-size:clamp(30px,8vw,46px)">Spanish for '
+        '<em>your real life.</em></h1>'
         '<div class="sub">Your personalized workbook — the beach, Maggie, coffee, '
         'cooking, the gym, gardening, and the Cuban &amp; Colombian Spanish Joshua '
-        'and his family actually speak.</div>'
-        '<div class="who">Personalized for Jenna · Boynton Beach, FL</div></div>')
+        'and his family actually speak.</div></div>')
 
     body.append('<h2>What\'s inside</h2>')
     body.append('<div class="grid">')
-    for href, ic, tt, dd in tiles:
-        body.append(f'<a class="tile" href="{href}"><div class="ic">{ic}</div>'
+    for i, (href, ic, tt, dd) in enumerate(tiles, 1):
+        body.append(f'<a class="tile" href="{href}">'
+                    f'<div class="tn">{i:02d}</div>'
                     f'<div class="tt">{esc(tt)}</div><div class="dd">{esc(dd)}</div></a>')
     body.append('</div>')
 
@@ -687,10 +687,10 @@ def build_index():
     body.append(toc("Part II · Present Tense", "16 core verbs, each taught the same "
         "way: " + ", ".join(v["inf"] for v in VERBS)))
     body.append(toc("Part III · Everyday Verb Forms", "Near future (voy a…), the "
-        "two-verb rule, present progressive (-ing), reflexive verbs, and "
-        "stem-changing verbs (the boot)"))
-    body.append(toc("Part IV · Real-Life Vocabulary", " ".join(t["icon"] for t in THEMES)
-        + " " + ", ".join(t["title"] for t in THEMES)))
+        "true future (hablaré), the two-verb rule, present progressive (-ing), "
+        "reflexive verbs, and stem-changing verbs (the boot)"))
+    body.append(toc("Part IV · Real-Life Vocabulary",
+        ", ".join(t["title"] for t in THEMES)))
     body.append(toc("Part V · Past Tense", "Regular & irregular preterite, yesterday, "
         "trips, stories, exercises"))
     body.append(toc("Part VI · Reading", "From 5-word stories up to a full page — "
@@ -811,8 +811,8 @@ details summary{cursor:pointer}
 .vocab td:first-child,.conj .v,.ex .es,.dlg .es,p.es{
   text-decoration:underline dotted color-mix(in srgb,var(--accent) 50%,transparent);
   text-underline-offset:3px;text-decoration-thickness:1px}
-.conj .v::after,.card .front::after,.chip::after{content:"🔊";font-size:.72em;
-  margin-left:5px;opacity:.4;vertical-align:middle}
+.conj .v::after,.card .front::after,.chip::after{content:"♪";font-size:.78em;
+  margin-left:6px;opacity:.5;color:var(--accent);vertical-align:middle}
 .speaking{background:var(--accent-soft);border-radius:6px;
   box-shadow:0 0 0 4px var(--accent-soft);transition:background .1s}
 
@@ -825,29 +825,60 @@ details summary{cursor:pointer}
 .stress-pop .dot2{opacity:.4;margin:0 1px}
 .stress-pop .sp-ic{margin-right:6px}
 
-/* ---------- gradient greige ground (dark default) ---------- */
+/* ---------- charcoal gradient ground — on a fixed layer so it ALWAYS shows,
+   including phones (background-attachment:fixed is broken on iOS) ---------- */
 :root{
-  --bggrad:radial-gradient(1200px 820px at 50% -14%, #38332d 0%, rgba(56,51,45,0) 60%),
-           linear-gradient(168deg, #221f1c 0%, #2b2824 46%, #1d1b18 100%);
-  --hover-shadow:0 1px 2px rgba(0,0,0,.4), 0 20px 44px rgba(0,0,0,.55);
+  --bggrad:
+    radial-gradient(880px 520px at 88% -6%, rgba(236,122,95,.16) 0%, rgba(236,122,95,0) 60%),
+    radial-gradient(1100px 720px at -12% 12%, rgba(111,176,166,.09) 0%, rgba(111,176,166,0) 55%),
+    linear-gradient(160deg, #35312b 0%, #272420 40%, #1b1917 76%, #131211 100%);
+  --hover-shadow:0 2px 4px rgba(0,0,0,.4), 0 22px 48px rgba(0,0,0,.6);
 }
 @media (prefers-color-scheme: light){:root:not([data-theme]){
-  --bggrad:radial-gradient(1200px 760px at 50% -12%, #ffffff 0%, rgba(255,255,255,0) 55%),
-           linear-gradient(168deg, #f7f3ed 0%, #efe9df 52%, #f4f0ea 100%);
+  --bggrad:
+    radial-gradient(880px 520px at 88% -6%, rgba(224,83,61,.10) 0%, rgba(224,83,61,0) 60%),
+    linear-gradient(160deg, #faf7f1 0%, #f1ebe1 45%, #e7dfd2 100%);
   --hover-shadow:0 1px 2px rgba(60,45,30,.06), 0 18px 38px rgba(60,45,30,.14);
 }}
 :root[data-theme="light"]{
-  --bggrad:radial-gradient(1200px 760px at 50% -12%, #ffffff 0%, rgba(255,255,255,0) 55%),
-           linear-gradient(168deg, #f7f3ed 0%, #efe9df 52%, #f4f0ea 100%);
+  --bggrad:
+    radial-gradient(880px 520px at 88% -6%, rgba(224,83,61,.10) 0%, rgba(224,83,61,0) 60%),
+    linear-gradient(160deg, #faf7f1 0%, #f1ebe1 45%, #e7dfd2 100%);
   --hover-shadow:0 1px 2px rgba(60,45,30,.06), 0 18px 38px rgba(60,45,30,.14);
 }
 :root[data-theme="dark"]{
-  --bggrad:radial-gradient(1200px 820px at 50% -14%, #38332d 0%, rgba(56,51,45,0) 60%),
-           linear-gradient(168deg, #221f1c 0%, #2b2824 46%, #1d1b18 100%);
-  --hover-shadow:0 1px 2px rgba(0,0,0,.4), 0 20px 44px rgba(0,0,0,.55);
+  --bggrad:
+    radial-gradient(880px 520px at 88% -6%, rgba(236,122,95,.16) 0%, rgba(236,122,95,0) 60%),
+    radial-gradient(1100px 720px at -12% 12%, rgba(111,176,166,.09) 0%, rgba(111,176,166,0) 55%),
+    linear-gradient(160deg, #35312b 0%, #272420 40%, #1b1917 76%, #131211 100%);
+  --hover-shadow:0 2px 4px rgba(0,0,0,.4), 0 22px 48px rgba(0,0,0,.6);
 }
-body{background-color:var(--sand);background-image:var(--bggrad);
-  background-attachment:fixed;background-repeat:no-repeat;min-height:100vh}
+body{background:var(--bg);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--bggrad)}
+
+/* ---------- NO giant paper sheet: content floats on the gradient ---------- */
+.page{background:transparent;box-shadow:none;border-radius:0;max-width:720px;
+  margin:0 auto;padding:12px 20px 72px}
+.box,.drill{background:var(--paper);box-shadow:var(--shadow)}
+.tip{background:var(--accent-soft)}.trick{background:var(--sun-soft)}
+.warn{background:var(--coral-soft)}.cuba{background:var(--cuba-soft)}
+.sea{background:var(--sea-soft)}
+table{background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  border-collapse:separate;border-spacing:0;box-shadow:var(--shadow);overflow:hidden}
+th{background:transparent}
+table tr:last-child td{border-bottom:none}
+.tile,.chip,.cards .card,.qa{background:var(--paper);box-shadow:var(--shadow)}
+.toc li{border-bottom-color:var(--line)}
+.write-lines .ln{border-bottom-color:var(--faint)}
+
+/* grown-up cover: no emoji flags, italic coral accent instead */
+.cover{min-height:auto;padding:44px 0 8px}
+.cover .flag{display:none}
+.cover h1 em{font-style:italic;color:var(--accent)}
+.cover .sub{font-size:16.5px}
+.goals{list-style:none;margin-left:0}
+.goals li{padding-left:26px;position:relative;margin:8px 0}
+.goals li::before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:700}
 
 /* ---------- hover: lift + colored border ---------- */
 @media (hover:hover){
@@ -1042,9 +1073,9 @@ def build_artifact(bodies):
             '<div class="wb-header"><div class="wb-bar">'
             '<span class="wb-brand">Hablar<span class="dot">.</span></span>'
             '<button id="slowBtn" class="slow-btn" title="Slow speech" '
-            'aria-pressed="false">🐢 Slow</button>'
+            'aria-pressed="false">Slow</button>'
             f'<nav class="wb-tabs">{nav}</nav></div></div>'
-            '<div class="say-bar" id="sayBar"><span class="ic">🔊</span>'
+            '<div class="say-bar" id="sayBar"><span class="ic" style="color:var(--accent)">♪</span>'
             '<span>Tap any <b>Spanish word or sentence</b> to hear it '
             '&amp; see the stressed syllable.</span>'
             '<button class="x" id="hintX" title="Dismiss" aria-label="Dismiss">&times;</button></div>'
