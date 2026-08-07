@@ -819,6 +819,50 @@ details summary{cursor:pointer}
 .stress-pop b{color:#5fe0a3;font-weight:800}
 .stress-pop .dot2{opacity:.35;margin:0 1px}
 .stress-pop .sp-ic{margin-right:6px}
+
+/* ---------- gradient charcoal ground ---------- */
+:root{
+  --bggrad:radial-gradient(1200px 760px at 50% -12%, #ffffff 0%, rgba(255,255,255,0) 55%),
+           linear-gradient(168deg, #f6f3ec 0%, #efece3 52%, #f4f1ea 100%);
+  --hover-shadow:0 1px 2px rgba(25,23,20,.07), 0 18px 38px rgba(25,23,20,.16);
+}
+@media (prefers-color-scheme: dark){:root{
+  --bggrad:radial-gradient(1200px 820px at 50% -14%, #2d3236 0%, rgba(45,50,54,0) 60%),
+           linear-gradient(168deg, #17191a 0%, #22262a 48%, #141617 100%);
+  --hover-shadow:0 1px 2px rgba(0,0,0,.45), 0 20px 44px rgba(0,0,0,.6);
+}}
+:root[data-theme="light"]{
+  --bggrad:radial-gradient(1200px 760px at 50% -12%, #ffffff 0%, rgba(255,255,255,0) 55%),
+           linear-gradient(168deg, #f6f3ec 0%, #efece3 52%, #f4f1ea 100%);
+  --hover-shadow:0 1px 2px rgba(25,23,20,.07), 0 18px 38px rgba(25,23,20,.16);
+}
+:root[data-theme="dark"]{
+  --bggrad:radial-gradient(1200px 820px at 50% -14%, #2d3236 0%, rgba(45,50,54,0) 60%),
+           linear-gradient(168deg, #17191a 0%, #22262a 48%, #141617 100%);
+  --hover-shadow:0 1px 2px rgba(0,0,0,.45), 0 20px 44px rgba(0,0,0,.6);
+}
+body{background-color:var(--sand);background-image:var(--bggrad);
+  background-attachment:fixed;background-repeat:no-repeat;min-height:100vh}
+
+/* ---------- hover: lift + colored border ---------- */
+@media (hover:hover){
+  .box,.drill,.card,.tile,.chip,.conj,.qa{
+    transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease}
+  .box:hover,.drill:hover,.card:hover,.tile:hover,.qa:hover{
+    transform:translateY(-3px);box-shadow:var(--hover-shadow);border-color:var(--accent)}
+  .trick:hover{border-color:var(--sun)}
+  .warn:hover{border-color:var(--coral)}
+  .cuba:hover{border-color:var(--cuba)}
+  .sea:hover{border-color:var(--sea)}
+  .tip:hover{border-color:var(--accent)}
+  .card:hover .front{color:var(--accent)}
+  .conj:hover{border-color:var(--accent);box-shadow:var(--hover-shadow)}
+  .chip:hover{transform:translateY(-1px);border-color:var(--accent);color:var(--accent)}
+}
+@media (prefers-reduced-motion: reduce){
+  .box,.drill,.card,.tile,.chip,.conj,.qa{transition:border-color .16s ease}
+  .box:hover,.drill:hover,.card:hover,.tile:hover,.qa:hover,.chip:hover{transform:none}
+}
 """
 
 TAB_ORDER = [
