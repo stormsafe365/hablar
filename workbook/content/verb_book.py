@@ -513,3 +513,111 @@ TIMELINE = [
     ("hacer", "Hice café.", "I made coffee.", "Hago café.", "I make coffee.",
      "Voy a hacer / haré café.", "I'm going to make / I'll make coffee."),
 ]
+
+
+# ══════════════════════════════════════════════════════════════════════════
+# PART 2 — FROM VERBS TO SENTENCES
+# (word order, questions, the two-verb rule, verb pairs, connectors, phrases)
+# ══════════════════════════════════════════════════════════════════════════
+
+# --- How a sentence is built ---
+WORD_ORDER_EXAMPLES = [
+    ("Estudio español en casa todos los días.", "I study Spanish at home every day."),
+    ("Nado en el mar por la mañana.", "I swim in the sea in the morning."),
+    ("Voy al gimnasio con mi novio los lunes.", "I go to the gym with my boyfriend on Mondays."),
+    ("Riego las plantas del jardín cada tarde.", "I water the garden plants every afternoon."),
+]
+DROP_YO_EXAMPLES = [
+    ("Yo hablo español.", "Hablo español.", "The ending -o already says “I.”"),
+    ("Yo no trabajo mañana.", "No trabajo mañana.", "Drop yo; keep it only for emphasis."),
+    ("¿Quién cocinó? — Yo.", "— Yo.", "Here one word is perfect — you're emphasizing."),
+]
+NEGATIVE_EXAMPLES = [
+    ("No tengo tiempo hoy.", "I don't have time today."),
+    ("No voy al gimnasio los domingos.", "I don't go to the gym on Sundays."),
+    ("No quiero salir esta noche.", "I don't want to go out tonight. (no before the conjugated verb)"),
+    ("No comí nada.", "I didn't eat anything. (double negative is correct in Spanish)"),
+    ("No conozco a nadie aquí.", "I don't know anyone here."),
+]
+
+# --- Asking questions ---
+QUESTION_WORDS = [
+    ("¿Qué?", "What?"), ("¿Quién?", "Who?"), ("¿Cuándo?", "When?"),
+    ("¿Dónde?", "Where?"), ("¿Adónde?", "Where to?"), ("¿Por qué?", "Why?"),
+    ("¿Cómo?", "How?"), ("¿Cuánto?", "How much?"), ("¿Cuál?", "Which?"),
+]
+QUESTION_EXAMPLES = [
+    ("¿Dónde vives?", "Where do you live? (¿dónde? = where something IS)"),
+    ("¿Adónde vas?", "Where are you going? (¿adónde? = where you're HEADED — with ir)"),
+    ("¿Qué haces este fin de semana?", "What are you doing this weekend?"),
+    ("¿Por qué estudias español?", "Why do you study Spanish?"),
+    ("¿Cocinaste anoche?", "Did you cook last night? (no question word — just the rising tone)"),
+    ("¿Y tú?", "And you? (hand the conversation back)"),
+]
+
+# --- The two-verb rule (one conjugated verb + a plain infinitive) ---
+TWO_VERB_OPENERS = [
+    ("quiero", "I want to…", "Quiero aprender español.", "I want to learn Spanish."),
+    ("puedo", "I can…", "Puedo nadar muy bien.", "I can swim very well."),
+    ("necesito", "I need to…", "Necesito estudiar más.", "I need to study more."),
+    ("voy a", "I'm going to…", "Voy a cocinar esta noche.", "I'm going to cook tonight."),
+    ("tengo que", "I have to…", "Tengo que trabajar mañana.", "I have to work tomorrow."),
+    ("me gusta", "I like to…", "Me gusta caminar con mi perro.", "I like to walk with my dog."),
+]
+
+# --- Two verbs for "to know" ---
+SABER_CONOCER = [
+    ("saber", "facts · information · how to do something",
+     ["Sé nadar muy bien.", "No sé la respuesta.", "¿Sabes cocinar comida cubana?"],
+     ["I know how to swim very well.", "I don't know the answer.", "Do you know how to cook Cuban food?"]),
+    ("conocer", "people · places · being familiar with something",
+     ["Conozco La Habana.", "Conozco a la familia de mi novio.", "¿Conoces un buen café?"],
+     ["I know / I've been to Havana.", "I know my boyfriend's family.", "Do you know a good café?"]),
+]
+
+# --- tener idioms (states + "have to") ---
+TENER_IDIOMS = [
+    ("Tengo treinta años.", "I'm thirty years old. (lit. I have 30 years)"),
+    ("Tengo hambre.", "I'm hungry. (lit. I have hunger)"),
+    ("Tengo sed.", "I'm thirsty."),
+    ("Tengo frío.", "I'm cold."),
+    ("Tengo calor.", "I'm hot."),
+    ("Tengo sueño.", "I'm sleepy."),
+    ("Tengo que trabajar.", "I have to work. (tener que + a plain verb)"),
+]
+
+# --- Connectors (glue that doubles your sentences) ---
+CONNECTORS = [
+    ("y", "and", "Nado y camino con mi perro.", "I swim and walk with my dog."),
+    ("pero", "but", "Hablo un poco, pero no entiendo rápido.", "I speak a little, but I don't understand fast speech."),
+    ("porque", "because", "Estudio porque mi novio es cubano.", "I study because my boyfriend is Cuban."),
+    ("también", "also", "Me gusta la playa. Yo también hago paddle.", "I like the beach. I also paddleboard."),
+    ("después", "after / then", "Nado y después tomo un café.", "I swim and then have a coffee."),
+    ("por eso", "that's why", "No dormí. Por eso estoy cansada.", "I didn't sleep. That's why I'm tired."),
+]
+
+# --- Grow your answer (one word → a real sentence) ---
+GROW_ANSWERS = [
+    ("¿Qué comiste ayer?", "What did you eat yesterday?",
+     ["Pollo.", "Comí pollo.", "Ayer comí pollo.", "Ayer comí pollo con arroz.",
+      "Ayer comí pollo con arroz porque mi novio cocinó."]),
+    ("¿Adónde vas los fines de semana?", "Where do you go on weekends?",
+     ["La playa.", "Voy a la playa.", "Voy a la playa los fines de semana.",
+      "Voy a la playa con mi novio los fines de semana.",
+      "Voy a la playa con mi novio los fines de semana porque me gusta nadar."]),
+    ("¿Qué vas a hacer mañana?", "What are you going to do tomorrow?",
+     ["Trabajar.", "Voy a trabajar.", "Mañana voy a trabajar.",
+      "Mañana voy a trabajar y después voy a estudiar español."]),
+]
+
+# --- Survival phrases (keep a conversation alive) ---
+SURVIVAL_PHRASES = [
+    ("Estoy aprendiendo español.", "I'm learning Spanish."),
+    ("Más despacio, por favor.", "Slower, please."),
+    ("¿Cómo se dice…?", "How do you say…?"),
+    ("¿Qué significa…?", "What does … mean?"),
+    ("No entendí.", "I didn't understand."),
+    ("¿Puedes repetir?", "Can you repeat?"),
+    ("Un momento.", "One moment."),
+    ("Creo que sí.", "I think so."),
+]

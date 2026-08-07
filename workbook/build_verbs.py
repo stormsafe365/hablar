@@ -185,8 +185,9 @@ def build_index():
     b.append(eyebrow("Contents"))
     b.append("<h2>What's inside</h2>")
     tiles = [
-        ("book.html", "📗", "Learn", "13 chapters: how verbs work, the four irregular "
-         "patterns, ser vs estar, reflexives, gustar, and your first past & future tenses."),
+        ("book.html", "📗", "Learn", "18 chapters: how verbs work, the four irregular "
+         "patterns, ser vs estar, reflexives, gustar, past & future — then word order, "
+         "questions, the two-verb rule, and connectors for real sentences."),
         ("practice.html", "✍️", "Practice", "Conjugation grids, fill-in-the-blank, "
          "translation, and free-writing — organized to follow every chapter."),
         ("answers.html", "🔑", "Answers", "Every exercise worked out, with a short "
@@ -574,6 +575,147 @@ def build_book():
         "<p>Pick any verb you know and say it three ways out loud: what you did "
         "yesterday, what you do today, what you'll do tomorrow. Do it with five verbs "
         "and you're conjugating across all three tenses.</p>"))
+    b.append('<p class="center muted" style="margin-top:30px">You\'ve got the tenses. '
+             'Part 2 turns single verbs into real sentences you can actually say. 🌊</p>')
+
+    # ══════════════════════════════════════════════════════════════════════
+    #  PART 2 — FROM VERBS TO SENTENCES
+    # ══════════════════════════════════════════════════════════════════════
+    b.append('<div class="page-break"></div>')
+    b.append(eyebrow("Part 2 · From verbs to sentences"))
+    b.append('<h1>Putting verbs to work</h1>')
+    b.append('<p class="muted">A conjugated verb is only half of talking. These five '
+             'chapters are the other half — word order, questions, and the shortcuts that '
+             'let you say a lot while conjugating very little.</p>')
+
+    # ---------- Ch 14: How a sentence is built ----------
+    b.append(chapter(14, "How a sentence is built", "Chapter 14 · Word order"))
+    b.append('<p>Spanish word order has a default, and the default covers almost '
+             'everything you\'ll want to say. Keep the pieces in this order:</p>')
+    b.append(box("tip", "The everyday shape",
+        "<p><b>Who</b> + <b>verb</b> + <b>what</b> + <b>where</b> + <b>when</b></p>"
+        "<p><span class='es'>Yo · estudio · español · en casa · todos los días.</span></p>"
+        "<p>The one that feels backwards to English: <b>place before time</b> — "
+        "<span class='es'>en casa todos los días</span>, not “every day at home.”</p>"))
+    b.append(examples(vb.WORD_ORDER_EXAMPLES))
+    b.append("<h3>Drop the “yo”</h3>")
+    b.append('<p>The verb ending already says who\'s doing it, so the subject pronoun is '
+             'usually left out. Leaving it in sounds like a textbook.</p>')
+    b.append('<table class="grid-conj"><thead><tr><th>Stiff</th><th>Natural</th>'
+             '<th>Why</th></tr></thead><tbody>')
+    for stiff, natural, why in vb.DROP_YO_EXAMPLES:
+        b.append(f'<tr><td class="en">{esc(stiff)}</td>'
+                 f'<td class="v">{esc(natural)}</td>'
+                 f'<td class="en">{esc(why)}</td></tr>')
+    b.append("</tbody></table>")
+    b.append(box("cuba", "Keep the pronoun only when…",
+        "<p>…you're <b>emphasizing</b> (<span class='es'>Yo cociné, no él</span>), "
+        "<b>comparing</b> (<span class='es'>Ella habla rápido pero yo hablo despacio</span>), "
+        "or it's genuinely unclear who you mean.</p>"))
+    b.append("<h3>Saying “no”</h3>")
+    b.append('<p><b>No</b> goes directly before the conjugated verb — every time. And '
+             'unlike English, Spanish keeps double negatives.</p>')
+    b.append(examples(vb.NEGATIVE_EXAMPLES))
+    b.append(box("trick", "Two more tiny rules with big reach",
+        "<p><b>Personal “a”:</b> when the thing receiving the action is a person, add an "
+        "<span class='es'>a</span> with no translation — <span class='es'>Veo a mi "
+        "novio</span> (but <span class='es'>Veo el mar</span>). <br>"
+        "<b>Possession uses “de”:</b> there's no apostrophe-s — "
+        "<span class='es'>la familia de mi novio</span> = “my boyfriend's family.”</p>"))
+
+    # ---------- Ch 15: Asking questions ----------
+    b.append(chapter(15, "Asking questions", "Chapter 15 · Question words"))
+    b.append('<p>Asking is easier than answering — and questions keep a conversation '
+             'alive without you having to produce much. Every question word carries an '
+             'accent (that accent is what marks it as a question word):</p>')
+    b.append(chips(vb.QUESTION_WORDS))
+    b.append("<h3>Two ways to make a question</h3>")
+    b.append(box("tip", "Pick one",
+        "<p><b>1 · Just raise your voice.</b> Same words as the statement, rising tone: "
+        "<span class='es'>¿Cocinaste anoche?</span> <br>"
+        "<b>2 · Question word + verb.</b> <span class='es'>¿Qué cocinaste? ¿Dónde "
+        "vives?</span></p>"))
+    b.append(examples(vb.QUESTION_EXAMPLES))
+    b.append(box("warn", "The two that trip everyone up",
+        "<p><b>¿Dónde? vs ¿Adónde?</b> — <span class='es'>¿Dónde?</span> asks where "
+        "something <i>is</i> (static); <span class='es'>¿Adónde?</span> asks where "
+        "you're <i>headed</i> (movement). Shortcut: if the verb is "
+        "<span class='es'>ir</span>, it's almost always <span class='es'>adónde</span>."
+        "<br><b>¿Por qué? vs porque</b> — two words with an accent <i>asks</i> “why?”; "
+        "one word without <i>answers</i> “because.”</p>"))
+
+    # ---------- Ch 16: The two-verb rule ----------
+    b.append(chapter(16, "The two-verb rule", "Chapter 16 · The biggest shortcut"))
+    b.append('<p>Here\'s a shortcut that lets you say hundreds of things while '
+             'conjugating almost nothing: <b>when two verbs sit together, only the first '
+             'one changes.</b> The second stays in its plain dictionary form.</p>')
+    b.append(box("trick", "Learn a few openers, say anything",
+        "<p>Conjugate just the <b>opener</b>, then drop in <i>any</i> infinitive. "
+        "Five openers cover an enormous amount of everyday speech:</p>"))
+    b.append('<table class="grid-conj"><thead><tr><th>Opener</th><th>Means</th>'
+             '<th>Example</th></tr></thead><tbody>')
+    for opener, means, es, en in vb.TWO_VERB_OPENERS:
+        b.append(f'<tr><td class="v">{esc(opener)}</td><td class="en">{esc(means)}</td>'
+                 f'<td><span class="es">{esc(es)}</span><br>'
+                 f'<span class="en">{esc(en)}</span></td></tr>')
+    b.append("</tbody></table>")
+    b.append(box("warn", "Negatives + two verbs",
+        "<p><b>No</b> still goes before the <i>conjugated</i> verb: "
+        "<span class='es'>No quiero salir</span> — not “quiero no salir.”</p>"))
+
+    # ---------- Ch 17: Verb pairs & tener idioms ----------
+    b.append(chapter(17, "Two “to know”s, and what tener really does",
+                     "Chapter 17 · Verb pairs"))
+    b.append('<p>English uses one word where Spanish uses two — and one Spanish verb '
+             'covers things English would never use “have” for.</p>')
+    b.append("<h3>saber vs. conocer (both = “to know”)</h3>")
+    b.append('<div class="grid" style="grid-template-columns:1fr;gap:12px">')
+    for inf, use, es_list, en_list in vb.SABER_CONOCER:
+        cls = "sea" if inf == "saber" else "cuba"
+        inner = f"<p class='small'>{esc(use)}</p>" + "".join(
+            f'<p style="margin:6px 0"><span class="es">{esc(e)}</span> '
+            f'<span class="en">— {esc(n)}</span></p>' for e, n in zip(es_list, en_list))
+        b.append(box(cls, inf, inner))
+    b.append("</div>")
+    b.append(box("tip", "Quick test",
+        "<p>Could you put <b>“how to”</b> or <b>“that…”</b> after it in English? → "
+        "<span class='es'>saber</span>. Talking about a <b>person or place</b> you're "
+        "familiar with? → <span class='es'>conocer</span> (and add the personal "
+        "<span class='es'>a</span>: <span class='es'>conozco a su mamá</span>).</p>"))
+    b.append("<h3>tener = more than “to have”</h3>")
+    b.append('<p>Spanish uses <span class="es">tener</span> for age and for many states '
+             'where English uses “to be.” Never <span class="es">ser/estar</span> for '
+             'these:</p>')
+    b.append(examples(vb.TENER_IDIOMS))
+
+    # ---------- Ch 18: Connectors, growing answers, survival phrases ----------
+    b.append(chapter(18, "Say more: connectors & staying in the conversation",
+                     "Chapter 18 · From words to conversation"))
+    b.append('<p>You don\'t need more vocabulary to speak in longer sentences — you need '
+             '<b>glue</b>. These little connector words are the cheapest way to double '
+             'your sentence length.</p>')
+    b.append('<table class="grid-conj"><thead><tr><th>Word</th><th>Means</th>'
+             '<th>Example</th></tr></thead><tbody>')
+    for word, means, es, en in vb.CONNECTORS:
+        b.append(f'<tr><td class="v">{esc(word)}</td><td class="en">{esc(means)}</td>'
+                 f'<td><span class="es">{esc(es)}</span><br>'
+                 f'<span class="en">{esc(en)}</span></td></tr>')
+    b.append("</tbody></table>")
+    b.append(box("trick", "Grow your answer — the one move that fixes one-word replies",
+        "<p>When someone asks you something, don't answer with one word. Start with what "
+        "you'd say now, then add one piece at a time. The magic word is "
+        "<span class='es'>porque</span> — any answer + <span class='es'>porque</span> + "
+        "a reason is instantly a real conversation.</p>"))
+    for q, qen, stages in vb.GROW_ANSWERS:
+        b.append(f'<p style="margin:14px 0 4px"><span class="es">{esc(q)}</span> '
+                 f'<span class="en">— {esc(qen)}</span></p>')
+        rows = "".join(
+            f'<li><span class="es">{esc(s)}</span></li>' for s in stages)
+        b.append(f'<ul class="ex" style="margin-top:4px">{rows}</ul>')
+    b.append("<h3>Phrases that keep you afloat</h3>")
+    b.append('<p>Four or five of these carry you through any real conversation — nobody '
+             'expects fluency, they notice that you\'re trying:</p>')
+    b.append(examples(vb.SURVIVAL_PHRASES))
     b.append('<p class="center muted" style="margin-top:30px">Now open the '
              '<a href="practice.html">Practice</a> book — that\'s where verbs move from '
              'your eyes into your mouth. ¡Vamos! 🌊</p>')
@@ -742,7 +884,58 @@ PRACTICE = [
      ("ir — ayer, hoy, mañana", "fui / voy / iré", "Preterite fui, present voy, future iré."),
    ]),
  ]),
- ("Set 12 · Free writing", "No single right answer — write real sentences about your life. Say them out loud too.", [
+ ("Set 12 · Sentence building", "Word order, dropping “yo,” and negatives.", [
+   ("translate", "Translate — natural word order, drop “yo,” place before time.", [
+     ("I study Spanish at home every day.", "Estudio español en casa todos los días."),
+     ("I go to the gym on Mondays.", "Voy al gimnasio los lunes."),
+     ("I don't have time today.", "No tengo tiempo hoy."),
+     ("I don't want to go out tonight.", "No quiero salir esta noche."),
+     ("I didn't eat anything.", "No comí nada."),
+   ]),
+   ("fill", "Fill in the question word.", [
+     ("¿___ vives? (where you ARE)", "Dónde", "Static location → ¿Dónde?"),
+     ("¿___ vas? (where you're HEADED)", "Adónde", "Movement, with ir → ¿Adónde?"),
+     ("¿___ estudias español? (reason)", "Por qué", "Two words + accent asks “why.”"),
+     ("¿___ te llamas?", "Cómo", "¿Cómo te llamas? — what's your name."),
+   ]),
+ ]),
+ ("Set 13 · The two-verb rule", "One conjugated opener + a plain infinitive.", [
+   ("translate", "Translate using an opener (quiero / puedo / necesito / voy a / tengo que).", [
+     ("I want to learn Spanish.", "Quiero aprender español."),
+     ("I can swim.", "Puedo nadar."),
+     ("I need to study more.", "Necesito estudiar más."),
+     ("I'm going to cook tonight.", "Voy a cocinar esta noche."),
+     ("I have to work tomorrow.", "Tengo que trabajar mañana."),
+   ]),
+ ]),
+ ("Set 14 · saber / conocer & tener", "Pick the right verb.", [
+   ("choose", "saber or conocer?", [
+     ("Yo ___ nadar. (know how to)", "sé / conozco", "sé", "Know how to → saber."),
+     ("Yo ___ La Habana. (a place)", "sé / conozco", "conozco", "A place → conocer."),
+     ("Yo ___ a la familia de mi novio. (people)", "sé / conozco", "conozco", "People → conocer."),
+     ("¿___ tú la respuesta? (a fact)", "Sabes / Conoces", "Sabes", "A fact → saber."),
+   ]),
+   ("translate", "Translate with tener.", [
+     ("I'm thirty years old.", "Tengo treinta años."),
+     ("I'm hungry.", "Tengo hambre."),
+     ("I'm sleepy.", "Tengo sueño."),
+     ("I have to work.", "Tengo que trabajar."),
+   ]),
+ ]),
+ ("Set 15 · Connectors & growing answers", "Glue short thoughts into real sentences.", [
+   ("translate", "Join the two halves with the connector shown.", [
+     ("I swim and I walk with my dog. (y)", "Nado y camino con mi perro."),
+     ("I speak a little, but I don't understand fast speech. (pero)", "Hablo un poco, pero no entiendo rápido."),
+     ("I study because my boyfriend is Cuban. (porque)", "Estudio porque mi novio es cubano."),
+     ("I didn't sleep. That's why I'm tired. (por eso)", "No dormí. Por eso estoy cansada."),
+   ]),
+   ("write", "Grow each answer: one word → full sentence (add a “porque”).", [
+     "¿Qué comiste ayer? (start with one food, grow to a full sentence with porque)",
+     "¿Adónde vas los fines de semana? (grow it to include who with + a reason)",
+     "¿Por qué estudias español? (answer in one full sentence with porque)",
+   ]),
+ ]),
+ ("Set 16 · Free writing", "No single right answer — write real sentences about your life. Say them out loud too.", [
    ("write", "Write full sentences.", [
      "Describe your morning routine using 5 reflexive verbs (me despierto…).",
      "Write 3 things you like and 1 thing you love using gusta/gustan/encanta.",
@@ -1056,6 +1249,32 @@ def build_cheatsheets():
         "<span class='es'>me gusta</span> (one) / "
         "<span class='es'>me gustan</span> (many)</p>"))
     b.append("</div>")
+
+    # sentence-building + survival
+    b.append('<div class="page-break"></div>')
+    b.append("<h2>7 · Building a sentence</h2>")
+    b.append('<div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">')
+    b.append(box("tip", "Word order",
+        "<p><b>Who · verb · what · where · when</b><br>"
+        "<span class='es'>Estudio español en casa todos los días.</span><br>"
+        "Place <b>before</b> time. Drop <span class='es'>yo</span>. "
+        "<span class='es'>No</span> goes right before the verb.</p>"))
+    b.append(box("trick", "The two-verb rule",
+        "<p>Conjugate only the opener, then a plain verb:<br>"
+        "<span class='es'>quiero · puedo · necesito · voy a · tengo que · me gusta</span> "
+        "+ infinitive.</p>"))
+    b.append(box("sea", "Question words",
+        "<p>qué · quién · cuándo · dónde · adónde · por qué · cómo · cuánto<br>"
+        "<span class='es'>¿Dónde?</span> = where it is · "
+        "<span class='es'>¿Adónde?</span> = where you're going.</p>"))
+    b.append(box("cuba", "Connectors (double your sentence)",
+        "<p><span class='es'>y</span> and · <span class='es'>pero</span> but · "
+        "<span class='es'>porque</span> because · <span class='es'>también</span> also · "
+        "<span class='es'>después</span> then · <span class='es'>por eso</span> "
+        "that's why</p>"))
+    b.append("</div>")
+    b.append("<h2>8 · Phrases that keep you afloat</h2>")
+    b.append(chips([(es, en) for es, en in vb.SURVIVAL_PHRASES]))
 
     w("cheatsheets.html", shell_v("The Verb Book · Cheat Sheets", "".join(b),
                                   subtitle="Cheat Sheets"))
