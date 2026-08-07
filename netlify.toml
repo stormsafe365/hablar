@@ -1,0 +1,6 @@
+# Netlify configuration for the Hablar Spanish workbook.
+# The site is plain static HTML — no build step. We just publish the
+# `workbook/` folder, so its index.html becomes the site homepage.
+[build]
+  publish = "workbook"
+  command = ""
