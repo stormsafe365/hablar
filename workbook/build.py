@@ -554,6 +554,9 @@ def build_cheats():
 
 def build_index():
     tiles = [
+        ("verbs/index.html", "🌊", "The Verb Book (new)", "A dedicated verb workbook: "
+         "present tense as patterns, ser vs estar, reflexives, gustar — plus your first "
+         "steps into the past and future. Learn · Practice · Quizzes · Reference."),
         ("book.html", "📘", "The Book", "Parts I–VII: foundations, the 16 core "
          "verbs, real-life vocabulary, past tense, reading, speaking & Cuban Spanish."),
         ("practice.html", "✍️", "Practice Workbook", "Thousands of exercises — "
@@ -605,6 +608,10 @@ def build_index():
         "culture — what your boyfriend actually says"))
     body.append('</ul>')
     body.append('<h3>Companion Books</h3><ul class="toc">')
+    body.append(toc("★ The Verb Book (new)", "A whole workbook just for verbs — the four "
+        "irregular patterns, ser/estar, reflexives, gustar, present progressive, and a "
+        "gentle on-ramp into the past & future. Its own Learn, Practice, Answers, "
+        "Quizzes, Cheat Sheets & Reference."))
     body.append(toc("Practice Workbook", "Verb drills, vocabulary drills, past-tense drills"))
     body.append(toc("Answer Book", "Full worked answers with explanations"))
     body.append(toc("Flashcards", "Verb deck + 16 themed vocabulary decks"))
@@ -668,11 +675,23 @@ ARTIFACT_EXTRA_CSS = r"""
 /* sticky header + tabs */
 .wb-header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--sand) 88%,transparent);
   border-bottom:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.wb-bar{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
-.wb-brand{font-family:var(--serif);font-weight:700;font-size:17px;white-space:nowrap;color:var(--ink)}
+.wb-bar{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 16px}
+.wb-brand{font-family:var(--serif);font-weight:700;font-size:17px;white-space:nowrap;color:var(--ink);margin-right:auto}
 .wb-brand .dot{color:var(--accent)}
-.wb-tabs{display:flex;gap:4px;overflow-x:auto;margin-left:auto;scrollbar-width:none;min-width:0}
+/* navigation lives on its own full-width row */
+.wb-navrow{max-width:900px;margin:0 auto;padding:0 12px 9px}
+.wb-tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;min-width:0;
+  scroll-padding:0 40px}
 .wb-tabs::-webkit-scrollbar{display:none}
+/* dropdown menu — used on narrow screens, easiest to tap on a phone */
+.wb-select{display:none;width:100%;font-family:var(--round);font-weight:800;
+  font-size:16px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);
+  background:var(--paper);color:var(--ink)}
+.wb-select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:720px){
+  .wb-tabs{display:none}
+  .wb-select{display:block}
+}
 .wb-tab{font-family:var(--round);font-weight:800;font-size:12.5px;letter-spacing:.01em;
   padding:8px 13px;border-radius:999px;color:var(--soft);white-space:nowrap;
   border:1px solid transparent;background:none;cursor:pointer;transition:.12s}
@@ -695,6 +714,11 @@ details summary{cursor:pointer}
   color:var(--soft);cursor:pointer;white-space:nowrap;flex:0 0 auto}
 .slow-btn.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
 
+/* English on/off toggle — when off, hide the English translations for self-testing */
+body.en-off .ex .en, body.en-off .dlg .en, body.en-off .chip .en,
+body.en-off .timeline .en, body.en-off .card .back,
+body.en-off .vocab td:nth-child(2){visibility:hidden}
+
 /* tap-to-hear hint bar */
 .say-bar{display:flex;align-items:center;gap:8px;max-width:900px;margin:0 auto;
   padding:9px 16px;font-size:13px;color:var(--soft);border-bottom:1px solid var(--line)}
@@ -704,9 +728,9 @@ details summary{cursor:pointer}
   font-size:18px;cursor:pointer;padding:0 4px;line-height:1}
 
 /* what's tappable */
-.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.chip,
+.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.grid-conj .v,.chip,
 .card .front{cursor:pointer;-webkit-tap-highlight-color:transparent}
-.vocab td:first-child,.conj .v,.ex .es,.dlg .es,p.es{
+.vocab td:first-child,.conj .v,.grid-conj .v,.ex .es,.dlg .es,p.es{
   text-decoration:underline dotted color-mix(in srgb,var(--accent) 50%,transparent);
   text-underline-offset:3px;text-decoration-thickness:1px}
 .conj .v::after,.card .front::after,.chip::after{content:"🔊";font-size:.72em;
@@ -730,6 +754,52 @@ TAB_ORDER = [
     ("cheatsheets", "Cheat Sheets"), ("tests", "Tests"),
 ]
 
+# The Verb Book is merged in as its own run of tabs, after the main ones.
+VERB_TAB_ORDER = [
+    ("verblearn", "Verbs · Learn"), ("verbpractice", "Verbs · Practice"),
+    ("verbquiz", "Verbs · Quiz"), ("verbtables", "Verbs · Tables"),
+]
+
+# rewrite the verb pages' internal links onto the merged tab ids
+_VERB_LINKMAP = [
+    ('href="../index.html"', 'href="#contents" data-tab="contents"'),
+    ('href="index.html"', 'href="#verblearn" data-tab="verblearn"'),
+    ('href="book.html"', 'href="#verblearn" data-tab="verblearn"'),
+    ('href="practice.html"', 'href="#verbpractice" data-tab="verbpractice"'),
+    ('href="answers.html"', 'href="#verbpractice" data-tab="verbpractice"'),
+    ('href="quizzes.html"', 'href="#verbquiz" data-tab="verbquiz"'),
+    ('href="reference.html"', 'href="#verbtables" data-tab="verbtables"'),
+    ('href="cheatsheets.html"', 'href="#verbtables" data-tab="verbtables"'),
+]
+
+
+def _verb_sections():
+    """Build the verb pages, then return (sections dict, verb CSS) for merging
+    into the combined app. Four tabs group the six verb pages."""
+    import build_verbs as bv
+    bv.main()  # (re)generate verbs/*.html and the standalone artifact
+
+    def inner(fname):
+        html = open(os.path.join(bv.OUT, fname), encoding="utf-8").read()
+        s = html.index('<div class="page">') + len('<div class="page">')
+        e = html.index('<div class="foot">', s)
+        body = html[s:e].replace(bv.NAV, "").replace(bv.EXTRA_CSS, "")
+        for a, b in _VERB_LINKMAP:
+            body = body.replace(a, b)
+        return body.strip()
+
+    div = '<div class="page-break"></div>'
+    secs = {
+        "verblearn": inner("book.html"),
+        "verbpractice": inner("practice.html") + div
+            + '<div class="eyebrow">Verb answer key</div><h1>Verb Answers</h1>'
+            + inner("answers.html"),
+        "verbquiz": inner("quizzes.html"),
+        "verbtables": inner("reference.html") + div + inner("cheatsheets.html"),
+    }
+    verb_css = bv.EXTRA_CSS.replace("<style>", "").replace("</style>", "")
+    return secs, verb_css
+
 def _to_tabs(html):
     """Rewrite cross-file links into in-page tab switches."""
     m = {"index.html": "contents", "book.html": "book", "practice.html": "practice",
@@ -741,14 +811,24 @@ def _to_tabs(html):
 
 
 def build_artifact(bodies):
-    nav = "".join(
+    verb_secs, verb_css = _verb_sections()
+
+    nav_main = "".join(
         f'<button class="wb-tab" data-tab="{k}">{esc(label)}</button>'
         for k, label in TAB_ORDER)
+    nav_verb = "".join(
+        f'<button class="wb-tab wb-tab-verb" data-tab="{k}">{esc(label)}</button>'
+        for k, label in VERB_TAB_ORDER)
+    nav = nav_main + '<span class="wb-sep"></span>' + nav_verb
+
     sections = []
     for k, _ in TAB_ORDER:
         inner = _to_tabs(bodies[k])
         sections.append(f'<section class="tab" id="tab-{k}">'
                         f'<div class="page">{inner}</div></section>')
+    for k, _ in VERB_TAB_ORDER:
+        sections.append(f'<section class="tab" id="tab-{k}">'
+                        f'<div class="page">{verb_secs[k]}</div></section>')
 
     js = r"""
 (function(){
@@ -758,6 +838,10 @@ def build_artifact(bodies):
       s.classList.toggle('on', s.id==='tab-'+name); });
     document.querySelectorAll('.wb-tab').forEach(function(b){
       b.classList.toggle('on', b.dataset.tab===name); });
+    var sel=document.getElementById('wbSelect');
+    if(sel && sel.value!==name) sel.value=name;
+    var act=document.querySelector('.wb-tab[data-tab="'+name+'"]');
+    if(act && act.scrollIntoView){ try{ act.scrollIntoView({inline:'center',block:'nearest'}); }catch(e){} }
     window.scrollTo({top:0,behavior:'instant'});
     hidePop();
   }
@@ -867,7 +951,7 @@ def build_artifact(bodies):
     return (c.textContent||'').replace(/🔊/g,'').trim();
   }
 
-  var SEL='.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.chip,.card .front';
+  var SEL='.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.grid-conj .v,.chip,.card .front';
   document.addEventListener('click', function(e){
     if(e.target.closest('[data-tab]')){ e.preventDefault(); show(e.target.closest('[data-tab]').getAttribute('data-tab')); return; }
     if(e.target.closest('.slow-btn')||e.target.closest('.say-bar')) return;
@@ -886,17 +970,40 @@ def build_artifact(bodies):
   var sb=document.getElementById('slowBtn');
   if(sb) sb.addEventListener('click', function(){ SLOW=!SLOW; sb.classList.toggle('on',SLOW);
     sb.setAttribute('aria-pressed', SLOW?'true':'false'); });
+  var eb=document.getElementById('enBtn');
+  if(eb) eb.addEventListener('click', function(){
+    var off=document.body.classList.toggle('en-off');
+    eb.classList.toggle('on', !off);
+    eb.setAttribute('aria-pressed', off?'false':'true'); });
+  var wsel=document.getElementById('wbSelect');
+  if(wsel) wsel.addEventListener('change', function(){ show(wsel.value); });
   var hx=document.getElementById('hintX');
   if(hx) hx.addEventListener('click', function(){ var b=document.getElementById('sayBar'); if(b) b.style.display='none'; });
 
   show('contents');
 })();
 """
-    body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}</style>'
+    sep_css = ('.wb-sep{flex:0 0 auto;width:1px;height:20px;background:var(--line);'
+               'margin:0 4px;align-self:center}'
+               '.wb-tab-verb.on{background:var(--sea-soft);color:var(--sea);'
+               'border-color:var(--line)}')
+    # dropdown options (mobile), grouped Workbook / Verbs
+    opts = ('<optgroup label="Workbook">'
+            + "".join(f'<option value="{k}">{esc(label)}</option>'
+                      for k, label in TAB_ORDER)
+            + '</optgroup><optgroup label="Verbs">'
+            + "".join(f'<option value="{k}">{esc(label.replace("Verbs · ", ""))}</option>'
+                      for k, label in VERB_TAB_ORDER)
+            + '</optgroup>')
+    body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}{verb_css}{sep_css}</style>'
             '<div class="wb-header"><div class="wb-bar">'
             '<span class="wb-brand">Hablar<span class="dot">.</span></span>'
+            '<button id="enBtn" class="slow-btn on" title="Show or hide English" '
+            'aria-pressed="true">🌐 English</button>'
             '<button id="slowBtn" class="slow-btn" title="Slow speech" '
-            'aria-pressed="false">🐢 Slow</button>'
+            'aria-pressed="false">🐢 Slow</button></div>'
+            '<div class="wb-navrow">'
+            f'<select id="wbSelect" class="wb-select" aria-label="Jump to a section">{opts}</select>'
             f'<nav class="wb-tabs">{nav}</nav></div></div>'
             '<div class="say-bar" id="sayBar"><span class="ic">🔊</span>'
             '<span>Tap any <b>green Spanish</b> word or sentence to hear it '
