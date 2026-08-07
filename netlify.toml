@@ -1,0 +1,7 @@
+# Netlify configuration for the personalized Spanish workbook.
+# The site serves the standalone, installable workbook app (self-contained:
+# index.html + manifest + service worker + icons). No build step needed —
+# it's plain static files.
+[build]
+  publish = "workbook/app"
+  command = ""
