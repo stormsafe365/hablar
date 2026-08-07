@@ -767,10 +767,12 @@ ARTIFACT_EXTRA_CSS = r"""
 :root[data-theme="dark"] .warn,:root[data-theme="dark"] .cuba,
 :root[data-theme="dark"] .sea{border-color:var(--line)}
 
-/* sticky header + tabs */
-.wb-header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--sand) 88%,transparent);
-  border-bottom:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-.wb-bar{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 16px}
+/* sticky header + tabs — translucent, melts into the gradient */
+.wb-header{position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb,var(--bg) 55%,transparent);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.wb-bar{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:10px;
+  padding:12px 20px 10px}
 .wb-brand{font-family:var(--serif);font-weight:700;font-size:17px;white-space:nowrap;color:var(--ink)}
 .wb-brand .dot{color:var(--accent)}
 .wb-tabs{display:flex;gap:4px;overflow-x:auto;margin-left:auto;scrollbar-width:none;min-width:0}
@@ -791,19 +793,21 @@ h1,h2,h3{overflow-wrap:break-word}
 .cover h1{text-wrap:balance}
 details summary{cursor:pointer}
 
-/* header slow-speed toggle */
-.slow-btn{font-family:var(--round);font-weight:800;font-size:13px;padding:7px 11px;
-  border-radius:999px;border:1px solid var(--line);background:var(--paper);
-  color:var(--soft);cursor:pointer;white-space:nowrap;flex:0 0 auto}
+/* header slow-speed toggle — quiet ghost control until active */
+.slow-btn{font-family:var(--round);font-weight:700;font-size:12.5px;padding:7px 10px;
+  border-radius:999px;border:1px solid transparent;background:none;
+  color:var(--faint);cursor:pointer;white-space:nowrap;flex:0 0 auto}
+.slow-btn:hover{color:var(--soft)}
 .slow-btn.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
 
-/* tap-to-hear hint bar */
-.say-bar{display:flex;align-items:center;gap:8px;max-width:900px;margin:0 auto;
-  padding:9px 16px;font-size:13px;color:var(--soft);border-bottom:1px solid var(--line)}
-.say-bar .ic{font-size:16px}
-.say-bar b{color:var(--accent);font-weight:700}
-.say-bar .x{margin-left:auto;background:none;border:none;color:var(--faint);
-  font-size:18px;cursor:pointer;padding:0 4px;line-height:1}
+/* one-time tap-to-hear toast (replaces the old permanent hint bar) */
+.hint-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);
+  z-index:90;background:var(--paper);color:var(--soft);border:1px solid var(--line);
+  border-radius:999px;padding:10px 18px;font-size:13.5px;box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:opacity .4s ease,transform .4s ease;
+  white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+.hint-toast b{color:var(--accent)}
+.hint-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* what's tappable */
 .ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.chip,
@@ -1063,8 +1067,16 @@ def build_artifact(bodies):
   var sb=document.getElementById('slowBtn');
   if(sb) sb.addEventListener('click', function(){ SLOW=!SLOW; sb.classList.toggle('on',SLOW);
     sb.setAttribute('aria-pressed', SLOW?'true':'false'); });
-  var hx=document.getElementById('hintX');
-  if(hx) hx.addEventListener('click', function(){ var b=document.getElementById('sayBar'); if(b) b.style.display='none'; });
+
+  // one-time hint toast
+  try{
+    if(!localStorage.getItem('wbHintSeen')){
+      var ht=document.getElementById('hintToast');
+      if(ht){ setTimeout(function(){ ht.classList.add('show'); }, 900);
+        setTimeout(function(){ ht.classList.remove('show'); }, 7500);
+        localStorage.setItem('wbHintSeen','1'); }
+    }
+  }catch(e){}
 
   show('contents');
 })();
@@ -1072,13 +1084,12 @@ def build_artifact(bodies):
     body = (f'<style>{THEME_CSS}{ARTIFACT_EXTRA_CSS}</style>'
             '<div class="wb-header"><div class="wb-bar">'
             '<span class="wb-brand">Hablar<span class="dot">.</span></span>'
+            f'<nav class="wb-tabs">{nav}</nav>'
             '<button id="slowBtn" class="slow-btn" title="Slow speech" '
             'aria-pressed="false">Slow</button>'
-            f'<nav class="wb-tabs">{nav}</nav></div></div>'
-            '<div class="say-bar" id="sayBar"><span class="ic" style="color:var(--accent)">♪</span>'
-            '<span>Tap any <b>Spanish word or sentence</b> to hear it '
-            '&amp; see the stressed syllable.</span>'
-            '<button class="x" id="hintX" title="Dismiss" aria-label="Dismiss">&times;</button></div>'
+            '</div></div>'
+            '<div class="hint-toast" id="hintToast">♪ Tap any <b>Spanish word or '
+            'sentence</b> to hear it</div>'
             + "".join(sections)
             + f'<script>{js}</script>')
     w("hablar-workbook.html", body)
