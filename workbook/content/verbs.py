@@ -6,16 +6,18 @@ Each verb is a dict consumed by three renderers:
   - the practice book  (fill / translate / conversation drills)
   - the answer book    (every exercise with its worked answer)
 
-Sentences are personalized to Celeste's life: Florida beach life,
+Sentences are personalized to Jenna's life: Florida beach life,
 paddleboarding, dogs, gardening, the gym, coffee, cooking, work, texting,
 and her Cuban boyfriend.
 """
 
-PRONOUNS = ["yo", "tú", "él / ella / usted", "nosotros", "vosotros",
-            "ellos / ellas / ustedes"]
+# Cuban & Colombian Spanish never use "vosotros" (it's Spain only), so we drop
+# it from every table. Each verb's data still lists the form in position 5 for
+# reference, but _conj skips it — only the forms Jenna will actually use appear.
+PRONOUNS = ["yo", "tú", "él / ella / usted", "nosotros", "ellos / ellas / ustedes"]
 
-def _conj(*forms):
-    return list(zip(PRONOUNS, forms))
+def _conj(yo, tu, el, nos, vos, ellos):
+    return list(zip(PRONOUNS, [yo, tu, el, nos, ellos]))
 
 VERBS = [
 {
@@ -23,7 +25,7 @@ VERBS = [
   "meaning": "to be (permanent — who/what something is)",
   "gloss": "identity, origin, description, time",
   "when": [
-    "Who or what someone is: <span class='es'>Soy Celeste.</span> — I am Celeste.",
+    "Who or what someone is: <span class='es'>Soy Jenna.</span> — I am Jenna.",
     "Where someone is <em>from</em>: <span class='es'>Él es de Cuba.</span> — He is from Cuba.",
     "Permanent traits: <span class='es'>El café es fuerte.</span> — The coffee is strong.",
     "Telling time & dates: <span class='es'>Son las ocho.</span> — It's eight o'clock.",
@@ -307,7 +309,7 @@ VERBS = [
   ],
   "trick": "VER keeps an extra 'e' in the yo form: <strong>veo</strong> (not 'vo'). "
            "Tiny word, tiny irregularity. \"I VE-O what you did there.\"",
-  "pattern": "Only oddity is yo = veo and vosotros = veis (no accent).",
+  "pattern": "Only oddity is the yo form: veo (keep the extra 'e').",
   "conj": _conj("veo", "ves", "ve", "vemos", "veis", "ven"),
   "examples": [
     ("Veo el atardecer desde la playa.", "I watch the sunset from the beach."),
@@ -666,7 +668,7 @@ VERBS = [
   "trick": "QUERER stem-changes e→ie (<strong>quiero</strong>) — the stressed 'e' "
            "'breaks' into 'ie'. And <span class='es'>te quiero</span> is how couples "
            "say 'I love you' day to day.",
-  "pattern": "Stem change e→ie in all but nosotros/vosotros. Regular yo (quiero).",
+  "pattern": "Stem change e→ie in every form except nosotros. Regular yo (quiero).",
   "conj": _conj("quiero", "quieres", "quiere", "queremos", "queréis", "quieren"),
   "examples": [
     ("Quiero un café cubano, por favor.", "I want a Cuban coffee, please."),
@@ -718,7 +720,7 @@ VERBS = [
   "trick": "PODER stem-changes o→ue (<strong>puedo</strong>) — the 'o' 'breaks' into "
            "'ue'. Say it like \"PWAY-do.\" Always followed by another verb: "
            "<span class='es'>puedo + hacer</span>.",
-  "pattern": "Stem change o→ue in all but nosotros/vosotros.",
+  "pattern": "Stem change o→ue in every form except nosotros.",
   "conj": _conj("puedo", "puedes", "puede", "podemos", "podéis", "pueden"),
   "examples": [
     ("Puedo nadar muy bien.", "I can swim very well."),

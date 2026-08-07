@@ -138,7 +138,7 @@ def part1_foundations():
              '<strong>Subject → Verb → Object</strong> — so you can start building '
              'sentences immediately. A few twists:</p>')
     h.append(examples([
-        ("Celeste bebe café.", "Celeste drinks coffee. (same order as English)"),
+        ("Jenna bebe café.", "Jenna drinks coffee. (same order as English)"),
         ("El perro cariñoso.", "The affectionate dog. (adjective comes AFTER the noun)"),
         ("No quiero café.", "I don't want coffee. ('no' goes right before the verb)"),
         ("¿Quieres café?", "Do you want coffee? (no 'do' — just raise your voice)"),
@@ -208,7 +208,7 @@ def part1_foundations():
 # ─────────────────────────────────────────────────────────────────────────
 def part4_past():
     h = []
-    h.append('<div class="eyebrow">Part IV</div>')
+    h.append('<div class="eyebrow">Part V</div>')
     h.append('<h1>Past Tense — Talking About Yesterday</h1>')
     h.append('<p class="muted">The <strong>pretérito</strong> is the “what '
              'happened” tense: finished actions with a clear end. It\'s how you '
@@ -222,17 +222,17 @@ def part4_past():
     h.append('<div style="flex:1;min-width:230px">' +
              conj_table("hablar → to speak", [
                 ("yo", "hablé"), ("tú", "hablaste"), ("él/ella", "habló"),
-                ("nosotros", "hablamos"), ("vosotros", "hablasteis"),
+                ("nosotros", "hablamos"),
                 ("ellos/ustedes", "hablaron")]) + '</div>')
     h.append('<div style="flex:1;min-width:230px">' +
              conj_table("comer → to eat", [
                 ("yo", "comí"), ("tú", "comiste"), ("él/ella", "comió"),
-                ("nosotros", "comimos"), ("vosotros", "comisteis"),
+                ("nosotros", "comimos"),
                 ("ellos/ustedes", "comieron")]) + '</div>')
     h.append('</div>')
     h.append(conj_table("vivir → to live (-ir uses -er endings)", [
         ("yo", "viví"), ("tú", "viviste"), ("él/ella", "vivió"),
-        ("nosotros", "vivimos"), ("vosotros", "vivisteis"),
+        ("nosotros", "vivimos"),
         ("ellos/ustedes", "vivieron")]))
     h.append(box('trick', 'Hear the accent', (
         '<p>Regular preterite lives on its <em>final</em> syllable in the “I” and '
@@ -294,10 +294,10 @@ def part4_past():
     h.append('<h2>4 · Talking About a Trip</h2>')
     h.append(dialogue([
         ("Amiga", "¿Qué hiciste el fin de semana?", "What did you do this weekend?"),
-        ("Celeste", "Fui a la playa con mi novio.", "I went to the beach with my boyfriend."),
+        ("Jenna", "Fui a la playa con mi novio.", "I went to the beach with my boyfriend."),
         ("Amiga", "¿Qué tal?", "How was it?"),
-        ("Celeste", "¡Muy bien! Hice paddleboard y vi delfines.", "Great! I paddleboarded and saw dolphins."),
-        ("Celeste", "Después comimos en un restaurante cubano.", "Then we ate at a Cuban restaurant."),
+        ("Jenna", "¡Muy bien! Hice paddleboard y vi delfines.", "Great! I paddleboarded and saw dolphins."),
+        ("Jenna", "Después comimos en un restaurante cubano.", "Then we ate at a Cuban restaurant."),
     ]))
 
     h.append('<h2>5 · Story: “Mi fin de semana”</h2>')
@@ -353,7 +353,7 @@ READING_LADDER = [
 def _reading_story_full():
     return {
         "title": "Un domingo tranquilo",
-        "es": ("Es domingo por la mañana y la casa está tranquila. Celeste se "
+        "es": ("Es domingo por la mañana y la casa está tranquila. Jenna se "
                "despierta temprano, antes que su novio. Va a la cocina y prepara "
                "un cafecito cubano, fuerte y dulce. Afuera, el jardín está verde y "
                "las flores del hibisco están abiertas. Los dos perros duermen en el "
@@ -362,12 +362,12 @@ def _reading_story_full():
                "amor”, dice, y le da un beso. Toman el café juntos en el jardín "
                "y hablan de sus planes. Hace buen tiempo, así que deciden ir a la "
                "playa.\n\n"
-               "En la playa, Celeste hace paddleboard mientras su novio nada. El "
+               "En la playa, Jenna hace paddleboard mientras su novio nada. El "
                "mar está tranquilo y ven un delfín a lo lejos. Al mediodía, vuelven "
                "a casa, cansados y felices. Su novio cocina arroz con pollo y "
                "escuchan salsa. “Me encanta nuestra vida aquí”, dice "
-               "Celeste. Y es verdad."),
-        "en": ("It's Sunday morning and the house is quiet. Celeste wakes up early, "
+               "Jenna. Y es verdad."),
+        "en": ("It's Sunday morning and the house is quiet. Jenna wakes up early, "
                "before her boyfriend. She goes to the kitchen and makes a Cuban "
                "cafecito, strong and sweet. Outside, the garden is green and the "
                "hibiscus flowers are open. The two dogs sleep on the couch.\n\n"
@@ -375,11 +375,11 @@ def _reading_story_full():
                "he says, and gives her a kiss. They have coffee together in the "
                "garden and talk about their plans. The weather is nice, so they "
                "decide to go to the beach.\n\n"
-               "At the beach, Celeste paddleboards while her boyfriend swims. The "
+               "At the beach, Jenna paddleboards while her boyfriend swims. The "
                "sea is calm and they see a dolphin in the distance. At noon, they "
                "return home, tired and happy. Her boyfriend cooks chicken and rice "
                "and they listen to salsa. “I love our life here,” says "
-               "Celeste. And it's true."),
+               "Jenna. And it's true."),
         "vocab": [
             ("se despierta", "she wakes up", ""),
             ("un rato", "a while", ""),
@@ -394,10 +394,10 @@ def _reading_story_full():
                     "where you do the action to yourself. You'll meet these fully "
                     "later; for now, just notice the little <span class='es'>se</span>."),
         "questions": [
-            "¿A qué hora se despierta Celeste, temprano o tarde?",
+            "¿A qué hora se despierta Jenna, temprano o tarde?",
             "¿Qué prepara en la cocina?",
             "¿Adónde deciden ir?",
-            "¿Qué hace el novio mientras Celeste hace paddleboard?",
+            "¿Qué hace el novio mientras Jenna hace paddleboard?",
             "¿Qué cocina el novio al final?",
         ],
         "prompt": ("Write 4–5 sentences about your own perfect Sunday, in Spanish. "
@@ -412,7 +412,7 @@ def _reading_story_full():
 
 def part5_reading():
     h = []
-    h.append('<div class="eyebrow">Part V</div>')
+    h.append('<div class="eyebrow">Part VI</div>')
     h.append('<h1>Reading</h1>')
     h.append('<p class="muted">We climb a ladder: from 5-word stories to a full '
              'page. Read each one <strong>out loud</strong> — reading aloud trains '
@@ -446,7 +446,7 @@ def part5_reading():
     h.append('<h4>Writing prompt</h4>')
     h.append(box('tip', 'Escribe', f'<p>{esc(st["prompt"])}</p>' + write_lines(5)))
     h.append('<h4>Conversation</h4>')
-    h.append('<p class="small">Ask your tutor (or answer yourself):</p>')
+    h.append('<p class="small">Answer these out loud:</p>')
     h.append('<ul>' + "".join(f'<li class="es">{esc(q)}</li>' for q in st["convo"]) + '</ul>')
     return "".join(h)
 
@@ -503,7 +503,7 @@ ROLE_PLAYS = [
     ("Meeting your boyfriend's family",
      "It's your first dinner with his family. Introduce yourself, say where you're "
      "from, compliment the food, and ask a question.",
-     ["Mucho gusto, soy Celeste.", "La comida está deliciosa.",
+     ["Mucho gusto, soy Jenna.", "La comida está deliciosa.",
       "¿Cómo se hace este plato?"]),
     ("At the market",
      "Buy fruit for the week. Ask what's fresh, ask prices, choose, and pay.",
@@ -519,12 +519,12 @@ ROLE_PLAYS = [
 
 def part6_speaking():
     h = []
-    h.append('<div class="eyebrow">Part VI</div>')
+    h.append('<div class="eyebrow">Part VII</div>')
     h.append('<h1>Speaking</h1>')
     h.append('<p class="muted">Speaking is a muscle. Here are hundreds of prompts, '
-             'role-plays, and real conversations — bring them to your tutor, or '
-             'answer them out loud on your own. There are no wrong answers, only '
-             'reps.</p>')
+             'role-plays, and real conversations. Answer them out loud on your '
+             'own, then use them for real with Joshua and his family. There are '
+             'no wrong answers, only reps.</p>')
 
     h.append('<h2>Conversation Question Banks</h2>')
     h.append('<p class="small">Answer each in full sentences. Push yourself to add '
@@ -534,8 +534,8 @@ def part6_speaking():
         h.append('<ul>' + "".join(f'<li class="es">{esc(q)}</li>' for q in qs) + '</ul>')
 
     h.append('<h2>Role-Plays</h2>')
-    h.append('<p class="small">Act these out with a partner or your tutor. Starter '
-             'lines are given — improvise the rest.</p>')
+    h.append('<p class="small">Act these out with a partner, or take both parts '
+             'yourself. Starter lines are given — improvise the rest.</p>')
     for title, setup, lines in ROLE_PLAYS:
         inner = (f'<p>{esc(setup)}</p><p class="small" style="margin-top:6px">'
                  'Try starting with:</p><ul>' +
@@ -543,7 +543,7 @@ def part6_speaking():
         h.append(drill(title, inner))
 
     h.append('<h2>The 20-Minute Conversation Ladder</h2>')
-    h.append('<p>Build up to a real conversation with your tutor in stages. Add one '
+    h.append('<p>Build up to a real 20–30 minute conversation in stages. Add one '
              'rung each week:</p>')
     h.append('<ol>'
              '<li><strong>2 min:</strong> Greetings + how you are + the weather.</li>'
@@ -552,7 +552,7 @@ def part6_speaking():
              '<li><strong>15 min:</strong> Describe your life — beach, dogs, work, '
              'boyfriend.</li>'
              '<li><strong>20+ min:</strong> Give opinions and plans '
-             '(<span class="es">quiero, voy a, me gusta…</span>) and ask your tutor '
+             '(<span class="es">quiero, voy a, me gusta…</span>) and ask '
              'questions back.</li>'
              '</ol>')
     h.append(box('tip', 'Rescue phrases (memorize these first)', chips([
@@ -572,13 +572,15 @@ def part6_speaking():
 # ─────────────────────────────────────────────────────────────────────────
 def part7_cuban():
     h = []
-    h.append('<div class="eyebrow">Part VII</div>')
-    h.append('<h1>Cuban Spanish</h1>')
-    h.append('<p class="muted">The Spanish your boyfriend actually speaks. Textbook '
-             'Spanish gets you understood; this gets you <em>in</em>. Expressions, '
-             'slang, sound, and a little culture.</p>')
+    h.append('<div class="eyebrow">Part VIII</div>')
+    h.append('<h1>Cuban &amp; Colombian Spanish</h1>')
+    h.append('<p class="muted">The Spanish Joshua and his family actually speak. '
+             'Textbook Spanish gets you understood; this gets you <em>in</em>. His '
+             'family is <strong>Cuban and Colombian</strong>, so both matter more to '
+             'you than “standard” Spanish does. Expressions, slang, sound, and a '
+             'little culture.</p>')
 
-    h.append('<h2>1 · Expressions Your Boyfriend Actually Says</h2>')
+    h.append('<h2>1 · Expressions the Cuban side actually says</h2>')
     h.append(vocab_table([
         ("¡Dale!", "Okay! / Go for it! / Cool!", "the all-purpose yes"),
         ("¿Qué bolá?", "What's up?", "the classic Cuban greeting"),
@@ -632,7 +634,34 @@ def part7_cuban():
         'salsa and reggaeton with the lyrics up. Your goal isn\'t to catch every '
         'word — it\'s to get comfortable with the <em>rhythm</em>.</p>')))
 
-    h.append('<h2>4 · Culture Notes</h2>')
+    h.append('<h2>4 · The Colombian side</h2>')
+    h.append('<p>The other half of Joshua\'s family. Here\'s the good news: '
+             'Colombian Spanish (especially from Bogotá) is often called the '
+             '<strong>clearest, easiest to understand</strong> in the world — the '
+             'consonants stay put. If the Cuban side is going too fast, the '
+             'Colombian side is where you practice.</p>')
+    h.append(vocab_table([
+        ("¿Qué más?", "How's it going? / What's up?", "the classic Colombian greeting"),
+        ("chévere", "cool, great", "you'll hear this everywhere"),
+        ("parcero / parce", "buddy, dude", "like Cuban 'asere'"),
+        ("¡Qué pena!", "How embarrassing / so sorry", "used for apologies"),
+        ("bacano / bacana", "awesome, cool", ""),
+        ("¿Cómo así?", "What do you mean? / How so?", ""),
+        ("listo", "okay / got it / ready", "the Colombian 'dale'"),
+        ("de una", "for sure / right away", ""),
+    ]))
+    h.append(box('sea', 'Usted everywhere', (
+        '<p>Colombians use <span class="es">usted</span> with almost everyone — '
+        'even friends, even family, even pets. Don\'t read it as cold; it\'s just '
+        'warm politeness. So you may hear <span class="es">¿Cómo está?</span> where '
+        'a Cuban would say <span class="es">¿Cómo estás?</span></p>')))
+    h.append(box('warn', 'Neither one uses vosotros', (
+        '<p>Cuban and Colombian Spanish <strong>never</strong> use '
+        '<span class="es">vosotros</span> — that\'s why this whole workbook skips '
+        'it. If a textbook makes you drill it, skip that page with a clear '
+        'conscience.</p>')))
+
+    h.append('<h2>5 · Culture Notes</h2>')
     h.append('<ul>'
              '<li><strong>Warmth is default.</strong> <span class="es">mi amor</span>, '
              '<span class="es">mi vida</span>, <span class="es">cariño</span> are '
@@ -647,13 +676,13 @@ def part7_cuban():
              'and dancing isn\'t optional at a party. It\'s okay to be a beginner; '
              'joining in matters more than getting it right.</li>'
              '</ul>')
-    h.append('<h2>5 · A Cuban-flavored dialogue</h2>')
+    h.append('<h2>6 · A family-flavored dialogue</h2>')
     h.append(dialogue([
-        ("Novio", "¿Qué bolá, mi amor? ¿Cómo anda la cosa?", "What's up, my love? How's it going?"),
-        ("Celeste", "Todo bien. ¿Vamos a la playa?", "All good. Shall we go to the beach?"),
-        ("Novio", "¡Dale! Pero primero, un cafecito.", "For sure! But first, a little coffee."),
-        ("Celeste", "¡Qué rico! Y después, ¿jamamos algo?", "Nice! And after, shall we eat something?"),
-        ("Novio", "Claro, asere. Hay arroz con pollo en casa.", "Of course, girl. There's chicken and rice at home."),
+        ("Joshua", "¿Qué bolá, mi amor? ¿Cómo anda la cosa?", "What's up, my love? How's it going?"),
+        ("Jenna", "Todo bien. ¿Vamos a la playa?", "All good. Shall we go to the beach?"),
+        ("Joshua", "¡Dale! Pero primero, un cafecito.", "For sure! But first, a little coffee."),
+        ("Abuela", "¡Qué pena, mija! Coman algo primero.", "Oh no, sweetie! Eat something first. (Colombian grandma)"),
+        ("Jenna", "¡Qué rico! Gracias, señora.", "How nice! Thank you, ma'am."),
     ]))
     return "".join(h)
 
@@ -698,7 +727,7 @@ def cheat_sheets():
     h.append('<h2>Ser vs Estar (both = “to be”)</h2>')
     h.append('<div style="display:flex;gap:16px;flex-wrap:wrap">')
     h.append('<div style="flex:1;min-width:230px">' + box('tip', 'SER — permanent',
-        '<ul><li>Identity: soy Celeste</li><li>Origin: es de Cuba</li>'
+        '<ul><li>Identity: soy Jenna</li><li>Origin: es de Cuba</li>'
         '<li>Traits: el café es fuerte</li><li>Time: son las ocho</li></ul>') + '</div>')
     h.append('<div style="flex:1;min-width:230px">' + box('sea', 'ESTAR — temporary',
         '<ul><li>Feelings: estoy cansada</li><li>Location: está en la playa</li>'

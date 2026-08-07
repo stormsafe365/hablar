@@ -20,6 +20,7 @@ from content.theme import CSS as THEME_CSS
 from content.verbs import VERBS
 from content.vocab import THEMES
 from content import extras
+from content import grammar
 
 OUT = os.path.dirname(os.path.abspath(__file__))
 
@@ -46,10 +47,12 @@ def render_verb_teach(v, n):
     h.append('<h3>Complete conjugation (present)</h3>')
     h.append(f'<p class="small">{esc(v["pattern"])}</p>')
     h.append(conj_table("", v["conj"]))
-    h.append(box('sea', 'Latin-America note',
-        '<p>Your boyfriend\'s family uses <span class="es">ustedes</span> for '
-        '“you all” — the <span class="es">vosotros</span> form is Spain only. '
-        'Learn it to recognize it, but you\'ll speak with the others.</p>'))
+    if n == 1:
+        h.append(box('sea', 'Why only five forms?',
+            '<p>For “you all,” Joshua\'s Cuban &amp; Colombian family always says '
+            '<span class="es">ustedes</span>. The Spain-only '
+            '<span class="es">vosotros</span> form is left out of every table on '
+            'purpose — it\'s one whole column you never have to learn.</p>'))
 
     h.append(f'<h3>Examples ({len(v["examples"])}+)</h3>')
     h.append(examples(v["examples"]))
@@ -126,12 +129,12 @@ def build_book():
     # cover
     parts.append(
         '<div class="cover">'
-        '<div class="flag">🇺🇸 🇨🇺</div>'
+        '<div class="flag">🇺🇸 🇨🇺 🇨🇴</div>'
         '<h1>Spanish<br>for Your Real Life</h1>'
-        '<div class="sub">A personalized workbook — built around the beach, your '
-        'dogs, the gym, coffee, cooking, and the Cuban Spanish your boyfriend '
-        'actually speaks.</div>'
-        '<div class="who">Personalized for Celeste · Florida</div>'
+        '<div class="sub">A personalized workbook — built around the beach, '
+        'Maggie, the gym, gardening, coffee, cooking, and the Cuban &amp; '
+        'Colombian Spanish Joshua and his family actually speak.</div>'
+        '<div class="who">Personalized for Jenna · Boynton Beach, FL</div>'
         '</div>')
 
     # goals
@@ -139,7 +142,7 @@ def build_book():
     parts.append('<h1>Your Goal</h1>')
     parts.append('<p>When we\'re finished, you will be able to:</p>')
     parts.append('<ul style="list-style:none;margin-left:0">'
-        '<li>✅ Have a 20–30 minute conversation with your tutor.</li>'
+        '<li>✅ Have a real 20–30 minute conversation in Spanish.</li>'
         '<li>✅ Talk naturally with your boyfriend.</li>'
         '<li>✅ Read simple books.</li>'
         '<li>✅ Watch beginner Spanish YouTube.</li>'
@@ -170,23 +173,41 @@ def build_book():
     for i, v in enumerate(VERBS, 1):
         parts.append(render_verb_teach(v, i))
 
-    # Part III — vocab
+    # Part III — everyday verb forms (near future, progressive, reflexive, stem-change)
     parts.append('<div class="page-break"></div>')
-    parts.append('<div class="eyebrow">Part III</div>')
+    parts.append(grammar.part_verb_forms())
+
+    # Part IV — vocab
+    parts.append('<div class="page-break"></div>')
+    parts.append('<div class="eyebrow">Part IV</div>')
     parts.append('<h1>Real-Life Vocabulary</h1>')
     parts.append('<p class="muted">Forget “the airport” and “the museum.” '
-        'We learn <em>your</em> life first — the beach, your dogs, the garden, the '
+        'We learn <em>your</em> life first — the beach, Maggie, the garden, the '
         'gym, coffee, cooking, work, and love — so every word is one you\'ll '
         'actually use this week.</p>')
     parts.append(chips([(t["icon"] + " " + t["title"], "") for t in THEMES]))
     for i, t in enumerate(THEMES, 1):
         parts.append(render_vocab_teach(t, i))
 
-    # Parts IV–VII
-    for fn in (extras.part4_past, extras.part5_reading,
-               extras.part6_speaking, extras.part7_cuban):
-        parts.append('<div class="page-break"></div>')
-        parts.append(fn())
+    # Part V — past tense
+    parts.append('<div class="page-break"></div>')
+    parts.append(extras.part4_past())
+
+    # Part VI — reading
+    parts.append('<div class="page-break"></div>')
+    parts.append(extras.part5_reading())
+
+    # Part VII — speaking (+ the one-word-answer fix, ladders, cards, about-you)
+    parts.append('<div class="page-break"></div>')
+    parts.append(extras.part6_speaking())
+    parts.append(grammar.one_word_fix())
+    parts.append(grammar.grow_ladders())
+    parts.append(grammar.conversation_cards())
+    parts.append(grammar.about_you())
+
+    # Part VIII — Cuban & Colombian Spanish
+    parts.append('<div class="page-break"></div>')
+    parts.append(extras.part7_cuban())
 
     parts.append('<div class="page-break"></div>')
     parts.append('<h1>¡Lo lograste! 🎉</h1>')
@@ -197,7 +218,7 @@ def build_book():
 
     body = "".join(parts)
     w("book.html", shell("Hablar Workbook · The Book", body,
-                         subtitle="Parts I–VII"))
+                         subtitle="Parts I–VIII"))
     return body
 
 
@@ -276,8 +297,38 @@ def build_practice():
         parts.append(render_vocab_practice(t, i))
 
     # past-tense practice
+    # everyday verb forms drills
     parts.append('<div class="page-break"></div>')
     parts.append('<div class="eyebrow">Unit 4</div>')
+    parts.append('<h1>Everyday Verb-Form Drills</h1>')
+    parts.append(drill('A · Near future — rewrite with "voy a / vamos a…"',
+        questions([f'{esc(s)} &nbsp; {blank(180)}' for s in [
+            "(beach, this weekend) → I'm going to…",
+            "(paddleboard with Joshua) → …",
+            "(water the plants tomorrow) → …",
+            "(gym after work) → …",
+            "(cook something Cuban) → …"]])))
+    parts.append(drill('B · Progressive — "estoy ___-ando/-iendo" (right now)',
+        questions([f'{esc(en)} &nbsp; {blank(190)}' for en in [
+            "I'm learning Spanish.", "I'm cooking.", "Maggie is sleeping.",
+            "We're walking on the beach.", "I'm trying it. (lo…)"]])))
+    parts.append(drill('C · Reflexives — your daily routine',
+        questions([f'{esc(s)} &nbsp; {blank()}' for s in [
+            "Yo (levantarse) ___ a las seis.",
+            "Yo (ducharse) ___ por la mañana.",
+            "Mi novio (llamarse) ___ Joshua.",
+            "Los domingos yo (quedarse) ___ en casa.",
+            "Yo (acostarse) ___ temprano."]])))
+    parts.append(drill('D · Stem-changers (the boot)',
+        questions([f'{esc(s)} &nbsp; {blank()}' for s in [
+            "Yo (querer) ___ aprender comida cubana.",
+            "Yo no (poder) ___ dormir con calor.",
+            "Yo (regar) ___ las plantas.",
+            "Yo (empezar) ___ a trabajar a las nueve.",
+            "Yo (preferir) ___ la playa por la mañana."]])))
+
+    parts.append('<div class="page-break"></div>')
+    parts.append('<div class="eyebrow">Unit 5</div>')
     parts.append('<h1>Past-Tense Drills</h1>')
     past_fill = [
         ("Ayer (yo, ir) ___ a la playa.", "fui"),
@@ -359,6 +410,46 @@ def build_answers():
         for en, es in t["translate"]:
             parts.append(_ans_row(esc(en), es))
         parts.append('<hr>')
+
+    # everyday verb-form answers
+    parts.append('<div class="page-break"></div>')
+    parts.append('<h1>Everyday Verb-Form Answers</h1>')
+    parts.append('<p class="small"><strong>A · Near future (voy a + verb).</strong></p>')
+    for en, es in [
+        ("beach this weekend", "Voy a la playa este fin de semana."),
+        ("paddleboard with Joshua", "Voy a hacer paddleboard con Joshua."),
+        ("water the plants tomorrow", "Mañana voy a regar las plantas."),
+        ("gym after work", "Voy al gimnasio después del trabajo."),
+        ("cook something Cuban", "Voy a cocinar algo cubano."),
+    ]:
+        parts.append(_ans_row(esc(en), es))
+    parts.append('<p class="small"><strong>B · Progressive (estar + -ando/-iendo).</strong></p>')
+    for en, es in [
+        ("I'm learning Spanish.", "Estoy aprendiendo español."),
+        ("I'm cooking.", "Estoy cocinando."),
+        ("Maggie is sleeping.", "Maggie está durmiendo."),
+        ("We're walking on the beach.", "Estamos caminando por la playa."),
+        ("I'm trying it.", "Lo estoy intentando."),
+    ]:
+        parts.append(_ans_row(esc(en), es))
+    parts.append('<p class="small"><strong>C · Reflexives.</strong></p>')
+    for s, a, why in [
+        ("Yo (levantarse) ____ a las seis.", "me levanto", "yo → me + levanto."),
+        ("Yo (ducharse) ____ por la mañana.", "me ducho", "yo → me + ducho."),
+        ("Mi novio (llamarse) ____ Joshua.", "se llama", "él → se + llama."),
+        ("Los domingos yo (quedarse) ____ en casa.", "me quedo", "yo → me + quedo."),
+        ("Yo (acostarse) ____ temprano.", "me acuesto", "reflexive + o→ue stem change."),
+    ]:
+        parts.append(_ans_row(esc(s), a, why))
+    parts.append('<p class="small"><strong>D · Stem-changers (the boot).</strong></p>')
+    for s, a, why in [
+        ("Yo (querer) ____ aprender…", "quiero", "e→ie."),
+        ("Yo no (poder) ____ dormir…", "puedo", "o→ue."),
+        ("Yo (regar) ____ las plantas.", "riego", "e→ie — the sneaky one."),
+        ("Yo (empezar) ____ a trabajar…", "empiezo", "e→ie."),
+        ("Yo (preferir) ____ la playa…", "prefiero", "e→ie."),
+    ]:
+        parts.append(_ans_row(esc(s), a, why))
 
     # past-tense answers with explanations
     parts.append('<div class="page-break"></div>')
@@ -554,8 +645,9 @@ def build_cheats():
 
 def build_index():
     tiles = [
-        ("book.html", "📘", "The Book", "Parts I–VII: foundations, the 16 core "
-         "verbs, real-life vocabulary, past tense, reading, speaking & Cuban Spanish."),
+        ("book.html", "📘", "The Book", "Parts I–VIII: foundations, the 16 core "
+         "verbs, everyday verb forms, real-life vocabulary, past tense, reading, "
+         "speaking & Cuban & Colombian Spanish."),
         ("practice.html", "✍️", "Practice Workbook", "Thousands of exercises — "
          "fill-ins, translation, conversation, and quizzes for every verb and theme."),
         ("answers.html", "🔑", "Answer Book", "Every answer worked out, with the "
@@ -569,11 +661,12 @@ def build_index():
     ]
     body = []
     body.append('<div class="cover" style="min-height:auto;padding-bottom:8px">'
-        '<div class="flag">🇺🇸 🇨🇺</div>'
+        '<div class="flag">🇺🇸 🇨🇺 🇨🇴</div>'
         '<h1 style="font-size:clamp(30px,8vw,46px)">Spanish for Your Real Life</h1>'
-        '<div class="sub">Your personalized workbook — the beach, your dogs, coffee, '
-        'cooking, the gym, and the Cuban Spanish your boyfriend actually speaks.</div>'
-        '<div class="who">Personalized for Celeste · Florida</div></div>')
+        '<div class="sub">Your personalized workbook — the beach, Maggie, coffee, '
+        'cooking, the gym, gardening, and the Cuban &amp; Colombian Spanish Joshua '
+        'and his family actually speak.</div>'
+        '<div class="who">Personalized for Jenna · Boynton Beach, FL</div></div>')
 
     body.append('<h2>What\'s inside</h2>')
     body.append('<div class="grid">')
@@ -593,16 +686,20 @@ def build_index():
         "memory tricks"))
     body.append(toc("Part II · Present Tense", "16 core verbs, each taught the same "
         "way: " + ", ".join(v["inf"] for v in VERBS)))
-    body.append(toc("Part III · Real-Life Vocabulary", " ".join(t["icon"] for t in THEMES)
+    body.append(toc("Part III · Everyday Verb Forms", "Near future (voy a…), the "
+        "two-verb rule, present progressive (-ing), reflexive verbs, and "
+        "stem-changing verbs (the boot)"))
+    body.append(toc("Part IV · Real-Life Vocabulary", " ".join(t["icon"] for t in THEMES)
         + " " + ", ".join(t["title"] for t in THEMES)))
-    body.append(toc("Part IV · Past Tense", "Regular & irregular preterite, yesterday, "
+    body.append(toc("Part V · Past Tense", "Regular & irregular preterite, yesterday, "
         "trips, stories, exercises"))
-    body.append(toc("Part V · Reading", "From 5-word stories up to a full page — "
+    body.append(toc("Part VI · Reading", "From 5-word stories up to a full page — "
         "vocab, grammar, questions, writing prompts"))
-    body.append(toc("Part VI · Speaking", "Hundreds of conversation questions, "
-        "role-plays, and the 20-minute conversation ladder"))
-    body.append(toc("Part VII · Cuban Spanish", "Expressions, slang, pronunciation, "
-        "culture — what your boyfriend actually says"))
+    body.append(toc("Part VII · Speaking", "The one-word-answer fix + porque, "
+        "grow-an-answer ladders, your 30 conversation cards, your about-you script, "
+        "and role-plays"))
+    body.append(toc("Part VIII · Cuban & Colombian Spanish", "Expressions, slang, "
+        "pronunciation, and culture — what Joshua and his family actually say"))
     body.append('</ul>')
     body.append('<h3>Companion Books</h3><ul class="toc">')
     body.append(toc("Practice Workbook", "Verb drills, vocabulary drills, past-tense drills"))
@@ -914,7 +1011,7 @@ def build_artifact(bodies):
 PWA_MANIFEST = """{
   "name": "Spanish for Your Real Life",
   "short_name": "Mi Español",
-  "description": "Celeste's personalized Spanish workbook — beach life, dogs, coffee, cooking, and Cuban Spanish.",
+  "description": "Jenna's personalized Spanish workbook — beach life, Maggie, coffee, cooking, and Cuban & Colombian Spanish.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -959,7 +1056,7 @@ def build_pwa(body):
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Mi Español · Personalized Workbook</title>
-<meta name="description" content="Celeste's personalized Spanish workbook."/>
+<meta name="description" content="Jenna's personalized Spanish workbook."/>
 <meta name="theme-color" content="#1c8a5d"/>
 <link rel="manifest" href="manifest.webmanifest"/>
 <meta name="mobile-web-app-capable" content="yes"/>
