@@ -667,6 +667,11 @@ def build_index():
         'cooking, the gym, gardening, and the Cuban &amp; Colombian Spanish Joshua '
         'and his family actually speak.</div></div>')
 
+    body.append('<a class="go-card" href="book.html">'
+        '<div><div class="gc-k">Sigue aprendiendo · keep going</div>'
+        '<div class="gc-t">The Book — start where you left off</div></div>'
+        '<span class="gc-a">→</span></a>')
+
     body.append('<h2>What\'s inside</h2>')
     body.append('<div class="grid">')
     for i, (href, ic, tt, dd) in enumerate(tiles, 1):
@@ -729,34 +734,34 @@ def build_index():
 # COMBINED SINGLE-PAGE ARTIFACT  (self-contained, tabbed, light + dark)
 # ══════════════════════════════════════════════════════════════════════════
 ARTIFACT_EXTRA_CSS = r"""
-/* warm greige — DARK is the default look (coral primary, teal secondary) */
+/* true neutral charcoal (no brown) — salmon primary + mint secondary */
 :root{
-  --bg:#262421; --paper:#302d29; --sand:#262421; --sand2:#3a352f;
-  --ink:#efe9df; --soft:#aca498; --faint:#7d7566; --line:#3d382f;
-  --accent:#ec7a5f; --accent2:#e0664a; --accent-soft:#3a2b25;
-  --cuba:#ec7a5f; --cuba-soft:#3a2b25; --sea:#6fb0a6; --sea-soft:#22322f;
-  --sun:#d9b45f; --sun-soft:#352f20; --coral:#ec7a5f; --coral-soft:#3a2b25;
+  --bg:#1a1c1e; --paper:#242729; --sand:#1a1c1e; --sand2:#2d3134;
+  --ink:#eef1f1; --soft:#a8b0b3; --faint:#747c81; --line:#34393d;
+  --accent:#ff8f7d; --accent2:#f97a66; --accent-soft:#362827;
+  --cuba:#ff8f7d; --cuba-soft:#362827; --sea:#5fd6a5; --sea-soft:#1c322a;
+  --sun:#d8b36a; --sun-soft:#322c1d; --coral:#ff8f7d; --coral-soft:#362827;
 }
 @media (prefers-color-scheme: light){:root:not([data-theme]){
-  --bg:#f4f1eb; --paper:#ffffff; --sand:#f4f1eb; --sand2:#efe9df;
-  --ink:#2a2723; --soft:#6c655b; --faint:#9a9184; --line:#e7e0d4;
-  --accent:#e0533d; --accent2:#c9452f; --accent-soft:#fbe7e1;
-  --cuba:#c0503b; --cuba-soft:#f9e6e0; --sea:#2f9e8a; --sea-soft:#dcf1ec;
-  --sun:#b8933a; --sun-soft:#f6eecf; --coral:#e0533d; --coral-soft:#fbe7e1;
+  --bg:#f3f4f5; --paper:#ffffff; --sand:#f3f4f5; --sand2:#e9ebec;
+  --ink:#22262a; --soft:#5f676d; --faint:#8f979c; --line:#e2e5e6;
+  --accent:#e8604a; --accent2:#d44e39; --accent-soft:#fdeae6;
+  --cuba:#e8604a; --cuba-soft:#fdeae6; --sea:#1fa97e; --sea-soft:#dff4ec;
+  --sun:#b8933a; --sun-soft:#f6eecf; --coral:#e8604a; --coral-soft:#fdeae6;
 }}
 :root[data-theme="light"]{
-  --bg:#f4f1eb; --paper:#ffffff; --sand:#f4f1eb; --sand2:#efe9df;
-  --ink:#2a2723; --soft:#6c655b; --faint:#9a9184; --line:#e7e0d4;
-  --accent:#e0533d; --accent2:#c9452f; --accent-soft:#fbe7e1;
-  --cuba:#c0503b; --cuba-soft:#f9e6e0; --sea:#2f9e8a; --sea-soft:#dcf1ec;
-  --sun:#b8933a; --sun-soft:#f6eecf; --coral:#e0533d; --coral-soft:#fbe7e1;
+  --bg:#f3f4f5; --paper:#ffffff; --sand:#f3f4f5; --sand2:#e9ebec;
+  --ink:#22262a; --soft:#5f676d; --faint:#8f979c; --line:#e2e5e6;
+  --accent:#e8604a; --accent2:#d44e39; --accent-soft:#fdeae6;
+  --cuba:#e8604a; --cuba-soft:#fdeae6; --sea:#1fa97e; --sea-soft:#dff4ec;
+  --sun:#b8933a; --sun-soft:#f6eecf; --coral:#e8604a; --coral-soft:#fdeae6;
 }
 :root[data-theme="dark"]{
-  --bg:#262421; --paper:#302d29; --sand:#262421; --sand2:#3a352f;
-  --ink:#efe9df; --soft:#aca498; --faint:#7d7566; --line:#3d382f;
-  --accent:#ec7a5f; --accent2:#e0664a; --accent-soft:#3a2b25;
-  --cuba:#ec7a5f; --cuba-soft:#3a2b25; --sea:#6fb0a6; --sea-soft:#22322f;
-  --sun:#d9b45f; --sun-soft:#352f20; --coral:#ec7a5f; --coral-soft:#3a2b25;
+  --bg:#1a1c1e; --paper:#242729; --sand:#1a1c1e; --sand2:#2d3134;
+  --ink:#eef1f1; --soft:#a8b0b3; --faint:#747c81; --line:#34393d;
+  --accent:#ff8f7d; --accent2:#f97a66; --accent-soft:#362827;
+  --cuba:#ff8f7d; --cuba-soft:#362827; --sea:#5fd6a5; --sea-soft:#1c322a;
+  --sun:#d8b36a; --sun-soft:#322c1d; --coral:#ff8f7d; --coral-soft:#362827;
 }
 /* in dark mode the hardcoded pale borders should track the line token */
 @media (prefers-color-scheme: dark){
@@ -821,11 +826,11 @@ details summary{cursor:pointer}
   box-shadow:0 0 0 4px var(--accent-soft);transition:background .1s}
 
 /* stress popup (dark in both themes for consistent contrast) */
-.stress-pop{position:absolute;z-index:100;background:#232726;color:#f1f1ef;
+.stress-pop{position:absolute;z-index:100;background:#212426;color:#f1f3f3;
   padding:8px 13px;border-radius:11px;font-family:var(--round);font-weight:700;
   font-size:17px;box-shadow:0 8px 24px rgba(0,0,0,.3);pointer-events:none;
   white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
-.stress-pop b{color:#f3a892;font-weight:800}
+.stress-pop b{color:#ffab9b;font-weight:800}
 .stress-pop .dot2{opacity:.4;margin:0 1px}
 .stress-pop .sp-ic{margin-right:6px}
 
@@ -833,28 +838,30 @@ details summary{cursor:pointer}
    including phones (background-attachment:fixed is broken on iOS) ---------- */
 :root{
   --bggrad:
-    radial-gradient(880px 520px at 88% -6%, rgba(236,122,95,.16) 0%, rgba(236,122,95,0) 60%),
-    radial-gradient(1100px 720px at -12% 12%, rgba(111,176,166,.09) 0%, rgba(111,176,166,0) 55%),
-    linear-gradient(160deg, #35312b 0%, #272420 40%, #1b1917 76%, #131211 100%);
+    radial-gradient(880px 520px at 88% -6%, rgba(255,143,125,.13) 0%, rgba(255,143,125,0) 60%),
+    radial-gradient(1100px 720px at -12% 14%, rgba(95,214,165,.10) 0%, rgba(95,214,165,0) 55%),
+    linear-gradient(160deg, #26292c 0%, #1c1f21 45%, #141617 80%, #0f1011 100%);
   --hover-shadow:0 2px 4px rgba(0,0,0,.4), 0 22px 48px rgba(0,0,0,.6);
 }
 @media (prefers-color-scheme: light){:root:not([data-theme]){
   --bggrad:
-    radial-gradient(880px 520px at 88% -6%, rgba(224,83,61,.10) 0%, rgba(224,83,61,0) 60%),
-    linear-gradient(160deg, #faf7f1 0%, #f1ebe1 45%, #e7dfd2 100%);
-  --hover-shadow:0 1px 2px rgba(60,45,30,.06), 0 18px 38px rgba(60,45,30,.14);
+    radial-gradient(880px 520px at 88% -6%, rgba(232,96,74,.08) 0%, rgba(232,96,74,0) 60%),
+    radial-gradient(1100px 720px at -12% 14%, rgba(31,169,126,.07) 0%, rgba(31,169,126,0) 55%),
+    linear-gradient(160deg, #fafbfb 0%, #eef0f1 50%, #e4e7e8 100%);
+  --hover-shadow:0 1px 2px rgba(30,35,40,.06), 0 18px 38px rgba(30,35,40,.14);
 }}
 :root[data-theme="light"]{
   --bggrad:
-    radial-gradient(880px 520px at 88% -6%, rgba(224,83,61,.10) 0%, rgba(224,83,61,0) 60%),
-    linear-gradient(160deg, #faf7f1 0%, #f1ebe1 45%, #e7dfd2 100%);
-  --hover-shadow:0 1px 2px rgba(60,45,30,.06), 0 18px 38px rgba(60,45,30,.14);
+    radial-gradient(880px 520px at 88% -6%, rgba(232,96,74,.08) 0%, rgba(232,96,74,0) 60%),
+    radial-gradient(1100px 720px at -12% 14%, rgba(31,169,126,.07) 0%, rgba(31,169,126,0) 55%),
+    linear-gradient(160deg, #fafbfb 0%, #eef0f1 50%, #e4e7e8 100%);
+  --hover-shadow:0 1px 2px rgba(30,35,40,.06), 0 18px 38px rgba(30,35,40,.14);
 }
 :root[data-theme="dark"]{
   --bggrad:
-    radial-gradient(880px 520px at 88% -6%, rgba(236,122,95,.16) 0%, rgba(236,122,95,0) 60%),
-    radial-gradient(1100px 720px at -12% 12%, rgba(111,176,166,.09) 0%, rgba(111,176,166,0) 55%),
-    linear-gradient(160deg, #35312b 0%, #272420 40%, #1b1917 76%, #131211 100%);
+    radial-gradient(880px 520px at 88% -6%, rgba(255,143,125,.13) 0%, rgba(255,143,125,0) 60%),
+    radial-gradient(1100px 720px at -12% 14%, rgba(95,214,165,.10) 0%, rgba(95,214,165,0) 55%),
+    linear-gradient(160deg, #26292c 0%, #1c1f21 45%, #141617 80%, #0f1011 100%);
   --hover-shadow:0 2px 4px rgba(0,0,0,.4), 0 22px 48px rgba(0,0,0,.6);
 }
 body{background:var(--bg);min-height:100vh}
@@ -883,6 +890,46 @@ table tr:last-child td{border-bottom:none}
 .goals{list-style:none;margin-left:0}
 .goals li{padding-left:26px;position:relative;margin:8px 0}
 .goals li::before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:700}
+
+/* two-accent rhythm: tiles alternate salmon / mint */
+.grid .tile:nth-child(even) .tn{color:var(--sea)}
+@media (hover:hover){
+  .grid .tile:nth-child(even):hover{border-color:var(--sea)}
+}
+
+/* dashboard "continue" card (salmon gradient, app-style) */
+.go-card{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  background:linear-gradient(135deg,var(--accent) 0%,#ffb39f 100%);color:#20211f;
+  border-radius:20px;padding:18px 20px;margin:4px 0 20px;box-shadow:var(--shadow);
+  border:none}
+.go-card .gc-k{font-family:var(--round);font-weight:800;font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;opacity:.72}
+.go-card .gc-t{font-family:var(--serif);font-weight:700;font-size:19px;line-height:1.2}
+.go-card .gc-a{font-size:24px;font-weight:700;flex:0 0 auto}
+@media (hover:hover){
+  .go-card{transition:transform .16s ease, box-shadow .16s ease}
+  .go-card:hover{transform:translateY(-2px);box-shadow:var(--hover-shadow)}
+}
+
+/* mobile: app-style floating bottom nav (top tabs hide) */
+.bottomnav{display:none}
+@media (max-width:640px){
+  .wb-tabs{display:none}
+  .page{padding-bottom:120px}
+  .bottomnav{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:60;
+    background:color-mix(in srgb,var(--paper) 94%,transparent);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border:1px solid var(--line);border-radius:22px;box-shadow:var(--hover-shadow);
+    justify-content:space-around;padding:8px 4px;
+    padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+  .bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;
+    font-family:var(--round);font-weight:700;font-size:10.5px;color:var(--faint);
+    background:none;border:none;padding:6px 10px;border-radius:14px;cursor:pointer}
+  .bn-item svg{width:20px;height:20px;stroke:currentColor;fill:none;
+    stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .bn-item.on{color:var(--accent)}
+  .bn-item:nth-child(even).on{color:var(--sea)}
+}
 
 /* ---------- hover: lift + colored border ---------- */
 @media (hover:hover){
@@ -937,7 +984,7 @@ def build_artifact(bodies):
   function show(name){
     document.querySelectorAll('.tab').forEach(function(s){
       s.classList.toggle('on', s.id==='tab-'+name); });
-    document.querySelectorAll('.wb-tab').forEach(function(b){
+    document.querySelectorAll('.wb-tab,.bn-item').forEach(function(b){
       b.classList.toggle('on', b.dataset.tab===name); });
     window.scrollTo({top:0,behavior:'instant'});
     hidePop();
@@ -1091,6 +1138,23 @@ def build_artifact(bodies):
             '<div class="hint-toast" id="hintToast">♪ Tap any <b>Spanish word or '
             'sentence</b> to hear it</div>'
             + "".join(sections)
+            + '<nav class="bottomnav">'
+            '<button class="bn-item" data-tab="contents">'
+            '<svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>'
+            'Home</button>'
+            '<button class="bn-item" data-tab="book">'
+            '<svg viewBox="0 0 24 24"><path d="M4 4h7v16H6a2 2 0 0 1-2-2V4Z"/><path d="M20 4h-7v16h5a2 2 0 0 0 2-2V4Z"/></svg>'
+            'Book</button>'
+            '<button class="bn-item" data-tab="practice">'
+            '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>'
+            'Practice</button>'
+            '<button class="bn-item" data-tab="flashcards">'
+            '<svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M8 6V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"/></svg>'
+            'Cards</button>'
+            '<button class="bn-item" data-tab="tests">'
+            '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 5-6"/></svg>'
+            'Tests</button>'
+            '</nav>'
             + f'<script>{js}</script>')
     w("hablar-workbook.html", body)
     return body
@@ -1107,8 +1171,8 @@ PWA_MANIFEST = """{
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#262421",
-  "theme_color": "#262421",
+  "background_color": "#1a1c1e",
+  "theme_color": "#1a1c1e",
   "lang": "en",
   "icons": [
     {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
@@ -1148,7 +1212,7 @@ def build_pwa(body):
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Mi Español · Personalized Workbook</title>
 <meta name="description" content="Jenna's personalized Spanish workbook."/>
-<meta name="theme-color" content="#262421"/>
+<meta name="theme-color" content="#1a1c1e"/>
 <link rel="manifest" href="manifest.webmanifest"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
