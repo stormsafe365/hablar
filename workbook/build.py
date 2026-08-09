@@ -224,6 +224,13 @@ def build_book():
 # ══════════════════════════════════════════════════════════════════════════
 # RENDERERS — PRACTICE WORKBOOK
 # ══════════════════════════════════════════════════════════════════════════
+def qa_blank(ans, width=120):
+    """A blank that knows its answer. Print shows a line to write on;
+    the app turns it into a type-and-check input."""
+    return (f'<span class="blank" data-ans="{esc(ans)}" '
+            f'style="min-width:{width}px"></span>')
+
+
 def render_verb_practice(v, n):
     h = ['<div class="page-break"></div>' if n > 1 else '']
     h.append(f'<div class="eyebrow">Practice · {v["inf"]}</div>')
@@ -231,23 +238,23 @@ def render_verb_practice(v, n):
 
     # A. Conjugation recall
     h.append(drill('A · Write the full conjugation from memory',
-        questions([f'{esc(p)} &nbsp; {blank(140)}' for p, _ in v["conj"]])))
+        questions([f'{esc(p)} &nbsp; {qa_blank(f, 140)}' for p, f in v["conj"]])))
 
     # B. Fill in the blanks
     h.append(drill('B · Fill in the blank with the correct present-tense form',
-        questions([f'{esc(s)} &nbsp; {blank()}' for s, _ in v["fill"]])))
+        questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in v["fill"]])))
 
     # C. Translate
     h.append(drill('C · Translate into Spanish',
-        questions([f'{esc(en)} &nbsp; {blank(200)}' for en, _ in v["translate"]])))
+        questions([f'{esc(en)} &nbsp; {qa_blank(es_, 200)}' for en, es_ in v["translate"]])))
 
     # D. Conversation / speaking (written prep)
     h.append(drill('D · Conversation — write your own true answer',
         questions([f'{s}{write_lines(1)}' for s in v["speak"]])))
 
     # E. Mini quiz
-    quiz = [f'Give the <strong>yo</strong> form of {v["inf"].lower()}: {blank(90)}',
-            f'Give the <strong>nosotros</strong> form: {blank(90)}',
+    quiz = [f'Give the <strong>yo</strong> form of {v["inf"].lower()}: {qa_blank(v["conj"][0][1], 90)}',
+            f'Give the <strong>nosotros</strong> form: {qa_blank(v["conj"][3][1], 90)}',
             f'Write one full sentence using {v["inf"].lower()}: {blank(230)}']
     h.append(drill('E · Quiz', questions(quiz)))
     return "".join(h)
@@ -258,13 +265,13 @@ def render_vocab_practice(t, n):
     h.append(f'<div class="eyebrow">Practice · {t["title"]}</div>')
     h.append(f'<h2>{esc(t["title"])}</h2>')
     h.append(drill('A · Fill in the blank',
-        questions([f'{esc(s)} &nbsp; {blank()}' for s, _ in t["fill"]])))
+        questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in t["fill"]])))
     h.append(drill('B · Translate into Spanish',
-        questions([f'{esc(en)} &nbsp; {blank(200)}' for en, _ in t["translate"]])))
+        questions([f'{esc(en)} &nbsp; {qa_blank(es_, 200)}' for en, es_ in t["translate"]])))
     # C. match / recall vocab
     words = t["vocab"][:8]
     h.append(drill('C · Write the Spanish word',
-        questions([f'{esc(en)} &nbsp; {blank(130)}' for _, en, _ in words])))
+        questions([f'{esc(en)} &nbsp; {qa_blank(es_, 130)}' for es_, en, _ in words])))
     h.append(drill('D · Free writing',
         f'<p>Write five sentences about {esc(t["title"].lower())} using this '
         'chapter\'s vocabulary.</p>' + write_lines(6)))
@@ -276,9 +283,11 @@ def build_practice():
     parts.append('<div class="cover">'
         '<div class="eyebrow">Práctica</div>'
         '<h1>The Practice<br>Workbook</h1>'
-        '<div class="sub">Thousands of questions. Nearly every page is exercises. '
-        'Write directly in it — that\'s the point.</div>'
-        '<div class="who">Companion to the Book · check yourself in the Answer Book</div>'
+        '<div class="sub">Thousands of questions — type right into the blanks. '
+        'Press Enter (or tap away) to check: <b>mint</b> = correct, '
+        '<b>gold</b> = right word, missing accent, <b>salmon</b> = try again '
+        '(the answer appears after two tries).</div>'
+        '<div class="who">Companion to the Book · answers explained in the Answer Book</div>'
         '</div>')
 
     parts.append('<div class="page-break"></div>')
@@ -301,30 +310,33 @@ def build_practice():
     parts.append('<div class="eyebrow">Unit 4</div>')
     parts.append('<h1>Everyday Verb-Form Drills</h1>')
     parts.append(drill('A · Near future — rewrite with "voy a / vamos a…"',
-        questions([f'{esc(s)} &nbsp; {blank(180)}' for s in [
-            "(beach, this weekend) → I'm going to…",
-            "(paddleboard with Joshua) → …",
-            "(water the plants tomorrow) → …",
-            "(gym after work) → …",
-            "(cook something Cuban) → …"]])))
+        questions([f'{esc(p)} &nbsp; {qa_blank(a, 200)}' for p, a in [
+            ("(beach, this weekend) → I'm going to…", "Voy a la playa este fin de semana."),
+            ("(paddleboard with Joshua) → …", "Voy a hacer paddleboard con Joshua."),
+            ("(water the plants tomorrow) → …", "Mañana voy a regar las plantas."),
+            ("(gym after work) → …", "Voy al gimnasio después del trabajo."),
+            ("(cook something Cuban) → …", "Voy a cocinar algo cubano.")]])))
     parts.append(drill('B · Progressive — "estoy ___-ando/-iendo" (right now)',
-        questions([f'{esc(en)} &nbsp; {blank(190)}' for en in [
-            "I'm learning Spanish.", "I'm cooking.", "Maggie is sleeping.",
-            "We're walking on the beach.", "I'm trying it. (lo…)"]])))
+        questions([f'{esc(en)} &nbsp; {qa_blank(a, 190)}' for en, a in [
+            ("I'm learning Spanish.", "Estoy aprendiendo español."),
+            ("I'm cooking.", "Estoy cocinando."),
+            ("Maggie is sleeping.", "Maggie está durmiendo."),
+            ("We're walking on the beach.", "Estamos caminando por la playa."),
+            ("I'm trying it. (lo…)", "Lo estoy intentando.")]])))
     parts.append(drill('C · Reflexives — your daily routine',
-        questions([f'{esc(s)} &nbsp; {blank()}' for s in [
-            "Yo (levantarse) ___ a las seis.",
-            "Yo (ducharse) ___ por la mañana.",
-            "Mi novio (llamarse) ___ Joshua.",
-            "Los domingos yo (quedarse) ___ en casa.",
-            "Yo (acostarse) ___ temprano."]])))
+        questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in [
+            ("Yo (levantarse) ___ a las seis.", "me levanto"),
+            ("Yo (ducharse) ___ por la mañana.", "me ducho"),
+            ("Mi novio (llamarse) ___ Joshua.", "se llama"),
+            ("Los domingos yo (quedarse) ___ en casa.", "me quedo"),
+            ("Yo (acostarse) ___ temprano.", "me acuesto")]])))
     parts.append(drill('D · Stem-changers (the boot)',
-        questions([f'{esc(s)} &nbsp; {blank()}' for s in [
-            "Yo (querer) ___ aprender comida cubana.",
-            "Yo no (poder) ___ dormir con calor.",
-            "Yo (regar) ___ las plantas.",
-            "Yo (empezar) ___ a trabajar a las nueve.",
-            "Yo (preferir) ___ la playa por la mañana."]])))
+        questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in [
+            ("Yo (querer) ___ aprender comida cubana.", "quiero"),
+            ("Yo no (poder) ___ dormir con calor.", "puedo"),
+            ("Yo (regar) ___ las plantas.", "riego"),
+            ("Yo (empezar) ___ a trabajar a las nueve.", "empiezo"),
+            ("Yo (preferir) ___ la playa por la mañana.", "prefiero")]])))
 
     parts.append('<div class="page-break"></div>')
     parts.append('<div class="eyebrow">Unit 5</div>')
@@ -340,15 +352,15 @@ def build_practice():
         ("Ellos (bailar) ___ salsa toda la noche.", "bailaron"),
     ]
     parts.append(drill('A · Put the verb into the preterite (past)',
-        questions([f'{esc(s)} &nbsp; {blank()}' for s, _ in past_fill])))
+        questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in past_fill])))
     parts.append(drill('B · Translate into the past',
-        questions([f'{esc(en)} &nbsp; {blank(210)}' for en in [
-            "Yesterday I went to the beach.",
-            "We ate at a Cuban restaurant.",
-            "I paddleboarded in the morning.",
-            "My boyfriend made coffee.",
-            "Did you work yesterday?",
-            "We saw a dolphin.",
+        questions([f'{esc(en)} &nbsp; {qa_blank(a, 210)}' for en, a in [
+            ("Yesterday I went to the beach.", "Ayer fui a la playa."),
+            ("We ate at a Cuban restaurant.", "Comimos en un restaurante cubano."),
+            ("I paddleboarded in the morning.", "Hice paddleboard por la mañana."),
+            ("My boyfriend made coffee.", "Mi novio hizo café."),
+            ("Did you work yesterday?", "¿Trabajaste ayer?"),
+            ("We saw a dolphin.", "Vimos un delfín."),
         ]])))
     parts.append(drill('C · Write it',
         '<p>Describe your last weekend in 5–6 sentences, in the past tense.</p>'
@@ -513,6 +525,25 @@ GERUNDS = {
     "Salir": "saliendo", "Oír": "oyendo", "Querer": "queriendo",
     "Poder": "pudiendo", "Saber": "sabiendo", "Conocer": "conociendo",
 }
+# True future (yo, tú, él, nos, ellos) — note the irregular stems
+FUTURE = {
+    "Ser":    ["seré", "serás", "será", "seremos", "serán"],
+    "Estar":  ["estaré", "estarás", "estará", "estaremos", "estarán"],
+    "Ir":     ["iré", "irás", "irá", "iremos", "irán"],
+    "Tener":  ["tendré", "tendrás", "tendrá", "tendremos", "tendrán"],
+    "Hacer":  ["haré", "harás", "hará", "haremos", "harán"],
+    "Ver":    ["veré", "verás", "verá", "veremos", "verán"],
+    "Venir":  ["vendré", "vendrás", "vendrá", "vendremos", "vendrán"],
+    "Decir":  ["diré", "dirás", "dirá", "diremos", "dirán"],
+    "Dar":    ["daré", "darás", "dará", "daremos", "darán"],
+    "Poner":  ["pondré", "pondrás", "pondrá", "pondremos", "pondrán"],
+    "Salir":  ["saldré", "saldrás", "saldrá", "saldremos", "saldrán"],
+    "Oír":    ["oiré", "oirás", "oirá", "oiremos", "oirán"],
+    "Querer": ["querré", "querrás", "querrá", "querremos", "querrán"],
+    "Poder":  ["podré", "podrás", "podrá", "podremos", "podrán"],
+    "Saber":  ["sabré", "sabrás", "sabrá", "sabremos", "sabrán"],
+    "Conocer":["conoceré", "conocerás", "conocerá", "conoceremos", "conocerán"],
+}
 
 DETAIL = {}   # key -> detail sheet HTML, embedded in the app
 
@@ -530,19 +561,26 @@ def _rev(q, a):
 
 def verb_detail_html(v):
     inf = v["inf"]; low = inf.lower()
-    pret = PRETERITE[inf]; ger = GERUNDS[inf]
+    pret = PRETERITE[inf]; ger = GERUNDS[inf]; fut = FUTURE[inf]
+    pros = [p for p, _ in v["conj"]]
     h = [_sheet_head("Verb · full breakdown", low, v["meaning"])]
-    h.append('<h4>One verb, four jobs</h4>')
+    h.append('<h4>One verb, five jobs</h4>')
     h.append(vocab_table([
         (f"yo {v['conj'][0][1]}", "present — today / usually", "hoy"),
         (f"yo {pret[0]}", "past — done and finished", "ayer"),
-        (f"voy a {low}", "going to — the easy future", "mañana"),
+        (f"voy a {low}", "going to — the spoken future", "mañana"),
+        (f"yo {fut[0]}", "will — the one-word future", "algún día"),
         (f"estoy {ger}", "-ing — right this second", "ahora mismo"),
     ]))
     h.append('<h4>Present</h4>')
     h.append(conj_table("", v["conj"]))
     h.append('<h4>Past (preterite)</h4>')
-    h.append(conj_table("", list(zip([p for p, _ in v["conj"]], pret))))
+    h.append(conj_table("", list(zip(pros, pret))))
+    h.append('<h4>Future</h4>')
+    h.append(f'<p class="small">In conversation you\'ll usually say '
+             f'<span class="es">voy a {esc(low)}</span>. The one-word future '
+             f'below is the same idea — recognize it when you hear it.</p>')
+    h.append(conj_table("", list(zip(pros, fut))))
     h.append('<h4>When you use it</h4>')
     h.append('<ul>' + "".join(f'<li>{u}</li>' for u in v["when"]) + '</ul>')
     h.append(box('trick', 'Memory trick', f'<p>{v["trick"]}</p>'))
@@ -1083,6 +1121,40 @@ table tr:last-child td{border-bottom:none}
   .wb-sheet{transition:none}.sheet-back{transition:none}
 }
 
+/* ---------- interactive practice: type + check ---------- */
+.fill-in{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--accent);
+  background:transparent;border:none;border-bottom:2px solid var(--faint);
+  border-radius:0;padding:2px 6px;margin:0 3px;outline:none;max-width:100%}
+.fill-in:focus{border-bottom-color:var(--accent)}
+.fill-in.ok{color:var(--sea);border-bottom-color:var(--sea);
+  background:var(--sea-soft);border-radius:8px 8px 0 0}
+.fill-in.almost{color:var(--sun);border-bottom-color:var(--sun);
+  background:var(--sun-soft);border-radius:8px 8px 0 0}
+.fill-in.no{border-bottom-color:var(--coral);background:var(--coral-soft);
+  border-radius:8px 8px 0 0}
+.ans-chip{font-family:var(--serif);font-weight:700;font-size:14px;color:var(--sea);
+  background:var(--sea-soft);border:none;border-radius:999px;padding:3px 12px;
+  margin-left:8px;cursor:pointer;vertical-align:middle}
+textarea.free-write{width:100%;min-height:72px;background:var(--paper);
+  border:1px solid var(--line);border-radius:12px;padding:10px 12px;
+  color:var(--ink);font-family:var(--sans);font-size:15px;resize:vertical;
+  outline:none;margin:10px 0;display:block}
+textarea.free-write:focus{border-color:var(--accent)}
+
+/* floating accent keypad (shows while typing) */
+.accent-bar{position:fixed;left:50%;transform:translateX(-50%) translateY(10px);
+  bottom:14px;z-index:95;display:flex;gap:2px;background:var(--paper);
+  border:1px solid var(--line);border-radius:999px;padding:5px 8px;
+  box-shadow:var(--hover-shadow);opacity:0;pointer-events:none;
+  transition:opacity .2s ease,transform .2s ease;max-width:94vw;overflow-x:auto}
+.accent-bar.show{opacity:1;pointer-events:auto;transform:translateX(-50%)}
+.accent-bar button{font-family:var(--serif);font-size:17px;font-weight:700;
+  color:var(--accent);background:none;border:none;width:34px;height:34px;
+  border-radius:50%;cursor:pointer;flex:0 0 auto}
+.accent-bar button:hover{background:var(--accent-soft)}
+@media (max-width:640px){.accent-bar{bottom:94px}}
+@media (prefers-reduced-motion: reduce){.accent-bar{transition:none}}
+
 /* tap-to-check practice rows */
 .rev{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 0;
   border-bottom:1px dashed var(--line)}
@@ -1292,6 +1364,15 @@ def build_artifact(bodies):
   document.addEventListener('click', function(e){
     if(e.target.closest('[data-tab]')){ e.preventDefault(); closeSheet(); show(e.target.closest('[data-tab]').getAttribute('data-tab')); return; }
     if(e.target.closest('.sh-x')){ closeSheet(); return; }
+    if(e.target.closest('input,textarea,.accent-bar')) return;
+    var ac=e.target.closest('.ans-chip');
+    if(ac){ var val=ac.getAttribute('data-ansval');
+      var inpp=ac.previousElementSibling;
+      if(inpp&&inpp.classList.contains('fill-in')){
+        inpp.value=val; inpp.classList.remove('no','almost'); inpp.classList.add('ok');
+        try{localStorage.setItem('wbP:'+inpp.dataset.pid,val);}catch(err){}
+      }
+      speak(val); return; }
     var rb=e.target.closest('.rev-btn');
     if(rb){ var ans=rb.nextElementSibling;
       if(ans) ans.classList.add('show');
@@ -1317,6 +1398,80 @@ def build_artifact(bodies):
   var sb=document.getElementById('slowBtn');
   if(sb) sb.addEventListener('click', function(){ SLOW=!SLOW; sb.classList.toggle('on',SLOW);
     sb.setAttribute('aria-pressed', SLOW?'true':'false'); });
+
+  // ---------- interactive practice: blanks -> type-and-check inputs ----------
+  function deacc(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'');}
+  function normA(s){return (s||'').toLowerCase()
+    .replace(/[¡!¿?.,;:"'«»()]/g,'').replace(/\s+/g,' ').trim();}
+  function saveP(inp){try{localStorage.setItem('wbP:'+inp.dataset.pid, inp.value);}catch(e){}}
+  function clearChip(inp){var n=inp.nextElementSibling;
+    if(n&&n.classList.contains('ans-chip')) n.remove();}
+  function showChip(inp,ans){clearChip(inp);
+    var b=document.createElement('button'); b.className='ans-chip'; b.type='button';
+    b.setAttribute('data-ansval',ans); b.textContent=ans+' ♪';
+    inp.insertAdjacentElement('afterend',b);}
+  function gradeInput(inp, speakIt){
+    var ans=inp.getAttribute('data-ans'), v=normA(inp.value);
+    inp.classList.remove('ok','almost','no');
+    if(!v){ saveP(inp); return; }
+    if(v===normA(ans)){ inp.classList.add('ok'); clearChip(inp); if(speakIt) speak(ans); }
+    else if(deacc(v)===deacc(normA(ans))){ inp.classList.add('almost'); showChip(inp,ans); }
+    else { inp.classList.add('no');
+      inp.dataset.tries=(+inp.dataset.tries||0)+1;
+      if(+inp.dataset.tries>=2) showChip(inp,ans); }
+    saveP(inp);
+  }
+  var pidx=0;
+  document.querySelectorAll('.blank[data-ans]').forEach(function(sp){
+    var ans=sp.getAttribute('data-ans');
+    var inp=document.createElement('input');
+    inp.type='text'; inp.className='fill-in'; inp.setAttribute('data-ans',ans);
+    inp.setAttribute('autocapitalize','none'); inp.autocomplete='off'; inp.spellcheck=false;
+    inp.dataset.pid='p'+(pidx++);
+    inp.style.width=Math.max(70,Math.min(250,ans.length*10+34))+'px';
+    sp.replaceWith(inp);
+    try{var sv=localStorage.getItem('wbP:'+inp.dataset.pid);
+      if(sv){inp.value=sv; gradeInput(inp,false);}}catch(e){}
+  });
+  var fidx=0;
+  document.querySelectorAll('.write-lines').forEach(function(wl){
+    var ta=document.createElement('textarea'); ta.className='free-write';
+    ta.rows=Math.max(2, wl.querySelectorAll('.ln').length);
+    ta.placeholder='Escribe aquí…'; ta.dataset.fid='f'+(fidx++);
+    wl.replaceWith(ta);
+    try{var sv=localStorage.getItem('wbF:'+ta.dataset.fid); if(sv) ta.value=sv;}catch(e){}
+  });
+  document.addEventListener('change', function(e){
+    if(e.target.classList&&e.target.classList.contains('fill-in')) gradeInput(e.target,true);});
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('fill-in')){
+      e.preventDefault(); gradeInput(e.target,true);}});
+  document.addEventListener('input', function(e){var t=e.target;
+    if(!t.classList) return;
+    if(t.classList.contains('fill-in')){t.classList.remove('ok','almost','no'); saveP(t);}
+    if(t.classList.contains('free-write')){
+      try{localStorage.setItem('wbF:'+t.dataset.fid, t.value);}catch(err){}}});
+
+  // floating accent keypad
+  var abar=document.getElementById('accentBar'), curInp=null, abarT=null;
+  if(abar){
+    document.addEventListener('focusin', function(e){
+      if(e.target.matches&&e.target.matches('.fill-in,.free-write')){
+        curInp=e.target; clearTimeout(abarT); abar.classList.add('show');}});
+    document.addEventListener('focusout', function(e){
+      if(e.target.matches&&e.target.matches('.fill-in,.free-write'))
+        abarT=setTimeout(function(){abar.classList.remove('show');}, 300);});
+    abar.addEventListener('mousedown', function(e){e.preventDefault();});
+    abar.addEventListener('click', function(e){
+      var b=e.target.closest('[data-ch]'); if(!b||!curInp) return;
+      var s=curInp.selectionStart!=null?curInp.selectionStart:curInp.value.length;
+      var en2=curInp.selectionEnd!=null?curInp.selectionEnd:s;
+      curInp.value=curInp.value.slice(0,s)+b.getAttribute('data-ch')+curInp.value.slice(en2);
+      curInp.focus(); try{curInp.setSelectionRange(s+1,s+1);}catch(err){}
+      curInp.dispatchEvent(new Event('input',{bubbles:true}));
+      clearTimeout(abarT); abar.classList.add('show');
+    });
+  }
 
   // one-time hint toast
   try{
@@ -1358,6 +1513,10 @@ def build_artifact(bodies):
             '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 5-6"/></svg>'
             'Tests</button>'
             '</nav>'
+            '<div class="accent-bar" id="accentBar">'
+            + "".join(f'<button type="button" data-ch="{c}">{c}</button>'
+                      for c in ["á","é","í","ó","ú","ñ","¿","¡"])
+            + '</div>'
             '<div class="sheet-back" id="sheetBack"></div>'
             '<div class="wb-sheet" id="wbSheet" role="dialog" aria-modal="true">'
             '<div class="sh-grab"></div>'
@@ -1390,8 +1549,9 @@ PWA_MANIFEST = """{
 }
 """
 
-PWA_SW = """/* Offline cache for the standalone workbook app */
-const CACHE = 'hablar-workbook-v1';
+PWA_SW = """/* Offline cache for the standalone workbook app.
+   CACHE includes a content hash so every new build replaces the old one. */
+const CACHE = 'hablar-workbook-__BUILDHASH__';
 const ASSETS = ['./', './index.html', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', e => {
@@ -1403,6 +1563,16 @@ self.addEventListener('activate', e => {
 });
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  // pages: network-first so updates land; fall back to cache offline
+  if (e.request.mode === 'navigate') {
+    e.respondWith(fetch(e.request).then(res => {
+      const copy = res.clone();
+      caches.open(CACHE).then(c => c.put('./index.html', copy)).catch(() => {});
+      return res;
+    }).catch(() => caches.match('./index.html')));
+    return;
+  }
+  // assets: cache-first with backfill
   e.respondWith(caches.match(e.request).then(hit => hit || fetch(e.request).then(res => {
     const copy = res.clone();
     caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {});
@@ -1439,8 +1609,10 @@ def build_pwa(body):
         f.write(doc)
     with open(os.path.join(OUT, "app", "manifest.webmanifest"), "w", encoding="utf-8") as f:
         f.write(PWA_MANIFEST)
+    import hashlib
+    build_hash = hashlib.md5(doc.encode("utf-8")).hexdigest()[:10]
     with open(os.path.join(OUT, "app", "sw.js"), "w", encoding="utf-8") as f:
-        f.write(PWA_SW)
+        f.write(PWA_SW.replace("__BUILDHASH__", build_hash))
     print("wrote app/index.html, app/manifest.webmanifest, app/sw.js "
           f"({len(doc)//1024} KB)")
 
