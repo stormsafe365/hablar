@@ -483,31 +483,145 @@ def build_answers():
 
 
 # ══════════════════════════════════════════════════════════════════════════
+# FLASHCARD DETAIL SHEETS (tap a card → full breakdown)
+# ══════════════════════════════════════════════════════════════════════════
+import re as _re
+
+# Hand-written preterite + gerund for the 16 core verbs (yo, tú, él, nos, ellos)
+PRETERITE = {
+    "Ser":    ["fui", "fuiste", "fue", "fuimos", "fueron"],
+    "Estar":  ["estuve", "estuviste", "estuvo", "estuvimos", "estuvieron"],
+    "Ir":     ["fui", "fuiste", "fue", "fuimos", "fueron"],
+    "Tener":  ["tuve", "tuviste", "tuvo", "tuvimos", "tuvieron"],
+    "Hacer":  ["hice", "hiciste", "hizo", "hicimos", "hicieron"],
+    "Ver":    ["vi", "viste", "vio", "vimos", "vieron"],
+    "Venir":  ["vine", "viniste", "vino", "vinimos", "vinieron"],
+    "Decir":  ["dije", "dijiste", "dijo", "dijimos", "dijeron"],
+    "Dar":    ["di", "diste", "dio", "dimos", "dieron"],
+    "Poner":  ["puse", "pusiste", "puso", "pusimos", "pusieron"],
+    "Salir":  ["salí", "saliste", "salió", "salimos", "salieron"],
+    "Oír":    ["oí", "oíste", "oyó", "oímos", "oyeron"],
+    "Querer": ["quise", "quisiste", "quiso", "quisimos", "quisieron"],
+    "Poder":  ["pude", "pudiste", "pudo", "pudimos", "pudieron"],
+    "Saber":  ["supe", "supiste", "supo", "supimos", "supieron"],
+    "Conocer":["conocí", "conociste", "conoció", "conocimos", "conocieron"],
+}
+GERUNDS = {
+    "Ser": "siendo", "Estar": "estando", "Ir": "yendo", "Tener": "teniendo",
+    "Hacer": "haciendo", "Ver": "viendo", "Venir": "viniendo",
+    "Decir": "diciendo", "Dar": "dando", "Poner": "poniendo",
+    "Salir": "saliendo", "Oír": "oyendo", "Querer": "queriendo",
+    "Poder": "pudiendo", "Saber": "sabiendo", "Conocer": "conociendo",
+}
+
+DETAIL = {}   # key -> detail sheet HTML, embedded in the app
+
+def _sheet_head(kicker, word, en, note=""):
+    n = f'<div class="small muted">{esc(note)}</div>' if note else ''
+    return (f'<div class="sh-k">{esc(kicker)}</div>'
+            f'<h3 class="sh-w es" data-sheetword="{esc(word)}">{esc(word)}</h3>'
+            f'<div class="sh-en">{esc(en)}</div>{n}'
+            '<div class="sh-stress"></div>')
+
+def _rev(q, a):
+    return (f'<div class="rev"><span class="rev-q">{esc(q)}</span>'
+            f'<button class="rev-btn" data-es="{esc(a)}">Show</button>'
+            f'<span class="rev-ans">{esc(a)}</span></div>')
+
+def verb_detail_html(v):
+    inf = v["inf"]; low = inf.lower()
+    pret = PRETERITE[inf]; ger = GERUNDS[inf]
+    h = [_sheet_head("Verb · full breakdown", low, v["meaning"])]
+    h.append('<h4>One verb, four jobs</h4>')
+    h.append(vocab_table([
+        (f"yo {v['conj'][0][1]}", "present — today / usually", "hoy"),
+        (f"yo {pret[0]}", "past — done and finished", "ayer"),
+        (f"voy a {low}", "going to — the easy future", "mañana"),
+        (f"estoy {ger}", "-ing — right this second", "ahora mismo"),
+    ]))
+    h.append('<h4>Present</h4>')
+    h.append(conj_table("", v["conj"]))
+    h.append('<h4>Past (preterite)</h4>')
+    h.append(conj_table("", list(zip([p for p, _ in v["conj"]], pret))))
+    h.append('<h4>When you use it</h4>')
+    h.append('<ul>' + "".join(f'<li>{u}</li>' for u in v["when"]) + '</ul>')
+    h.append(box('trick', 'Memory trick', f'<p>{v["trick"]}</p>'))
+    h.append('<h4>In real sentences</h4>')
+    h.append(examples(v["examples"][:6]))
+    h.append('<h4>Try it — tap to check</h4>')
+    for s, a in v["fill"][:4]:
+        h.append(_rev(s, a))
+    for en_, es_ in v["translate"][:2]:
+        h.append(_rev(en_, es_))
+    return "".join(h)
+
+_ARTICLES = {"el", "la", "los", "las", "un", "una", "unos", "unas", "de", "para"}
+
+def _core_token(es):
+    words = _re.sub(r"[¡!¿?.,…()/]", " ", es.lower()).split()
+    for w in words:
+        if w not in _ARTICLES and len(w) > 2:
+            return w
+    return words[0] if words else es.lower()
+
+def vocab_detail_html(t, es, en, note):
+    tok = _core_token(es)
+    h = [_sheet_head(t["title"], es, en, note)]
+    found, seen = [], set()
+    for _, ses, sen in t["dialogue"]:
+        if tok in ses.lower() and ses not in seen:
+            found.append((ses, sen)); seen.add(ses)
+    for een, ees in t["translate"]:
+        if tok in ees.lower() and ees not in seen:
+            found.append((ees, een)); seen.add(ees)
+    if found:
+        h.append('<h4>In real sentences</h4>')
+        h.append(examples(found[:3]))
+    prac = [(s, a) for s, a in t["fill"] if tok in s.lower() or tok == a.lower()]
+    if prac:
+        h.append('<h4>Try it — tap to check</h4>')
+        for s, a in prac[:2]:
+            h.append(_rev(s, a))
+    h.append(box('tip', 'Make it yours',
+        f'<p>Say one true sentence about your life using '
+        f'<span class="es">{esc(es)}</span> — out loud, right now. '
+        'Add a <em>porque</em> if you can.</p>'))
+    return "".join(h)
+
+
+# ══════════════════════════════════════════════════════════════════════════
 # FLASHCARDS
 # ══════════════════════════════════════════════════════════════════════════
 def build_flashcards():
     parts = []
     parts.append('<div class="cover"><div class="eyebrow">Tarjetas</div>'
         '<h1>Flashcards</h1>'
-        '<div class="sub">Every vocabulary word in the workbook. Print, cut along '
-        'the dashed lines, and drill 5 minutes a day.</div>'
-        '<div class="who">Spanish → English · fold or cut</div></div>')
+        '<div class="sub">Every word in the workbook. <strong>Tap any card for '
+        'the full breakdown</strong> — tenses, real sentences, and quick practice. '
+        '(On paper: print and cut along the dashed lines.)</div>'
+        '<div class="who">Spanish → English</div></div>')
 
     # verbs deck
     parts.append('<div class="page-break"></div>')
     parts.append('<h1>Deck 1 · The 16 Verbs</h1>')
     verb_cards = []
-    for v in VERBS:
+    for i, v in enumerate(VERBS):
         yo = v["conj"][0][1]
+        key = f"v{i}"
+        DETAIL[key] = verb_detail_html(v)
         verb_cards.append((v["inf"].lower(), v["meaning"].split("(")[0].strip(),
-                           f'yo → {yo}'))
+                           f'yo → {yo}', key))
     parts.append(_cards(verb_cards))
 
     # vocab decks by theme
-    for t in THEMES:
+    for ti, t in enumerate(THEMES):
         parts.append('<div class="page-break"></div>')
         parts.append(f'<h1>{esc(t["title"])}</h1>')
-        cards = [(es, en, note) for es, en, note in t["vocab"]]
+        cards = []
+        for wi, (es, en, note) in enumerate(t["vocab"]):
+            key = f"t{ti}_{wi}"
+            DETAIL[key] = vocab_detail_html(t, es, en, note)
+            cards.append((es, en, note, key))
         parts.append(_cards(cards))
 
     body = "".join(parts)
@@ -517,10 +631,14 @@ def build_flashcards():
 
 
 def _cards(items):
+    """items: (front, back, tag) or (front, back, tag, detail_key)."""
     out = ['<div class="cards">']
-    for front, back, tag in items:
+    for it in items:
+        front, back, tag = it[0], it[1], it[2]
+        key = it[3] if len(it) > 3 else None
         tag_h = f'<div class="tag">{esc(tag)}</div>' if tag else ''
-        out.append(f'<div class="card"><div class="front">{esc(front)}</div>'
+        key_h = f' data-key="{esc(key)}"' if key else ''
+        out.append(f'<div class="card"{key_h}><div class="front">{esc(front)}</div>'
                    f'<div class="back">{esc(back)}</div>{tag_h}</div>')
     out.append('</div>')
     return "".join(out)
@@ -931,6 +1049,50 @@ table tr:last-child td{border-bottom:none}
   .bn-item:nth-child(even).on{color:var(--sea)}
 }
 
+/* ---------- flashcard detail sheet (slide-up, app style) ---------- */
+.sheet-back{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:110;
+  opacity:0;pointer-events:none;transition:opacity .25s}
+.sheet-back.show{opacity:1;pointer-events:auto}
+.wb-sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;background:var(--paper);
+  border:1px solid var(--line);border-bottom:none;border-radius:24px 24px 0 0;
+  box-shadow:0 -18px 50px rgba(0,0,0,.5);max-height:86vh;display:flex;
+  flex-direction:column;transform:translateY(103%);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.wb-sheet.show{transform:none}
+@media (min-width:700px){
+  .wb-sheet{left:50%;right:auto;width:620px;transform:translate(-50%,103%)}
+  .wb-sheet.show{transform:translate(-50%,0)}
+}
+.sh-grab{width:44px;height:5px;border-radius:3px;background:var(--line);
+  margin:10px auto 0;flex:0 0 auto}
+.sh-x{position:absolute;top:12px;right:14px;width:34px;height:34px;border-radius:50%;
+  background:var(--sand2);color:var(--soft);font-size:19px;line-height:1;z-index:2;
+  border:none;cursor:pointer}
+.sh-body{overflow-y:auto;padding:12px 22px calc(30px + env(safe-area-inset-bottom,0px))}
+.sh-k{font-family:var(--round);font-weight:800;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);margin-top:8px}
+.sh-w{font-family:var(--serif);font-size:34px;font-weight:700;color:var(--accent);
+  margin:2px 0 0;cursor:pointer}
+.sh-w::after{content:"♪";font-size:.5em;margin-left:8px;opacity:.5;vertical-align:middle}
+.sh-en{color:var(--soft);font-size:15px}
+.sh-stress{font-family:var(--round);font-weight:700;color:var(--sea);font-size:15.5px;
+  margin:5px 0 4px;letter-spacing:.02em}
+.sh-stress b{color:var(--sea)}
+.sh-body h4{margin:18px 0 6px}
+@media (prefers-reduced-motion: reduce){
+  .wb-sheet{transition:none}.sheet-back{transition:none}
+}
+
+/* tap-to-check practice rows */
+.rev{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 0;
+  border-bottom:1px dashed var(--line)}
+.rev-q{font-size:14.5px}
+.rev-btn{font-family:var(--round);font-weight:700;font-size:12px;color:var(--sea);
+  background:var(--sea-soft);border:none;border-radius:999px;padding:5px 13px;cursor:pointer}
+.rev-ans{display:none;font-family:var(--serif);font-weight:700;font-size:16px;
+  color:var(--sea);cursor:pointer}
+.rev-ans.show{display:inline}
+
 /* ---------- hover: lift + colored border ---------- */
 @media (hover:hover){
   .box,.drill,.card,.tile,.chip,.conj,.qa{
@@ -957,6 +1119,11 @@ TAB_ORDER = [
     ("answers", "Answers"), ("flashcards", "Flashcards"),
     ("cheatsheets", "Cheat Sheets"), ("tests", "Tests"),
 ]
+
+def _detail_json():
+    import json
+    return json.dumps(DETAIL, ensure_ascii=False).replace('</', '<\\/')
+
 
 def _to_tabs(html):
     """Rewrite cross-file links into in-page tab switches."""
@@ -1095,17 +1262,53 @@ def build_artifact(bodies):
     return (c.textContent||'').replace(/🔊/g,'').trim();
   }
 
-  var SEL='.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.chip,.card .front';
+  // ---------- flashcard detail sheet ----------
+  var sheetBack=document.getElementById('sheetBack'),
+      wbSheet=document.getElementById('wbSheet'),
+      sheetBody=document.getElementById('sheetBody');
+  function openSheet(key){
+    var d=(window.WB_DETAIL||{})[key]; if(!d||!wbSheet) return;
+    sheetBody.innerHTML=d; sheetBody.scrollTop=0;
+    var w=sheetBody.querySelector('[data-sheetword]');
+    var slot=sheetBody.querySelector('.sh-stress');
+    if(w){var txt=w.getAttribute('data-sheetword');
+      if(slot){
+        if(txt.split(/\s+/).length<=3 && /[a-záéíóúñü]/i.test(txt))
+          slot.innerHTML=markPhrase(txt);
+        else slot.style.display='none';
+      }
+      speak(txt);
+    }
+    sheetBack.classList.add('show'); wbSheet.classList.add('show');
+  }
+  function closeSheet(){
+    if(!wbSheet) return;
+    sheetBack.classList.remove('show'); wbSheet.classList.remove('show');
+  }
+  if(sheetBack) sheetBack.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSheet(); });
+
+  var SEL='.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.chip,.sh-w';
   document.addEventListener('click', function(e){
-    if(e.target.closest('[data-tab]')){ e.preventDefault(); show(e.target.closest('[data-tab]').getAttribute('data-tab')); return; }
-    if(e.target.closest('.slow-btn')||e.target.closest('.say-bar')) return;
+    if(e.target.closest('[data-tab]')){ e.preventDefault(); closeSheet(); show(e.target.closest('[data-tab]').getAttribute('data-tab')); return; }
+    if(e.target.closest('.sh-x')){ closeSheet(); return; }
+    var rb=e.target.closest('.rev-btn');
+    if(rb){ var ans=rb.nextElementSibling;
+      if(ans) ans.classList.add('show');
+      rb.style.display='none'; speak(rb.getAttribute('data-es')); return; }
+    var ra=e.target.closest('.rev-ans.show');
+    if(ra){ speak(ra.textContent); return; }
+    var cd=e.target.closest('.card[data-key]');
+    if(cd){ openSheet(cd.getAttribute('data-key')); return; }
+    if(e.target.closest('.slow-btn')) return;
     var t=e.target.closest(SEL);
     if(!t){ hidePop(); return; }
     var text=esText(t);
     if(!text) return;
     speak(text, t);
     var words=text.split(/\s+/);
-    if(words.length<=3 && /[a-záéíóúñü]/i.test(text)) showPop(markPhrase(text), t.getBoundingClientRect());
+    if(words.length<=3 && /[a-záéíóúñü]/i.test(text) && !t.closest('.wb-sheet'))
+      showPop(markPhrase(text), t.getBoundingClientRect());
     else hidePop();
   });
   window.addEventListener('scroll', hidePop, {passive:true});
@@ -1155,6 +1358,12 @@ def build_artifact(bodies):
             '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 5-6"/></svg>'
             'Tests</button>'
             '</nav>'
+            '<div class="sheet-back" id="sheetBack"></div>'
+            '<div class="wb-sheet" id="wbSheet" role="dialog" aria-modal="true">'
+            '<div class="sh-grab"></div>'
+            '<button class="sh-x" aria-label="Close">&times;</button>'
+            '<div class="sh-body" id="sheetBody"></div></div>'
+            + f'<script>window.WB_DETAIL={_detail_json()};</script>'
             + f'<script>{js}</script>')
     w("hablar-workbook.html", body)
     return body
