@@ -798,6 +798,15 @@ def build_tests():
 # ══════════════════════════════════════════════════════════════════════════
 # CHEAT SHEETS + INDEX
 # ══════════════════════════════════════════════════════════════════════════
+def build_grammar():
+    from content import gramguide
+    body, sheets = gramguide.get()
+    DETAIL.update(sheets)
+    w("grammar.html", shell("Hablar Workbook · Grammar Guide", body,
+                            subtitle="Grammar Guide"))
+    return body
+
+
 def build_cheats():
     body = extras.cheat_sheets()
     w("cheatsheets.html", shell("Hablar Workbook · Cheat Sheets",
@@ -810,6 +819,8 @@ def build_index():
         ("book.html", "📘", "The Book", "Parts I–VIII: foundations, the 16 core "
          "verbs, everyday verb forms, real-life vocabulary, past tense, reading, "
          "speaking & Cuban & Colombian Spanish."),
+        ("grammar.html", "", "Grammar Guide", "Plain-English grammar with clear "
+         "examples — pronouns, articles, ser vs estar, reflexives, and more."),
         ("practice.html", "✍️", "Practice Workbook", "Thousands of exercises — "
          "fill-ins, translation, conversation, and quizzes for every verb and theme."),
         ("answers.html", "🔑", "Answer Book", "Every answer worked out, with the "
@@ -1086,8 +1097,8 @@ table tr:last-child td{border-bottom:none}
     justify-content:space-around;padding:8px 4px;
     padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}
   .bn-item{display:flex;flex-direction:column;align-items:center;gap:3px;
-    font-family:var(--round);font-weight:700;font-size:10.5px;color:var(--faint);
-    background:none;border:none;padding:6px 10px;border-radius:14px;cursor:pointer}
+    font-family:var(--round);font-weight:700;font-size:10px;color:var(--faint);
+    background:none;border:none;padding:6px 6px;border-radius:14px;cursor:pointer}
   .bn-item svg{width:20px;height:20px;stroke:currentColor;fill:none;
     stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
   .bn-item.on{color:var(--accent)}
@@ -1162,6 +1173,34 @@ textarea.free-write:focus{border-color:var(--accent)}
 @media (max-width:640px){.accent-bar{bottom:94px}}
 @media (prefers-reduced-motion: reduce){.accent-bar{transition:none}}
 
+/* ---------- grammar guide cards ---------- */
+.ggrid{display:grid;grid-template-columns:1fr;gap:14px;margin:18px 0}
+@media (min-width:560px){.ggrid{grid-template-columns:1fr 1fr}}
+.gcard{position:relative;background:var(--paper);border:1px solid var(--line);
+  border-radius:18px;padding:16px 18px 18px;box-shadow:var(--shadow);
+  cursor:pointer;overflow:hidden;min-height:118px}
+.gcard .gc-t{font-family:var(--serif);font-weight:700;font-size:19px;
+  max-width:66%;line-height:1.2}
+.gcard .gc-d{color:var(--soft);font-size:13.5px;margin-top:5px;max-width:64%}
+.gchips{position:absolute;right:-8px;top:12px;display:flex;
+  flex-direction:column;gap:7px;align-items:flex-end}
+.gchip{font-family:var(--round);font-weight:800;font-size:12px;
+  padding:5px 13px;border-radius:9px;box-shadow:var(--shadow)}
+.gchip.a{background:var(--accent);color:#201a18}
+.gchip.s{background:var(--sea);color:#132018}
+.gchip.g{background:var(--sun);color:#241f10}
+.gchip.r1{transform:rotate(6deg)}
+.gchip.r2{transform:rotate(-5deg)}
+.gchip.r3{transform:rotate(3deg)}
+@media (hover:hover){
+  .gcard{transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease}
+  .gcard:hover{transform:translateY(-3px);box-shadow:var(--hover-shadow);
+    border-color:var(--accent)}
+  .ggrid .gcard:nth-child(even):hover{border-color:var(--sea)}
+}
+.gcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sh-body .gg-t{font-family:var(--serif);font-size:28px;font-weight:700;margin:2px 0 0}
+
 /* tap-to-check practice rows */
 .rev{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 0;
   border-bottom:1px dashed var(--line)}
@@ -1194,7 +1233,8 @@ textarea.free-write:focus{border-color:var(--accent)}
 """
 
 TAB_ORDER = [
-    ("contents", "Contents"), ("book", "The Book"), ("practice", "Practice"),
+    ("contents", "Contents"), ("book", "The Book"), ("grammar", "Grammar"),
+    ("practice", "Practice"),
     ("answers", "Answers"), ("flashcards", "Flashcards"),
     ("cheatsheets", "Cheat Sheets"), ("tests", "Tests"),
 ]
@@ -1211,7 +1251,8 @@ def _index_json():
 
 def _to_tabs(html):
     """Rewrite cross-file links into in-page tab switches."""
-    m = {"index.html": "contents", "book.html": "book", "practice.html": "practice",
+    m = {"index.html": "contents", "book.html": "book", "grammar.html": "grammar",
+         "practice.html": "practice",
          "answers.html": "answers", "flashcards.html": "flashcards",
          "cheatsheets.html": "cheatsheets", "tests.html": "tests"}
     for f, tab in m.items():
@@ -1391,7 +1432,7 @@ def build_artifact(bodies):
       rb.style.display='none'; speak(rb.getAttribute('data-es')); return; }
     var ra=e.target.closest('.rev-ans.show');
     if(ra){ speak(ra.textContent); return; }
-    var cd=e.target.closest('.card[data-key]');
+    var cd=e.target.closest('.card[data-key],.gcard[data-key]');
     if(cd){ openSheet(cd.getAttribute('data-key')); return; }
     if(e.target.closest('.slow-btn')) return;
     var t=e.target.closest(SEL);
@@ -1521,6 +1562,9 @@ def build_artifact(bodies):
             '<button class="bn-item" data-tab="book">'
             '<svg viewBox="0 0 24 24"><path d="M4 4h7v16H6a2 2 0 0 1-2-2V4Z"/><path d="M20 4h-7v16h5a2 2 0 0 0 2-2V4Z"/></svg>'
             'Book</button>'
+            '<button class="bn-item" data-tab="grammar">'
+            '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9a2.4 2.4 0 1 1 3.5 2.2c-.9.4-1.1 1-1.1 1.8"/><path d="M12 16.6v.01"/></svg>'
+            'Grammar</button>'
             '<button class="bn-item" data-tab="practice">'
             '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>'
             'Practice</button>'
@@ -1644,6 +1688,7 @@ if __name__ == "__main__":
         "practice":    build_practice(),
         "answers":     build_answers(),
         "flashcards":  build_flashcards(),
+        "grammar":     build_grammar(),
         "cheatsheets": build_cheats(),
         "tests":       build_tests(),
     }
