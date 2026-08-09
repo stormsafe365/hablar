@@ -546,6 +546,11 @@ FUTURE = {
 }
 
 DETAIL = {}   # key -> detail sheet HTML, embedded in the app
+INDEX = {}    # normalized Spanish word -> detail key (tap a word anywhere → sheet)
+
+def _norm_key(s):
+    s = _re.sub(r"[¡!¿?.,;:\"'«»()]", "", s.lower())
+    return _re.sub(r"\s+", " ", s).strip()
 
 def _sheet_head(kicker, word, en, note=""):
     n = f'<div class="small muted">{esc(note)}</div>' if note else ''
@@ -647,6 +652,7 @@ def build_flashcards():
         yo = v["conj"][0][1]
         key = f"v{i}"
         DETAIL[key] = verb_detail_html(v)
+        INDEX.setdefault(_norm_key(v["inf"]), key)
         verb_cards.append((v["inf"].lower(), v["meaning"].split("(")[0].strip(),
                            f'yo → {yo}', key))
     parts.append(_cards(verb_cards))
@@ -659,6 +665,7 @@ def build_flashcards():
         for wi, (es, en, note) in enumerate(t["vocab"]):
             key = f"t{ti}_{wi}"
             DETAIL[key] = vocab_detail_html(t, es, en, note)
+            INDEX.setdefault(_norm_key(es), key)
             cards.append((es, en, note, key))
         parts.append(_cards(cards))
 
@@ -1197,6 +1204,11 @@ def _detail_json():
     return json.dumps(DETAIL, ensure_ascii=False).replace('</', '<\\/')
 
 
+def _index_json():
+    import json
+    return json.dumps(INDEX, ensure_ascii=False).replace('</', '<\\/')
+
+
 def _to_tabs(html):
     """Rewrite cross-file links into in-page tab switches."""
     m = {"index.html": "contents", "book.html": "book", "practice.html": "practice",
@@ -1386,6 +1398,12 @@ def build_artifact(bodies):
     if(!t){ hidePop(); return; }
     var text=esText(t);
     if(!text) return;
+    // a word with a detail sheet opens it (except inside the sheet itself
+    // and conjugation cells, which keep quick speak + stress)
+    if(!t.closest('.wb-sheet') && !t.classList.contains('v')){
+      var dk=(window.WB_INDEX||{})[normA(text)];
+      if(dk){ openSheet(dk); return; }
+    }
     speak(text, t);
     var words=text.split(/\s+/);
     if(words.length<=3 && /[a-záéíóúñü]/i.test(text) && !t.closest('.wb-sheet'))
@@ -1522,7 +1540,8 @@ def build_artifact(bodies):
             '<div class="sh-grab"></div>'
             '<button class="sh-x" aria-label="Close">&times;</button>'
             '<div class="sh-body" id="sheetBody"></div></div>'
-            + f'<script>window.WB_DETAIL={_detail_json()};</script>'
+            + f'<script>window.WB_DETAIL={_detail_json()};'
+              f'window.WB_INDEX={_index_json()};</script>'
             + f'<script>{js}</script>')
     w("hablar-workbook.html", body)
     return body
