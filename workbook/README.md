@@ -1,5 +1,11 @@
 # Spanish for Your Real Life — a personalized workbook
 
+> **Live app:** https://jennasespanollessons.netlify.app/
+> (Deployed on Netlify from `workbook/app/` — to update it, rebuild with
+> `python3 build.py`, re-zip the `app/` folder contents, and drag the zip
+> onto the site's **Deploys** page in Netlify. Installed phones pick up the
+> new version automatically on next open.)
+
 A print-ready Spanish workbook built around real life in Florida: the beach,
 paddleboarding, dogs, gardening, the gym, music, cooking, coffee, work,
 texting, relationships, and the **Cuban Spanish** a boyfriend actually speaks.
