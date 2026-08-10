@@ -505,6 +505,184 @@ TOPICS = [
         ("I like the beans (plural!)","me gustan los frijoles"),
         ("I love the beach","me encanta la playa")],
 },
+{
+ "id": "porpara",
+ "t": "Por vs. para", "d": "Two words for “for” — and they're not interchangeable.",
+ "chips": [("por","a"),("para","s"),("gracias","g")],
+ "body": (
+   '<p>The trick: <b>para looks forward</b> (goal, destination, recipient) — '
+   '<b>por looks back or through</b> (reason, exchange, along, during).</p>'
+   + _gtable(["PARA — forward →","POR — because / through"],[
+     ["a goal: "+_es("Estudio para hablar con su familia"),
+      "a reason: "+_es("Gracias por todo")],
+     ["a recipient: "+_es("Este cafecito es para ti"),
+      "movement through: "+_es("Caminamos por la playa")],
+     ["a destination: "+_es("Salgo para el trabajo"),
+      "time of day: "+_es("por la mañana")],
+     ["a deadline: "+_es("para el viernes"),
+      "an exchange: "+_es("Lo compré por veinte dólares")]])
+   + '<p class="small">Don\'t stress about mastering this — even advanced '
+   'learners mix these up. Learn the phrases above as chunks and you\'ll be '
+   'right most of the time.</p>'),
+ "ex": [("Gracias por todo.","Thanks for everything. (say this to his mom!)"),
+        ("Este cafecito es para ti.","This little coffee is for you."),
+        ("Caminamos por la playa con Maggie.","We walk along the beach with Maggie."),
+        ("Estudio español para hablar con su familia.","I study Spanish (in order) to talk with his family.")],
+ "pr": [("thanks for everything","gracias por todo"),
+        ("this is for you: es ___ ti","para"),
+        ("in the morning: ___ la mañana","por"),
+        ("(goal) I study ___ to speak: estudio ___ hablar","para")],
+},
+{
+ "id": "objetos",
+ "t": "Object pronouns", "d": "me, te, lo, la — “me, you, it.”",
+ "chips": [("lo","a"),("la","s"),("te","g")],
+ "body": (
+   '<p>Little words that stand in for people and things, so you don\'t '
+   'repeat the noun. You already use two constantly: '
+   +_es("te quiero")+' and '+_es("lo estoy intentando")+'.</p>'
+   + _gtable(["Spanish","English"],[
+     [_es("me"),"me"],[_es("te"),"you"],
+     [_es("lo"),"him / it (masculine)"],[_es("la"),"her / it (feminine)"],
+     [_es("nos"),"us"],[_es("los / las"),"them"]])
+   + '<p><b>Where does it go?</b> Right <b>before</b> the conjugated verb: '
+   +_es("Lo veo")+' — I see it. With two verbs you can also hang it on the '
+   'end of the second: '+_es("Lo quiero comer")+' or '
+   +_es("Quiero comerlo")+' — both correct.</p>'),
+ "ex": [("Te quiero mucho.","I love you a lot."),
+        ("¿Me ayudas con el español?","Will you help me with Spanish?"),
+        ("Lo estoy intentando.","I'm trying it."),
+        ("¿Los tostones? Los comí todos.","The tostones? I ate them all."),
+        ("Maggie nos espera en casa.","Maggie is waiting for us at home.")],
+ "pr": [("I love you","te quiero"),
+        ("I'm trying it","lo estoy intentando"),
+        ("I ate them (los tostones): ___ comí","los"),
+        ("will you help me? ¿___ ayudas?","me")],
+},
+{
+ "id": "muymucho",
+ "t": "Muy vs. mucho", "d": "“Very” vs. “a lot” — the classic mix-up.",
+ "chips": [("muy","a"),("mucho","s"),("muchas","g")],
+ "body": (
+   '<p>Both feel like “very,” but they live in different places:</p>'
+   + _gtable(["MUY + describing word","MUCHO + noun / after verb"],[
+     [_es("muy cansada")+" — very tired", _es("mucho calor")+" — a lot of heat"],
+     [_es("muy bien")+" — very well", _es("muchas olas")+" — many waves"],
+     [_es("muy dulce")+" — very sweet", _es("Te quiero mucho")+" — I love you a lot"]])
+   + '<p><b>Muy never changes.</b> <b>Mucho matches the noun</b>: '
+   +_es("mucho calor")+', '+_es("mucha agua")+', '+_es("muchos perros")+', '
+   +_es("muchas flores")+'. And there\'s no “muy mucho” — for “very '
+   'much,” say '+_es("muchísimo")+'.</p>'),
+ "ex": [("Hoy hace mucho calor y estoy muy cansada.","Today it's very hot and I'm very tired."),
+        ("Hay muchas olas esta mañana.","There are a lot of waves this morning."),
+        ("El cafecito está muy dulce.","The cafecito is very sweet."),
+        ("Te quiero muchísimo.","I love you very much.")],
+ "pr": [("very tired (you, f)","muy cansada"),
+        ("a lot of heat","mucho calor"),
+        ("many waves","muchas olas"),
+        ("I love you a lot: te quiero ___","mucho")],
+},
+{
+ "id": "teneridioms",
+ "t": "Tener expressions", "d": "In Spanish you HAVE hunger, heat, and sleepiness.",
+ "chips": [("hambre","a"),("sueño","s"),("ganas","g")],
+ "body": (
+   '<p>English says “I <em>am</em> hungry” — Spanish says “I '
+   '<em>have</em> hunger.” A whole family of feelings works this way:</p>'
+   + _gtable(["Spanish","English"],[
+     [_es("tengo hambre"),"I'm hungry"],[_es("tengo sed"),"I'm thirsty"],
+     [_es("tengo calor"),"I'm hot"],[_es("tengo frío"),"I'm cold"],
+     [_es("tengo sueño"),"I'm sleepy"],[_es("tengo miedo"),"I'm scared"],
+     [_es("tengo prisa"),"I'm in a hurry"],[_es("tengo razón"),"I'm right"],
+     [_es("tengo suerte"),"I'm lucky"],
+     [_es("tengo ganas de…"),"I feel like… (+ verb)"]])
+   + '<p><b>The one that saves you embarrassment:</b> for “I\'m hot” '
+   '(temperature), always '+_es("tengo calor")+' — never “estoy '
+   'caliente,” which means something very different.</p>'),
+ "ex": [("Tengo hambre. ¿Comemos?","I'm hungry. Shall we eat?"),
+        ("Tengo ganas de ir a la playa.","I feel like going to the beach."),
+        ("Tengo sueño — me acuesto temprano.","I'm sleepy — I'm going to bed early."),
+        ("¡Tengo suerte de tener a Joshua!","I'm lucky to have Joshua!")],
+ "pr": [("I'm hungry","tengo hambre"),
+        ("I'm sleepy","tengo sueño"),
+        ("I feel like dancing","tengo ganas de bailar"),
+        ("I'm hot (temperature!)","tengo calor")],
+},
+{
+ "id": "comandos",
+ "t": "Tú commands", "d": "Ven, dale, siéntate — you already use these with Maggie.",
+ "chips": [("ven","a"),("dale","s"),("haz","g")],
+ "body": (
+   '<p>To tell someone (or Maggie) to do something, the regular rule is '
+   'sweet: <b>use the él/ella form</b>: '+_es("habla")+' (speak!), '
+   +_es("come")+' (eat!), '+_es("camina")+' (walk!).</p>'
+   '<p><b>Eight famous rebels</b> — memorize the chant '
+   '“<b>Vin Diesel Has Ten Weapons</b>”:</p>'
+   + _gtable(["Command","From","Means"],[
+     [_es("ven"),"venir","come!"],[_es("di"),"decir","say!"],
+     [_es("sal"),"salir","leave!"],[_es("haz"),"hacer","do!"],
+     [_es("ten"),"tener","have!"],[_es("ve"),"ir","go!"],
+     [_es("pon"),"poner","put!"],[_es("sé"),"ser","be!"]])
+   + '<p><b>Little words hang on the end:</b> '+_es("dime")+' (tell me), '
+   +_es("hazlo")+' (do it), '+_es("siéntate")+' (sit down!). And now you '
+   'know what '+_es("dale")+' literally is: da + le — “give it!” → '
+   'Cuban for “go for it.”</p>'),
+ "ex": [("¡Ven aquí, Maggie! ¡Siéntate!","Come here, Maggie! Sit!"),
+        ("Dime la verdad.","Tell me the truth."),
+        ("Pon música cubana.","Put on Cuban music."),
+        ("Dale, vamos a la playa.","Go on, let's go to the beach.")],
+ "pr": [("come! (Maggie)","ven"),
+        ("tell me","dime"),
+        ("do it","hazlo"),
+        ("put on music: ___ música","pon")],
+},
+{
+ "id": "comparar",
+ "t": "Comparisons", "d": "más que, menos que, tan… como.",
+ "chips": [("más","a"),("que","g"),("mejor","s")],
+ "body": (
+   _gtable(["Pattern","Example"],[
+     [_es("más … que")+" — more … than",
+      _es("El café cubano es más fuerte que el americano.")],
+     [_es("menos … que")+" — less … than",
+      _es("La tarde está menos tranquila que la mañana.")],
+     [_es("tan … como")+" — as … as",
+      _es("Esta playa es tan bonita como aquella.")],
+     [_es("mejor / peor")+" — better / worse",
+      _es("Joshua baila mejor que yo.")],
+     [_es("el / la más …")+" — the most …",
+      _es("Maggie es la perra más cariñosa del mundo.")]])),
+ "ex": [("El café cubano es más fuerte que el americano.","Cuban coffee is stronger than American coffee."),
+        ("Joshua baila mejor que yo… por ahora.","Joshua dances better than me… for now."),
+        ("Maggie es la perra más cariñosa del mundo.","Maggie is the most affectionate dog in the world.")],
+ "pr": [("stronger than: más fuerte ___","que"),
+        ("as pretty as: tan bonita ___","como"),
+        ("better","mejor"),
+        ("the most affectionate: la ___ cariñosa","más")],
+},
+{
+ "id": "lugares",
+ "t": "Where things are", "d": "en, sobre, debajo de, cerca de…",
+ "chips": [("cerca de","s"),("debajo","a"),("entre","g")],
+ "body": (
+   _gtable(["Spanish","English"],[
+     [_es("en"),"in / on / at"],[_es("sobre"),"on top of"],
+     [_es("debajo de"),"under"],[_es("cerca de"),"near"],
+     [_es("lejos de"),"far from"],[_es("al lado de"),"next to"],
+     [_es("entre"),"between"],[_es("dentro de"),"inside"],
+     [_es("detrás de"),"behind"],[_es("delante de"),"in front of"]])
+   + '<p class="small">Remember '+_es("de + el = del")+': '
+   +_es("al lado del café")+' — next to the café. Use these with '
+   +_es("estar")+': '+_es("Maggie está debajo de la mesa.")+'</p>'),
+ "ex": [("Maggie está debajo de la mesa.","Maggie is under the table."),
+        ("La casa está cerca de la playa.","The house is near the beach."),
+        ("Las llaves están sobre la mesa.","The keys are on the table."),
+        ("El gimnasio está al lado del café.","The gym is next to the café.")],
+ "pr": [("near the beach","cerca de la playa"),
+        ("under the table","debajo de la mesa"),
+        ("next to the café","al lado del café"),
+        ("between","entre")],
+},
 ]
 
 
