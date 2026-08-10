@@ -137,6 +137,11 @@ th{font-family:var(--round);font-weight:800;font-size:12px;text-transform:upperc
 .card .tag{font-size:11px;color:var(--faint);font-family:var(--round);
   font-weight:800;text-transform:uppercase;letter-spacing:.08em}
 
+/* learn-this links (styled further in the app) */
+.tlink{background:none;border:none;padding:0;font:inherit;color:var(--soft);
+  text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer}
+.dlearn{font-family:var(--round);font-weight:700;font-size:12px;color:var(--sea)}
+
 /* toc */
 .toc{list-style:none;margin:18px 0;padding:0}
 .toc li{display:flex;align-items:baseline;gap:8px;padding:7px 0;
@@ -286,8 +291,14 @@ def questions(items, start=1):
         out.append(f'<div class="q"><span class="num">{i}.</span>{it}</div>')
     return "".join(out)
 
-def drill(title, inner):
-    return f'<div class="drill"><h4>{esc(title)}</h4>{inner}</div>'
+def drill(title, inner, learn=None):
+    """learn: optional grammar-sheet key; renders a 'learn this' link in the
+    app (hidden in print)."""
+    link = ''
+    if learn:
+        link = (f' <button type="button" class="tlink dlearn no-print" '
+                f'data-key="{esc(learn)}">· learn this</button>')
+    return f'<div class="drill"><h4>{esc(title)}{link}</h4>{inner}</div>'
 
 def blank(width=120):
     return f'<span class="blank" style="min-width:{width}px"></span>'

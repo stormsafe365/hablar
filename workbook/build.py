@@ -238,11 +238,13 @@ def render_verb_practice(v, n):
 
     # A. Conjugation recall
     h.append(drill('A · Write the full conjugation from memory',
-        questions([f'{esc(p)} &nbsp; {qa_blank(f, 140)}' for p, f in v["conj"]])))
+        questions([f'{esc(p)} &nbsp; {qa_blank(f, 140)}' for p, f in v["conj"]]),
+        learn='g_present'))
 
     # B. Fill in the blanks
     h.append(drill('B · Fill in the blank with the correct present-tense form',
-        questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in v["fill"]])))
+        questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in v["fill"]]),
+        learn='g_present'))
 
     # C. Translate
     h.append(drill('C · Translate into Spanish',
@@ -315,28 +317,32 @@ def build_practice():
             ("(paddleboard with Joshua) → …", "Voy a hacer paddleboard con Joshua."),
             ("(water the plants tomorrow) → …", "Mañana voy a regar las plantas."),
             ("(gym after work) → …", "Voy al gimnasio después del trabajo."),
-            ("(cook something Cuban) → …", "Voy a cocinar algo cubano.")]])))
+            ("(cook something Cuban) → …", "Voy a cocinar algo cubano.")]]),
+        learn='g_nearfut'))
     parts.append(drill('B · Progressive — "estoy ___-ando/-iendo" (right now)',
         questions([f'{esc(en)} &nbsp; {qa_blank(a, 190)}' for en, a in [
             ("I'm learning Spanish.", "Estoy aprendiendo español."),
             ("I'm cooking.", "Estoy cocinando."),
             ("Maggie is sleeping.", "Maggie está durmiendo."),
             ("We're walking on the beach.", "Estamos caminando por la playa."),
-            ("I'm trying it. (lo…)", "Lo estoy intentando.")]])))
+            ("I'm trying it. (lo…)", "Lo estoy intentando.")]]),
+        learn='g_continuo'))
     parts.append(drill('C · Reflexives — your daily routine',
         questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in [
             ("Yo (levantarse) ___ a las seis.", "me levanto"),
             ("Yo (ducharse) ___ por la mañana.", "me ducho"),
             ("Mi novio (llamarse) ___ Joshua.", "se llama"),
             ("Los domingos yo (quedarse) ___ en casa.", "me quedo"),
-            ("Yo (acostarse) ___ temprano.", "me acuesto")]])))
+            ("Yo (acostarse) ___ temprano.", "me acuesto")]]),
+        learn='g_reflexivos'))
     parts.append(drill('D · Stem-changers (the boot)',
         questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in [
             ("Yo (querer) ___ aprender comida cubana.", "quiero"),
             ("Yo no (poder) ___ dormir con calor.", "puedo"),
             ("Yo (regar) ___ las plantas.", "riego"),
             ("Yo (empezar) ___ a trabajar a las nueve.", "empiezo"),
-            ("Yo (preferir) ___ la playa por la mañana.", "prefiero")]])))
+            ("Yo (preferir) ___ la playa por la mañana.", "prefiero")]]),
+        learn='g_boot'))
 
     parts.append('<div class="page-break"></div>')
     parts.append('<div class="eyebrow">Unit 5</div>')
@@ -352,7 +358,8 @@ def build_practice():
         ("Ellos (bailar) ___ salsa toda la noche.", "bailaron"),
     ]
     parts.append(drill('A · Put the verb into the preterite (past)',
-        questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in past_fill])))
+        questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in past_fill]),
+        learn='g_preterite'))
     parts.append(drill('B · Translate into the past',
         questions([f'{esc(en)} &nbsp; {qa_blank(a, 210)}' for en, a in [
             ("Yesterday I went to the beach.", "Ayer fui a la playa."),
@@ -361,7 +368,7 @@ def build_practice():
             ("My boyfriend made coffee.", "Mi novio hizo café."),
             ("Did you work yesterday?", "¿Trabajaste ayer?"),
             ("We saw a dolphin.", "Vimos un delfín."),
-        ]])))
+        ]]), learn='g_preterite'))
     parts.append(drill('C · Write it',
         '<p>Describe your last weekend in 5–6 sentences, in the past tense.</p>'
         + write_lines(7)))
@@ -570,13 +577,25 @@ def verb_detail_html(v):
     pros = [p for p, _ in v["conj"]]
     h = [_sheet_head("Verb · full breakdown", low, v["meaning"])]
     h.append('<h4>One verb, five jobs</h4>')
-    h.append(vocab_table([
-        (f"yo {v['conj'][0][1]}", "present — today / usually", "hoy"),
-        (f"yo {pret[0]}", "past — done and finished", "ayer"),
-        (f"voy a {low}", "going to — the spoken future", "mañana"),
-        (f"yo {fut[0]}", "will — the one-word future", "algún día"),
-        (f"estoy {ger}", "-ing — right this second", "ahora mismo"),
-    ]))
+    h.append('<p class="small">Tap the coral form to hear it · tap the '
+             '<u style="text-decoration:underline dotted">tense name</u> to '
+             'learn how that tense works.</p>')
+    jobs = [
+        (f"yo {v['conj'][0][1]}", "g_present", "present — today / usually", "hoy · today"),
+        (f"yo {pret[0]}", "g_preterite", "past — done and finished", "ayer · yesterday"),
+        (f"voy a {low}", "g_nearfut", "going to — the spoken future", "mañana · tomorrow"),
+        (f"yo {fut[0]}", "g_futuro", "will — the one-word future", "algún día · someday"),
+        (f"estoy {ger}", "g_continuo", "the -ing form — right this second", "ahora mismo · right now"),
+    ]
+    rows = ['<table class="vocab"><thead><tr><th>Español</th>'
+            '<th>Which tense? (tap it)</th><th>Time word</th></tr></thead><tbody>']
+    for form, gkey, label, note in jobs:
+        rows.append(f'<tr><td><span class="es">{esc(form)}</span></td>'
+                    f'<td><button type="button" class="tlink" data-key="{gkey}">'
+                    f'{esc(label)}</button></td>'
+                    f'<td class="small">{esc(note)}</td></tr>')
+    rows.append('</tbody></table>')
+    h.append("".join(rows))
     h.append('<h4>Present</h4>')
     h.append(conj_table("", v["conj"]))
     h.append('<h4>Past (preterite)</h4>')
@@ -728,7 +747,8 @@ def build_tests():
         ("Yo (conocer) ___ a tu familia.", "conozco"),
     ]
     parts.append(drill('Conjugate in the present',
-        questions([f'{esc(s)} &nbsp; {blank()}' for s, _ in v2])))
+        questions([f'{esc(s)} &nbsp; {qa_blank(a)}' for s, a in v2]),
+        learn='g_present'))
     parts.append(drill('Translate', questions([f'{esc(e)} &nbsp; {blank(200)}' for e in [
         "I have to work today.", "We're going to the beach.",
         "I want a Cuban coffee.", "Do you know how to dance salsa?"]])))
@@ -747,10 +767,14 @@ def build_tests():
     # Unit 4 — past tense
     parts.append('<div class="page-break"></div>')
     parts.append('<h1>Test · Unit 4 — Past Tense</h1>')
-    parts.append(drill('Preterite', questions([f'{esc(s)} &nbsp; {blank()}' for s in [
-        "Ayer yo (ir) ___ a la playa.", "Nosotros (comer) ___ arroz con pollo.",
-        "Yo (hacer) ___ paddleboard.", "Mi novio (cocinar) ___ la cena.",
-        "¿Tú (trabajar) ___ ayer?", "Yo (tener) ___ un buen día."]])))
+    parts.append(drill('Preterite', questions([f'{esc(q)} &nbsp; {qa_blank(a)}' for q, a in [
+        ("Ayer yo (ir) ___ a la playa.", "fui"),
+        ("Nosotros (comer) ___ arroz con pollo.", "comimos"),
+        ("Yo (hacer) ___ paddleboard.", "hice"),
+        ("Mi novio (cocinar) ___ la cena.", "cocinó"),
+        ("¿Tú (trabajar) ___ ayer?", "trabajaste"),
+        ("Yo (tener) ___ un buen día.", "tuve")]]),
+        learn='g_preterite'))
 
     # Final exam
     parts.append('<div class="page-break"></div>')
@@ -1201,6 +1225,13 @@ textarea.free-write:focus{border-color:var(--accent)}
 .gcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .sh-body .gg-t{font-family:var(--serif);font-size:28px;font-weight:700;margin:2px 0 0}
 
+/* tappable tense names inside verb sheets */
+.tlink{background:none;border:none;padding:0;font:inherit;color:var(--ink);
+  text-align:left;cursor:pointer;
+  text-decoration:underline dotted color-mix(in srgb,var(--sea) 60%,transparent);
+  text-underline-offset:3px}
+.tlink:hover{color:var(--sea)}
+
 /* tap-to-check practice rows */
 .rev{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 0;
   border-bottom:1px dashed var(--line)}
@@ -1432,7 +1463,7 @@ def build_artifact(bodies):
       rb.style.display='none'; speak(rb.getAttribute('data-es')); return; }
     var ra=e.target.closest('.rev-ans.show');
     if(ra){ speak(ra.textContent); return; }
-    var cd=e.target.closest('.card[data-key],.gcard[data-key]');
+    var cd=e.target.closest('.card[data-key],.gcard[data-key],.tlink[data-key]');
     if(cd){ openSheet(cd.getAttribute('data-key')); return; }
     if(e.target.closest('.slow-btn')) return;
     var t=e.target.closest(SEL);

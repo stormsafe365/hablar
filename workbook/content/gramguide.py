@@ -168,6 +168,7 @@ TOPICS = [
         ("nosotros ___ bien","estamos")],
 },
 {
+ "id": "servsestar",
  "t": "“Ser” vs. “estar”", "d": "The two “to be”s — identity vs. situation.",
  "chips": [("soy","a"),("estoy","s"),("cansada","g")],
  "body": (
@@ -189,6 +190,7 @@ TOPICS = [
         ("Joshua ___ mi novio","es")],
 },
 {
+ "id": "present",
  "t": "Regular verbs (present)", "d": "Chop the ending, add the new one.",
  "chips": [("hablo","a"),("comes","a"),("vivimos","g")],
  "body": (
@@ -227,6 +229,7 @@ TOPICS = [
  "pr": [("yo (hacer)","hago"),("yo (salir)","salgo"),("yo (ir)","voy")],
 },
 {
+ "id": "boot",
  "t": "Stem-changing verbs", "d": "The “boot” — the middle vowel shifts.",
  "chips": [("puedo","a"),("quiero","a"),("riego","g")],
  "body": (
@@ -246,6 +249,7 @@ TOPICS = [
         ("yo (regar)","riego")],
 },
 {
+ "id": "reflexivos",
  "t": "Reflexive verbs", "d": "Actions you do to yourself — me levanto.",
  "chips": [("me","a"),("ducho","a"),("se","g")],
  "body": (
@@ -300,6 +304,64 @@ TOPICS = [
         ("because","porque")],
 },
 {
+ "id": "preterite",
+ "t": "The past (preterite)", "d": "Done and finished — ayer, anoche…",
+ "chips": [("ayer","g"),("comí","a"),("fui","s")],
+ "body": (
+   '<p>The preterite is for things that <b>happened and finished</b>: '
+   +_es("Ayer comí")+' — yesterday I ate. If you hear '+_es("ayer")+
+   ' (yesterday), '+_es("anoche")+' (last night), or '
+   +_es("la semana pasada")+' (last week), you\'re in the past.</p>'
+   + _gtable(["Who","-AR (hablar)","-ER/-IR (comer)"],[
+     ["yo",_es("hablé"),_es("comí")],
+     ["tú",_es("hablaste"),_es("comiste")],
+     ["él / ella",_es("habló"),_es("comió")],
+     ["nosotros",_es("hablamos"),_es("comimos")],
+     ["ellos / uds.",_es("hablaron"),_es("comieron")]])
+   + '<p><b>The accent IS the tense:</b> '+_es("hablo")+' = I talk (now) but '
+   +_es("habló")+' = he talked (past). Punch that last syllable.</p>'
+   '<p class="small">The common irregulars come as whole words — '
+   +_es("fui")+' (I went / I was — ser and ir share it!), '+_es("tuve")+', '
+   +_es("hice")+', '+_es("estuve")+'. Tap any verb card for its own past '
+   'table.</p>'),
+ "ex": [("Ayer fui a la playa con Maggie.","Yesterday I went to the beach with Maggie."),
+        ("Anoche comí arroz con pollo en casa de su mamá.","Last night I ate chicken and rice at his mom's house."),
+        ("Joshua cocinó el domingo.","Joshua cooked on Sunday.")],
+ "pr": [("yo (hablar), yesterday","hablé"),
+        ("yo (ir), yesterday","fui"),
+        ("nosotros (comer)","comimos")],
+},
+{
+ "id": "futuro",
+ "t": "The one-word future", "d": "iré, seré, tendré — “will.”",
+ "chips": [("iré","a"),("será","s"),("tendré","g")],
+ "body": (
+   '<p>This is the “will” future — and it\'s the <b>easiest tense in '
+   'Spanish</b>. Don\'t chop anything: take the <b>whole verb</b> and add '
+   'one set of endings. The same endings work for every single verb.</p>'
+   + _gtable(["Who","hablar → will speak","ir → will go"],[
+     ["yo",_es("hablaré"),_es("iré")],
+     ["tú",_es("hablarás"),_es("irás")],
+     ["él / ella",_es("hablará"),_es("irá")],
+     ["nosotros",_es("hablaremos"),_es("iremos")],
+     ["ellos / uds.",_es("hablarán"),_es("irán")]])
+   + '<p class="small">A few verbs squish their stem first: '
+   +_es("tendré")+' · '+_es("haré")+' · '+_es("diré")+' · '+_es("pondré")
+   +' · '+_es("saldré")+' · '+_es("vendré")+' · '+_es("podré")+' · '
+   +_es("sabré")+' · '+_es("querré")+'. Same endings, though.</p>'
+   '<p><b>When do you use it?</b> Mostly you\'ll <em>hear</em> it — in '
+   'conversation people say '+_es("voy a + verb")+'. Learn this one to '
+   'recognize the future when Joshua\'s family talks about '
+   +_es("algún día")+' — someday.</p>'),
+ "ex": [("Mañana hablaré con su abuela.","Tomorrow I'll talk with his grandma."),
+        ("Algún día iremos a Cuba.","Someday we'll go to Cuba."),
+        ("Aprenderé español, poco a poco.","I'll learn Spanish, little by little.")],
+ "pr": [("I will eat","comeré"),
+        ("we will go","iremos"),
+        ("I will have","tendré")],
+},
+{
+ "id": "continuo",
  "t": "The “presente continuo”", "d": "I am ___-ing, right this second.",
  "chips": [("estoy","a"),("comiendo","a"),("hablando","g")],
  "body": (
@@ -320,6 +382,7 @@ TOPICS = [
         ("Maggie is sleeping","está durmiendo")],
 },
 {
+ "id": "nearfut",
  "t": "The near future", "d": "voy a + verb — how people really talk.",
  "chips": [("voy","a"),("a","g"),("nadar","a")],
  "body": (
@@ -399,7 +462,7 @@ def get():
                  'and quick practice.</p>')
     cards.append('<div class="ggrid">')
     for i, tp in enumerate(TOPICS):
-        key = f"g{i}"
+        key = f"g_{tp['id']}" if "id" in tp else f"g{i}"
         chip_h = "".join(
             f'<span class="gchip {c} r{(j % 3) + 1}">{esc(w)}</span>'
             for j, (w, c) in enumerate(tp["chips"]))
