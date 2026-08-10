@@ -135,6 +135,38 @@ TOPICS = [
         ("our house: ___ casa","nuestra")],
 },
 {
+ "id": "demostrativos",
+ "t": "Demonstrative adjectives", "d": "este, ese, aquel — this, that, that over there.",
+ "chips": [("este","s"),("ese","s"),("aquel","g")],
+ "body": (
+   '<p>These point at things — and Spanish sorts them by <b>how far away</b> '
+   'the thing is from you. They match the noun\'s gender and number, just '
+   'like adjectives.</p>'
+   + _gtable(["Distance","Singular (m/f)","Plural (m/f)"],[
+     ["<b>Short</b> — within reach",
+      _es("este / esta")+"<br><span class='small'>this</span>",
+      _es("estos / estas")+"<br><span class='small'>these</span>"],
+     ["<b>Medium</b> — visible, same area",
+      _es("ese / esa")+"<br><span class='small'>that</span>",
+      _es("esos / esas")+"<br><span class='small'>those</span>"],
+     ["<b>Long</b> — further or far away",
+      _es("aquel / aquella")+"<br><span class='small'>that over there</span>",
+      _es("aquellos / aquellas")+"<br><span class='small'>those over there</span>"]])
+   + '<p><b>The memory trick:</b> this & these have the T\'s ('+_es("este, estos")
+   +') — that & those don\'t ('+_es("ese, esos")+'). And '+_es("aquel")
+   +' is for “waaay over there.” The distance can be physical or in time: '
+   +_es("aquellos días")+' — those (long-ago) days.</p>'),
+ "ex": [("Me encanta esta playa.","I love this beach. (you're standing on it)"),
+        ("¿Ves ese barco?","Do you see that boat? (visible, a bit away)"),
+        ("Aquella casa es de su abuela.","That house over there is his grandma's."),
+        ("Estas flores son del jardín.","These flowers are from the garden."),
+        ("Esos tostones están ricos.","Those tostones are delicious.")],
+ "pr": [("this beach","esta playa"),
+        ("that dog (visible, over there a bit)","ese perro"),
+        ("these flowers","estas flores"),
+        ("that house waaay over there","aquella casa")],
+},
+{
  "t": "The verb “ser”", "d": "To be — who or what something IS.",
  "chips": [("soy","a"),("eres","a"),("es","g")],
  "body": (
