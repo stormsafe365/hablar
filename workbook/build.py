@@ -554,6 +554,7 @@ FUTURE = {
 
 DETAIL = {}   # key -> detail sheet HTML, embedded in the app
 INDEX = {}    # normalized Spanish word -> detail key (tap a word anywhere → sheet)
+CARDS = {}    # key -> [front_es, back_en, note] for the daily review engine
 
 def _norm_key(s):
     s = _re.sub(r"[¡!¿?.,;:\"'«»()]", "", s.lower())
@@ -672,6 +673,7 @@ def build_flashcards():
         key = f"v{i}"
         DETAIL[key] = verb_detail_html(v)
         INDEX.setdefault(_norm_key(v["inf"]), key)
+        CARDS[key] = [v["inf"].lower(), v["meaning"].split("(")[0].strip(), f"yo → {yo}"]
         verb_cards.append((v["inf"].lower(), v["meaning"].split("(")[0].strip(),
                            f'yo → {yo}', key))
     parts.append(_cards(verb_cards))
@@ -685,6 +687,7 @@ def build_flashcards():
             key = f"t{ti}_{wi}"
             DETAIL[key] = vocab_detail_html(t, es, en, note)
             INDEX.setdefault(_norm_key(es), key)
+            CARDS[key] = [es, en, note]
             cards.append((es, en, note, key))
         parts.append(_cards(cards))
 
@@ -879,6 +882,11 @@ def build_index():
         '<div><div class="gc-k">Sigue aprendiendo · keep going</div>'
         '<div class="gc-t">The Book — start where you left off</div></div>'
         '<span class="gc-a">→</span></a>')
+
+    body.append('<div class="rev-hero" id="revHero" role="button" tabindex="0">'
+        '<div><div class="gc-k">Repaso diario · daily review</div>'
+        '<div class="gc-t" id="revHeroT">Review your words</div></div>'
+        '<span class="gc-a">→</span></div>')
 
     body.append('<h2>What\'s inside</h2>')
     body.append('<div class="grid">')
@@ -1235,6 +1243,45 @@ textarea.free-write:focus{border-color:var(--accent)}
 .gcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .sh-body .gg-t{font-family:var(--serif);font-size:28px;font-weight:700;margin:2px 0 0}
 
+/* ---------- daily review ---------- */
+.rev-hero{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  background:linear-gradient(135deg,var(--sea) 0%,#8ee8c2 100%);color:#132018;
+  border-radius:20px;padding:18px 20px;margin:0 0 20px;box-shadow:var(--shadow);
+  cursor:pointer}
+.rev-hero .gc-k{opacity:.72}
+@media (hover:hover){
+  .rev-hero{transition:transform .16s ease, box-shadow .16s ease}
+  .rev-hero:hover{transform:translateY(-2px);box-shadow:var(--hover-shadow)}
+}
+.rv-back{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:125;
+  opacity:0;pointer-events:none;transition:opacity .25s}
+.rv-back.show{opacity:1;pointer-events:auto}
+.rv-modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-46%) scale(.97);
+  width:min(440px,92vw);z-index:130;background:var(--paper);
+  border:1px solid var(--line);border-radius:24px;padding:22px 22px 24px;
+  box-shadow:0 24px 60px rgba(0,0,0,.55);opacity:0;pointer-events:none;
+  transition:opacity .22s ease,transform .22s ease;text-align:center}
+.rv-modal.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.rv-prog{font-family:var(--round);font-weight:800;font-size:12px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.rv-front{font-family:var(--serif);font-size:38px;font-weight:700;
+  color:var(--accent);margin:22px 0 4px;line-height:1.15;cursor:pointer}
+.rv-note{color:var(--faint);font-size:13px;min-height:18px}
+.rv-backside{color:var(--ink);font-size:17px;margin:14px 0 4px;min-height:26px;
+  visibility:hidden}
+.rv-backside.show{visibility:visible}
+.rv-actions{margin-top:18px}
+.rv-show{font-family:var(--round);font-weight:800;font-size:14px;
+  background:var(--accent);color:#201a18;border:none;border-radius:999px;
+  padding:12px 26px;cursor:pointer;box-shadow:var(--shadow)}
+.rv-grade{display:flex;gap:10px;justify-content:center}
+.rv-grade button{font-family:var(--round);font-weight:800;font-size:14px;
+  border:none;border-radius:999px;padding:12px 20px;cursor:pointer;
+  box-shadow:var(--shadow)}
+.rv-again{background:var(--sun-soft);color:var(--sun)}
+.rv-know{background:var(--sea);color:#132018}
+@media (prefers-reduced-motion: reduce){.rv-modal,.rv-back{transition:none}}
+
 /* ---------- listen tab ---------- */
 .ldial{display:flex;align-items:center;gap:12px;background:var(--paper);
   border:1px solid var(--line);border-radius:999px;padding:10px 18px;
@@ -1317,6 +1364,11 @@ def _detail_json():
 def _index_json():
     import json
     return json.dumps(INDEX, ensure_ascii=False).replace('</', '<\\/')
+
+
+def _cards_json():
+    import json
+    return json.dumps(CARDS, ensure_ascii=False).replace('</', '<\\/')
 
 
 def _to_tabs(html):
@@ -1523,13 +1575,14 @@ def build_artifact(bodies):
     if(!text) return;
     // a word with a detail sheet opens it (except inside the sheet itself
     // and conjugation cells, which keep quick speak + stress)
-    if(!t.closest('.wb-sheet') && !t.classList.contains('v')){
+    if(!t.closest('.wb-sheet') && !t.closest('.rv-modal') && !t.classList.contains('v')){
       var dk=(window.WB_INDEX||{})[normA(text)];
       if(dk){ openSheet(dk); return; }
     }
     speak(text, t);
     var words=text.split(/\s+/);
-    if(words.length<=3 && /[a-záéíóúñü]/i.test(text) && !t.closest('.wb-sheet'))
+    if(words.length<=3 && /[a-záéíóúñü]/i.test(text) && !t.closest('.wb-sheet')
+       && !t.closest('.rv-modal'))
       showPop(markPhrase(text), t.getBoundingClientRect());
     else hidePop();
   });
@@ -1614,6 +1667,102 @@ def build_artifact(bodies):
     });
   }
 
+  // ---------- daily review (SRS-lite) ----------
+  var INTERVALS=[1,3,7,14,30];
+  function rvToday(){ return Math.floor(Date.now()/86400000); }
+  function rvStore(){ try{return JSON.parse(localStorage.getItem('wbSRS')||'{}');}catch(e){return {};} }
+  function rvSave(st){ try{localStorage.setItem('wbSRS', JSON.stringify(st));}catch(e){} }
+  function rvStreak(){ try{return JSON.parse(localStorage.getItem('wbStreak')||'{"d":0,"n":0}');}catch(e){return {d:0,n:0};} }
+  function rvBumpStreak(){
+    var s=rvStreak(), t=rvToday();
+    if(s.d===t) return s;
+    s.n=(s.d===t-1)?s.n+1:1; s.d=t;
+    try{localStorage.setItem('wbStreak', JSON.stringify(s));}catch(e){}
+    return s;
+  }
+  function rvCounts(){
+    var st=rvStore(), t=rvToday(), due=0, fresh=0;
+    for(var k in (window.WB_CARDS||{})){
+      if(st[k]){ if(st[k].due<=t) due++; } else fresh++;
+    }
+    return {due:due, fresh:fresh};
+  }
+  function rvHeroUpdate(){
+    var el=document.getElementById('revHeroT'); if(!el) return;
+    var c=rvCounts(), s=rvStreak(), t=rvToday();
+    var fire=(s.n>0 && s.d>=t-1)? ' · 🔥 '+s.n+'-day streak' : '';
+    if(c.due===0 && s.d===t) el.textContent='All done for today'+fire;
+    else el.textContent=(c.due+Math.min(c.fresh,10))+' cards today'+fire;
+  }
+  var rvQueue=[], rvCur=null, rvDone=0, rvTotal=0;
+  var rvModal=document.getElementById('rvModal'), rvBack=document.getElementById('rvBack');
+  function rvBuildQueue(){
+    var st=rvStore(), t=rvToday(), due=[], fresh=[];
+    for(var k in (window.WB_CARDS||{})){
+      if(st[k]){ if(st[k].due<=t) due.push(k); } else fresh.push(k);
+    }
+    rvQueue=due.concat(fresh.slice(0,10)).slice(0,20);
+    rvDone=0; rvTotal=rvQueue.length;
+  }
+  function rvOpen(){
+    rvBuildQueue();
+    if(!rvTotal){
+      var ht=document.getElementById('hintToast');
+      if(ht){ht.innerHTML='Nothing due — come back tomorrow 🔥';
+        ht.classList.add('show'); setTimeout(function(){ht.classList.remove('show');},3500);}
+      return;
+    }
+    rvBack.classList.add('show'); rvModal.classList.add('show');
+    rvNext();
+  }
+  function rvClose(){ rvBack.classList.remove('show'); rvModal.classList.remove('show'); rvHeroUpdate(); }
+  function rvNext(){
+    var front=document.getElementById('rvFront'), note=document.getElementById('rvNote'),
+        back=document.getElementById('rvBackside'), prog=document.getElementById('rvProg'),
+        showB=document.getElementById('rvShow'), grade=document.getElementById('rvGrade');
+    if(!rvQueue.length){
+      var s=rvBumpStreak();
+      prog.textContent='¡Listo!';
+      front.textContent='🔥 '+s.n+'-day streak';
+      note.textContent='';
+      back.textContent=rvDone+' cards reviewed. Nos vemos mañana.';
+      back.classList.add('show');
+      showB.style.display='none'; grade.style.display='none';
+      return;
+    }
+    rvCur=rvQueue.shift();
+    var c=window.WB_CARDS[rvCur];
+    prog.textContent=(rvDone+1)+' / '+rvTotal;
+    front.textContent=c[0];
+    note.textContent=c[2]||'';
+    back.textContent=c[1];
+    back.classList.remove('show');
+    showB.style.display=''; grade.style.display='none';
+    speak(c[0]);
+  }
+  function rvGradeCard(knew){
+    var st=rvStore(), t=rvToday(), e=st[rvCur]||{i:-1,due:t};
+    if(knew){ e.i=Math.min((e.i==null?-1:e.i)+1, INTERVALS.length-1);
+      e.due=t+INTERVALS[e.i]; }
+    else { e.i=-1; e.due=t; rvQueue.push(rvCur); rvTotal++; }
+    st[rvCur]=e; rvSave(st);
+    rvDone++; rvBumpStreak();
+    rvNext();
+  }
+  var hero=document.getElementById('revHero');
+  if(hero){ hero.addEventListener('click', function(e){ e.preventDefault(); rvOpen(); }); }
+  var _b;
+  if((_b=document.getElementById('rvX'))) _b.addEventListener('click', rvClose);
+  if((_b=document.getElementById('rvShow'))) _b.addEventListener('click', function(){
+    document.getElementById('rvBackside').classList.add('show');
+    document.getElementById('rvShow').style.display='none';
+    document.getElementById('rvGrade').style.display='';
+  });
+  if((_b=document.getElementById('rvAgain'))) _b.addEventListener('click', function(){ rvGradeCard(false); });
+  if((_b=document.getElementById('rvKnow'))) _b.addEventListener('click', function(){ rvGradeCard(true); });
+  if(rvBack) rvBack.addEventListener('click', rvClose);
+  rvHeroUpdate();
+
   // ---------- listen tab: speed dial + scores ----------
   var lrateEl=document.getElementById('lrate'), lrateVal=document.getElementById('lrateval');
   function lRate(){ return lrateEl ? (+lrateEl.value)/100 : 0.8; }
@@ -1685,13 +1834,27 @@ def build_artifact(bodies):
             + "".join(f'<button type="button" data-ch="{c}">{c}</button>'
                       for c in ["á","é","í","ó","ú","ñ","¿","¡"])
             + '</div>'
+            '<div class="rv-back" id="rvBack"></div>'
+            '<div class="rv-modal" id="rvModal" role="dialog" aria-modal="true">'
+            '<button class="sh-x" id="rvX" aria-label="Close">&times;</button>'
+            '<div class="rv-prog" id="rvProg"></div>'
+            '<div class="rv-front es" id="rvFront"></div>'
+            '<div class="rv-note" id="rvNote"></div>'
+            '<div class="rv-backside" id="rvBackside"></div>'
+            '<div class="rv-actions">'
+            '<button class="rv-show" id="rvShow">Show answer</button>'
+            '<div class="rv-grade" id="rvGrade" style="display:none">'
+            '<button class="rv-again" id="rvAgain">Still learning</button>'
+            '<button class="rv-know" id="rvKnow">Knew it</button>'
+            '</div></div></div>'
             '<div class="sheet-back" id="sheetBack"></div>'
             '<div class="wb-sheet" id="wbSheet" role="dialog" aria-modal="true">'
             '<div class="sh-grab"></div>'
             '<button class="sh-x" aria-label="Close">&times;</button>'
             '<div class="sh-body" id="sheetBody"></div></div>'
             + f'<script>window.WB_DETAIL={_detail_json()};'
-              f'window.WB_INDEX={_index_json()};</script>'
+              f'window.WB_INDEX={_index_json()};'
+              f'window.WB_CARDS={_cards_json()};</script>'
             + f'<script>{js}</script>')
     w("hablar-workbook.html", body)
     return body
