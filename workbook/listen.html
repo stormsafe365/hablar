@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hablar Workbook · Listen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* warm "greige" — light (print uses this; app dark palette lives in build.py) */
+  --bg:#f4f1eb; --paper:#ffffff; --sand:#f4f1eb; --sand2:#efe9df;
+  --ink:#2a2723; --soft:#6c655b; --faint:#9a9184; --line:#e7e0d4;
+  --accent:#e0533d; --accent2:#c9452f; --accent-soft:#fbe7e1;      /* coral — primary */
+  --cuba:#c0503b; --cuba-soft:#f9e6e0;
+  --sea:#2f9e8a; --sea-soft:#dcf1ec;                                /* teal — secondary */
+  --sun:#b8933a; --sun-soft:#f6eecf;                                /* gold */
+  --coral:#e0533d; --coral-soft:#fbe7e1;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Inter',system-ui,-apple-system,Segoe UI,sans-serif;
+  --round:'Inter',var(--sans);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--sand);color:var(--ink);font-family:var(--sans);
+  line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased}
+.page{background:var(--paper);max-width:820px;margin:26px auto;padding:56px 64px;
+  box-shadow:0 1px 2px rgba(25,23,20,.05),0 18px 44px rgba(25,23,20,.09);
+  border-radius:6px;position:relative}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.15;color:var(--ink)}
+h1{font-size:40px;font-weight:700;letter-spacing:-.02em}
+h2{font-size:28px;margin:34px 0 12px;letter-spacing:-.01em}
+h3{font-size:21px;margin:26px 0 8px}
+h4{font-size:17px;margin:18px 0 6px;font-family:var(--sans);font-weight:700}
+p{margin:10px 0}
+a{color:var(--accent);text-decoration:none}
+strong{font-weight:700}
+em{font-style:italic}
+ul,ol{margin:10px 0 10px 24px}
+li{margin:4px 0}
+.small{font-size:13px;color:var(--soft)}
+.muted{color:var(--soft)}
+.center{text-align:center}
+.es{color:var(--accent);font-weight:600}            /* spanish text */
+.en{color:var(--soft)}                               /* english gloss */
+hr{border:none;border-top:1px solid var(--line);margin:26px 0}
+
+/* eyebrow / part label */
+.eyebrow{font-family:var(--round);font-weight:800;text-transform:uppercase;
+  letter-spacing:.14em;font-size:12px;color:var(--accent);margin-bottom:6px}
+
+/* callout boxes */
+.box{border-radius:14px;padding:16px 20px;margin:16px 0;border:1px solid var(--line);
+  background:var(--bg)}
+.box .lead{font-family:var(--round);font-weight:800;font-size:12px;
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:block}
+.tip{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 32%,var(--line))}
+.tip .lead{color:var(--accent)}
+.trick{background:var(--sun-soft);border-color:color-mix(in srgb,var(--sun) 32%,var(--line))}
+.trick .lead{color:var(--sun)}
+.warn{background:var(--coral-soft);border-color:color-mix(in srgb,var(--coral) 32%,var(--line))}
+.warn .lead{color:var(--coral)}
+.cuba{background:var(--cuba-soft);border-color:color-mix(in srgb,var(--cuba) 32%,var(--line))}
+.cuba .lead{color:var(--cuba)}
+.sea{background:var(--sea-soft);border-color:color-mix(in srgb,var(--sea) 32%,var(--line))}
+.sea .lead{color:var(--sea)}
+
+/* conjugation table */
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:15px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--round);font-weight:800;font-size:12px;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--soft);background:var(--bg)}
+.conj{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.conj td:first-child{color:var(--soft);width:34%}
+.conj .v{color:var(--accent);font-weight:700}
+.conj tr:last-child td{border-bottom:none}
+
+/* vocab table */
+.vocab td:first-child{font-weight:600;color:var(--accent);width:38%}
+.vocab td:nth-child(2){color:var(--ink)}
+.vocab .ipa{color:var(--faint);font-size:13px}
+
+/* example list */
+.ex{list-style:none;margin:12px 0;padding:0}
+.ex li{padding:7px 0;border-bottom:1px dashed var(--line)}
+.ex li:last-child{border-bottom:none}
+.ex .n{color:var(--faint);font-size:12px;font-family:var(--round);
+  font-weight:800;margin-right:8px}
+.ex .es{display:inline}
+.ex .en{display:block;margin-left:22px;font-size:14px}
+
+/* dialogue */
+.dlg{margin:14px 0;border-left:3px solid var(--accent-soft);padding-left:16px}
+.dlg .line{margin:8px 0}
+.dlg .who{font-family:var(--round);font-weight:800;font-size:12px;
+  color:var(--accent);display:inline-block;min-width:64px}
+.dlg .en{display:block;margin-left:64px;font-size:14px}
+
+/* exercises */
+.drill{background:var(--bg);border:1px solid var(--line);border-radius:14px;
+  padding:18px 22px;margin:18px 0}
+.drill h4{margin-top:0}
+.q{margin:9px 0;padding-left:30px;position:relative}
+.q .num{position:absolute;left:0;top:0;font-family:var(--round);font-weight:800;
+  color:var(--accent);font-size:14px}
+.blank{display:inline-block;min-width:120px;border-bottom:1.5px solid var(--faint);
+  margin:0 3px}
+.write-lines{margin:10px 0}
+.write-lines .ln{border-bottom:1px solid var(--line);height:26px}
+
+/* pills / chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip{background:var(--sand);border:1px solid var(--line);border-radius:999px;
+  padding:5px 13px;font-size:14px;font-weight:600}
+.chip .en{color:var(--soft);font-weight:400;margin-left:5px}
+
+/* flashcards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.card{border:1px dashed var(--faint);padding:16px;min-height:118px;
+  display:flex;flex-direction:column;justify-content:center;text-align:center}
+.card .front{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--accent)}
+.card .ipa{color:var(--faint);font-size:13px;margin-top:3px}
+.card .back{font-size:15px;color:var(--ink);margin-top:6px}
+.card .tag{font-size:11px;color:var(--faint);font-family:var(--round);
+  font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+
+/* learn-this links (styled further in the app) */
+.tlink{background:none;border:none;padding:0;font:inherit;color:var(--soft);
+  text-decoration:underline dotted;text-underline-offset:3px;cursor:pointer}
+.dlearn{font-family:var(--round);font-weight:700;font-size:12px;color:var(--sea)}
+
+/* toc */
+.toc{list-style:none;margin:18px 0;padding:0}
+.toc li{display:flex;align-items:baseline;gap:8px;padding:7px 0;
+  border-bottom:1px solid var(--line)}
+.toc .t{font-weight:600}
+.toc .d{color:var(--soft);font-size:14px;flex:1}
+.toc .pg{color:var(--faint);font-size:13px;font-family:var(--round);font-weight:800}
+
+/* cover */
+.cover{min-height:78vh;display:flex;flex-direction:column;justify-content:center}
+.cover h1{font-size:58px;font-weight:900;letter-spacing:-.03em;line-height:1.02}
+.cover .sub{font-size:20px;color:var(--soft);margin-top:14px;max-width:30em}
+.cover .who{margin-top:36px;font-family:var(--round);font-weight:800;
+  text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--accent)}
+.cover .flag{font-size:40px;margin-bottom:18px;letter-spacing:6px}
+
+/* footer running head */
+.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;color:var(--faint);font-size:12px;
+  font-family:var(--round);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+
+/* index landing grid */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+.tile{display:block;border:1px solid var(--line);border-radius:16px;padding:20px 22px;
+  background:var(--bg);transition:transform .1s}
+.tile:hover{transform:translateY(-2px)}
+.tile .ic{font-size:26px}
+.tile .tn{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--accent)}
+.tile .tt{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);
+  margin:6px 0 4px}
+.tile .dd{font-size:14px;color:var(--soft)}
+
+@media (max-width:640px){
+  .page{padding:32px 22px;margin:10px}
+  .grid,.cards{grid-template-columns:1fr}
+  .cover h1{font-size:40px}
+  h1{font-size:32px}
+}
+
+@media print{
+  @page{size:letter;margin:16mm 15mm}
+  body{background:#fff;font-size:11.5pt;line-height:1.5}
+  .page{box-shadow:none;margin:0;padding:0;max-width:none;border-radius:0}
+  .no-print{display:none!important}
+  h2{page-break-after:avoid}
+  h3,h4{page-break-after:avoid}
+  table,.drill,.box,.dlg,.card,.conj{page-break-inside:avoid}
+  .page-break{page-break-before:always}
+  a{color:var(--ink);text-decoration:none}
+  .cards{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="no-print" style="max-width:820px;margin:0 auto;padding:10px 16px;
+  display:flex;gap:14px;flex-wrap:wrap;font-family:var(--round);font-weight:700;
+  font-size:13px">
+  <a href="index.html">&larr; Contents</a>
+  <a href="book.html">Book</a>
+  <a href="practice.html">Practice</a>
+  <a href="answers.html">Answers</a>
+  <a href="cheatsheets.html">Cheat&nbsp;Sheets</a>
+  <a href="flashcards.html">Flashcards</a>
+  <a href="tests.html">Tests</a>
+</div>
+
+<div class="page">
+<div class="eyebrow">Listen · entrena el oído</div><h1>Train your ear</h1><p class="muted">Cuban Spanish moves fast — this is where you get ready for it. Tap ▶, <strong>don't peek at the options first</strong>, and choose what you heard. Start slow with the dial, then push the speed up over time. Full speed is the real target.</p><div class="ldial"><span class="small">Speed</span><input type="range" id="lrate" min="55" max="100" step="5" value="80"><span class="lrateval" id="lrateval">80%</span></div><div class="box tip"><span class="lead">How to use this</span><p>Play it once. Try to catch <em>one</em> word you know. Play it again, then answer. When you miss one, replay it <em>after</em> seeing the answer — that's when your ear learns. The green answers speak when you get them right.</p></div><h2>Level 1 · One word <span class="lscore" id="lscore-l1"></span></h2><p class="small">These are near-twins on purpose — <span class="es">comí</span> vs <span class="es">comió</span> is the past tense hiding in one vowel.</p><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="ayer" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">mañana</button><button type="button" class="lopt" data-ok="1">ayer</button><button type="button" class="lopt" data-ok="0">ahora</button></div><div class="len small">yesterday</div></div></div><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="comí" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">comemos</button><button type="button" class="lopt" data-ok="0">comió</button><button type="button" class="lopt" data-ok="1">comí</button></div><div class="len small">I ate — the í is stressed</div></div></div><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="habló" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">hablo</button><button type="button" class="lopt" data-ok="0">hablan</button><button type="button" class="lopt" data-ok="1">habló</button></div><div class="len small">he talked — hear the final Ó (past!)</div></div></div><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="hablamos" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">hablaron</button><button type="button" class="lopt" data-ok="0">hablaste</button><button type="button" class="lopt" data-ok="1">hablamos</button></div><div class="len small">we talk / we talked</div></div></div><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="la abuela" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">la escuela</button><button type="button" class="lopt" data-ok="1">la abuela</button><button type="button" class="lopt" data-ok="0">la abeja</button></div><div class="len small">the grandmother</div></div></div><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="trabajé" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="1">trabajé</button><button type="button" class="lopt" data-ok="0">trabajó</button><button type="button" class="lopt" data-ok="0">trabajas</button></div><div class="len small">I worked</div></div></div><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="volvieron" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">volvimos</button><button type="button" class="lopt" data-ok="0">volviste</button><button type="button" class="lopt" data-ok="1">volvieron</button></div><div class="len small">they came back</div></div></div><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="quiero" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">quiere</button><button type="button" class="lopt" data-ok="0">quieren</button><button type="button" class="lopt" data-ok="1">quiero</button></div><div class="len small">I want</div></div></div><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="cansada" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">casada</button><button type="button" class="lopt" data-ok="0">enojada</button><button type="button" class="lopt" data-ok="1">cansada</button></div><div class="len small">tired — not casada (married)!</div></div></div><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="perro" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">pero</button><button type="button" class="lopt" data-ok="1">perro</button><button type="button" class="lopt" data-ok="0">pera</button></div><div class="len small">dog — the rolled RR</div></div></div><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="tiene" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="1">tiene</button><button type="button" class="lopt" data-ok="0">tienen</button><button type="button" class="lopt" data-ok="0">tenemos</button></div><div class="len small">he/she has</div></div></div><div class="lq" data-sec="l1"><button type="button" class="lplay" data-es="vamos" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">va</button><button type="button" class="lopt" data-ok="0">van</button><button type="button" class="lopt" data-ok="1">vamos</button></div><div class="len small">we go / let&#x27;s go</div></div></div><h2>Level 2 · Phrases <span class="lscore" id="lscore-l2"></span></h2><div class="lq" data-sec="l2"><button type="button" class="lplay" data-es="¿Cómo estás?" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="1">¿Cómo estás?</button><button type="button" class="lopt" data-ok="0">¿Cómo te llamas?</button><button type="button" class="lopt" data-ok="0">¿Dónde estás?</button></div><div class="len small">How are you?</div></div></div><div class="lq" data-sec="l2"><button type="button" class="lplay" data-es="Estoy un poco cansada." aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">Estoy muy ocupada.</button><button type="button" class="lopt" data-ok="0">Estoy en la casa.</button><button type="button" class="lopt" data-ok="1">Estoy un poco cansada.</button></div><div class="len small">I&#x27;m a little tired.</div></div></div><div class="lq" data-sec="l2"><button type="button" class="lplay" data-es="¿Qué comiste anoche?" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="1">¿Qué comiste anoche?</button><button type="button" class="lopt" data-ok="0">¿Qué comes ahora?</button><button type="button" class="lopt" data-ok="0">¿Con quién comiste?</button></div><div class="len small">What did you eat last night?</div></div></div><div class="lq" data-sec="l2"><button type="button" class="lplay" data-es="Más despacio, por favor." aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="1">Más despacio, por favor.</button><button type="button" class="lopt" data-ok="0">Más tarde, por favor.</button><button type="button" class="lopt" data-ok="0">Muchas gracias, señora.</button></div><div class="len small">Slower, please.</div></div></div><div class="lq" data-sec="l2"><button type="button" class="lplay" data-es="No entendí muy bien." aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">No entiendo nada.</button><button type="button" class="lopt" data-ok="0">No hablé con ella.</button><button type="button" class="lopt" data-ok="1">No entendí muy bien.</button></div><div class="len small">I didn&#x27;t understand very well.</div></div></div><div class="lq" data-sec="l2"><button type="button" class="lplay" data-es="¿Qué bolá, asere?" aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">¿Qué hora es?</button><button type="button" class="lopt" data-ok="1">¿Qué bolá, asere?</button><button type="button" class="lopt" data-ok="0">¿Qué pasa, amigo?</button></div><div class="len small">What&#x27;s up, buddy? (Cuban!)</div></div></div><div class="lq" data-sec="l2"><button type="button" class="lplay" data-es="Tengo ganas de bailar." aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">Tengo que trabajar.</button><button type="button" class="lopt" data-ok="0">Tengo ganas de comer.</button><button type="button" class="lopt" data-ok="1">Tengo ganas de bailar.</button></div><div class="len small">I feel like dancing.</div></div></div><div class="lq" data-sec="l2"><button type="button" class="lplay" data-es="Nos vemos mañana." aria-label="Play">&#9654;</button><div class="lbody"><div class="lopts"><button type="button" class="lopt" data-ok="0">Te veo ahora.</button><button type="button" class="lopt" data-ok="0">Nos vemos el lunes.</button><button type="button" class="lopt" data-ok="1">Nos vemos mañana.</button></div><div class="len small">See you tomorrow.</div></div></div><h2>Level 3 · Type what you hear</h2><p class="small">The big leagues. Accents count as “almost” (gold) — spelling counts. Tap “Translation” after you answer.</p><div class="lq ltype"><button type="button" class="lplay" data-es="Ayer cociné arroz con pollo." aria-label="Play">&#9654;</button><div class="lbody"><span class="blank" data-ans="Ayer cociné arroz con pollo." style="min-width:230px"></span><div class="rev"><button class="rev-btn" data-es="Ayer cociné arroz con pollo.">Translation</button><span class="rev-ans">Yesterday I cooked chicken and rice.</span></div></div></div><div class="lq ltype"><button type="button" class="lplay" data-es="Mi novio se llama Joshua." aria-label="Play">&#9654;</button><div class="lbody"><span class="blank" data-ans="Mi novio se llama Joshua." style="min-width:230px"></span><div class="rev"><button class="rev-btn" data-es="Mi novio se llama Joshua.">Translation</button><span class="rev-ans">My boyfriend&#x27;s name is Joshua.</span></div></div></div><div class="lq ltype"><button type="button" class="lplay" data-es="Estoy aprendiendo español porque su familia es de Cuba." aria-label="Play">&#9654;</button><div class="lbody"><span class="blank" data-ans="Estoy aprendiendo español porque su familia es de Cuba." style="min-width:230px"></span><div class="rev"><button class="rev-btn" data-es="Estoy aprendiendo español porque su familia es de Cuba.">Translation</button><span class="rev-ans">I&#x27;m learning Spanish because his family is from Cuba.</span></div></div></div><div class="lq ltype"><button type="button" class="lplay" data-es="Anoche hablamos con su abuela por teléfono." aria-label="Play">&#9654;</button><div class="lbody"><span class="blank" data-ans="Anoche hablamos con su abuela por teléfono." style="min-width:230px"></span><div class="rev"><button class="rev-btn" data-es="Anoche hablamos con su abuela por teléfono.">Translation</button><span class="rev-ans">Last night we talked with his grandmother on the phone.</span></div></div></div><div class="lq ltype"><button type="button" class="lplay" data-es="Los domingos comemos con su familia." aria-label="Play">&#9654;</button><div class="lbody"><span class="blank" data-ans="Los domingos comemos con su familia." style="min-width:230px"></span><div class="rev"><button class="rev-btn" data-es="Los domingos comemos con su familia.">Translation</button><span class="rev-ans">On Sundays we eat with his family.</span></div></div></div><div class="lq ltype"><button type="button" class="lplay" data-es="Maggie está durmiendo en el sofá." aria-label="Play">&#9654;</button><div class="lbody"><span class="blank" data-ans="Maggie está durmiendo en el sofá." style="min-width:230px"></span><div class="rev"><button class="rev-btn" data-es="Maggie está durmiendo en el sofá.">Translation</button><span class="rev-ans">Maggie is sleeping on the couch.</span></div></div></div><div class="lq ltype"><button type="button" class="lplay" data-es="Voy a la playa con mi novio este fin de semana." aria-label="Play">&#9654;</button><div class="lbody"><span class="blank" data-ans="Voy a la playa con mi novio este fin de semana." style="min-width:230px"></span><div class="rev"><button class="rev-btn" data-es="Voy a la playa con mi novio este fin de semana.">Translation</button><span class="rev-ans">I&#x27;m going to the beach with my boyfriend this weekend.</span></div></div></div><div class="lq ltype"><button type="button" class="lplay" data-es="Mañana voy a estudiar los verbos otra vez." aria-label="Play">&#9654;</button><div class="lbody"><span class="blank" data-ans="Mañana voy a estudiar los verbos otra vez." style="min-width:230px"></span><div class="rev"><button class="rev-btn" data-es="Mañana voy a estudiar los verbos otra vez.">Translation</button><span class="rev-ans">Tomorrow I&#x27;m going to study the verbs again.</span></div></div></div><div class="box sea"><span class="lead">Leveling up</span><p>When Level 3 feels easy at 100%, you're ready for the real thing: Cuban YouTube and Joshua's family dinners. Remember the rescue phrase: <span class="es">Más despacio, por favor.</span></p></div>
+<div class="foot"><span>Hablar &middot; Personalized Spanish Workbook</span>
+<span>Train Your Ear</span></div>
+</div>
+</body>
+</html>

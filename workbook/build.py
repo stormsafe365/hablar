@@ -822,6 +822,14 @@ def build_tests():
 # ══════════════════════════════════════════════════════════════════════════
 # CHEAT SHEETS + INDEX
 # ══════════════════════════════════════════════════════════════════════════
+def build_listen():
+    from content import listen as _listen
+    body = _listen.build_tab()
+    w("listen.html", shell("Hablar Workbook · Listen", body,
+                           subtitle="Train Your Ear"))
+    return body
+
+
 def build_grammar():
     from content import gramguide
     body, sheets = gramguide.get()
@@ -845,6 +853,8 @@ def build_index():
          "speaking & Cuban & Colombian Spanish."),
         ("grammar.html", "", "Grammar Guide", "Plain-English grammar with clear "
          "examples — pronouns, articles, ser vs estar, reflexives, and more."),
+        ("listen.html", "", "Listen — Train Your Ear", "Hear it, then choose or "
+         "type what you heard — with a speed dial from slow to full Cuban speed."),
         ("practice.html", "✍️", "Practice Workbook", "Thousands of exercises — "
          "fill-ins, translation, conversation, and quizzes for every verb and theme."),
         ("answers.html", "🔑", "Answer Book", "Every answer worked out, with the "
@@ -1225,6 +1235,35 @@ textarea.free-write:focus{border-color:var(--accent)}
 .gcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .sh-body .gg-t{font-family:var(--serif);font-size:28px;font-weight:700;margin:2px 0 0}
 
+/* ---------- listen tab ---------- */
+.ldial{display:flex;align-items:center;gap:12px;background:var(--paper);
+  border:1px solid var(--line);border-radius:999px;padding:10px 18px;
+  margin:14px 0;box-shadow:var(--shadow)}
+.ldial input[type=range]{flex:1;accent-color:var(--accent);min-width:0}
+.lrateval{font-family:var(--round);font-weight:800;color:var(--accent);
+  font-size:14px;min-width:44px;text-align:right}
+.lq{display:flex;gap:14px;align-items:flex-start;background:var(--paper);
+  border:1px solid var(--line);border-radius:16px;padding:14px 16px;
+  margin:10px 0;box-shadow:var(--shadow)}
+.lplay{width:44px;height:44px;flex:0 0 auto;border-radius:50%;
+  background:var(--accent);color:#201a18;border:none;font-size:15px;
+  cursor:pointer;box-shadow:var(--shadow)}
+.lplay:active{transform:scale(.95)}
+.lbody{flex:1;min-width:0}
+.lopts{display:flex;flex-wrap:wrap;gap:8px}
+.lopt{font-family:var(--sans);font-size:14.5px;font-weight:600;
+  background:var(--sand2);color:var(--ink);border:1px solid var(--line);
+  border-radius:999px;padding:8px 15px;cursor:pointer}
+.lopt.ok{background:var(--sea-soft);color:var(--sea);border-color:var(--sea)}
+.lopt.no{background:var(--coral-soft);border-color:var(--coral);opacity:.7}
+.lq.done .lopt:not(.ok){opacity:.45}
+.lq .len{visibility:hidden;margin-top:8px}
+.lq.done .len{visibility:visible}
+.lscore{font-family:var(--round);font-weight:800;font-size:13px;
+  color:var(--sea);margin-left:10px;vertical-align:middle}
+.lq.ltype{flex-wrap:wrap}
+.lq.ltype .rev{border-bottom:none;padding:6px 0 0}
+
 /* tappable tense names inside verb sheets */
 .tlink{background:none;border:none;padding:0;font:inherit;color:var(--ink);
   text-align:left;cursor:pointer;
@@ -1265,7 +1304,7 @@ textarea.free-write:focus{border-color:var(--accent)}
 
 TAB_ORDER = [
     ("contents", "Contents"), ("book", "The Book"), ("grammar", "Grammar"),
-    ("practice", "Practice"),
+    ("listen", "Listen"), ("practice", "Practice"),
     ("answers", "Answers"), ("flashcards", "Flashcards"),
     ("cheatsheets", "Cheat Sheets"), ("tests", "Tests"),
 ]
@@ -1282,7 +1321,7 @@ def _index_json():
 
 def _to_tabs(html):
     """Rewrite cross-file links into in-page tab switches."""
-    m = {"index.html": "contents", "book.html": "book", "grammar.html": "grammar",
+    m = {"index.html": "contents", "book.html": "book", "grammar.html": "grammar", "listen.html": "listen",
          "practice.html": "practice",
          "answers.html": "answers", "flashcards.html": "flashcards",
          "cheatsheets.html": "cheatsheets", "tests.html": "tests"}
@@ -1381,13 +1420,13 @@ def build_artifact(bodies):
     if(!VOICE) VOICE=vs.filter(function(v){return /^es/i.test(v.lang||'');})[0]||null;
   }
   if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
-  function speak(text, el){
+  function speak(text, el, rate){
     if(!('speechSynthesis' in window)||!text) return;
     try{
       speechSynthesis.cancel();
       var u=new SpeechSynthesisUtterance(text);
       if(VOICE){u.voice=VOICE; u.lang=VOICE.lang;} else u.lang='es-US';
-      u.rate=SLOW?0.6:0.92;
+      u.rate=rate||(SLOW?0.6:0.92);
       if(el){el.classList.add('speaking');
         u.onend=u.onerror=function(){el.classList.remove('speaking');};}
       speechSynthesis.speak(u);
@@ -1461,6 +1500,18 @@ def build_artifact(bodies):
     if(rb){ var ans=rb.nextElementSibling;
       if(ans) ans.classList.add('show');
       rb.style.display='none'; speak(rb.getAttribute('data-es')); return; }
+    // listen tab: play + option grading
+    var lp=e.target.closest('.lplay');
+    if(lp){ speak(lp.getAttribute('data-es'), null, lRate()); return; }
+    var lo=e.target.closest('.lopt');
+    if(lo){ var lq=lo.closest('.lq');
+      if(lq.classList.contains('done')) return;
+      if(lo.getAttribute('data-ok')==='1'){
+        lo.classList.add('ok'); lq.classList.add('done');
+        speak(lq.querySelector('.lplay').getAttribute('data-es'));
+        updLScore(lq.getAttribute('data-sec'));
+      } else { lo.classList.add('no'); }
+      return; }
     var ra=e.target.closest('.rev-ans.show');
     if(ra){ speak(ra.textContent); return; }
     var cd=e.target.closest('.card[data-key],.gcard[data-key],.tlink[data-key]');
@@ -1563,6 +1614,30 @@ def build_artifact(bodies):
     });
   }
 
+  // ---------- listen tab: speed dial + scores ----------
+  var lrateEl=document.getElementById('lrate'), lrateVal=document.getElementById('lrateval');
+  function lRate(){ return lrateEl ? (+lrateEl.value)/100 : 0.8; }
+  if(lrateEl){
+    try{var sv=localStorage.getItem('wbLRate'); if(sv){lrateEl.value=sv;}}catch(e){}
+    lrateVal.textContent=lrateEl.value+'%';
+    lrateEl.addEventListener('input', function(){
+      lrateVal.textContent=lrateEl.value+'%';
+      try{localStorage.setItem('wbLRate', lrateEl.value);}catch(e){}
+    });
+  }
+  function updLScore(sec){
+    if(!sec) return;
+    var all=document.querySelectorAll('.lq[data-sec="'+sec+'"]');
+    var done=document.querySelectorAll('.lq[data-sec="'+sec+'"].done').length;
+    var el=document.getElementById('lscore-'+sec);
+    if(!el) return;
+    var best=0;
+    try{best=+(localStorage.getItem('wbLBest:'+sec)||0);
+      if(done>best){best=done; localStorage.setItem('wbLBest:'+sec, best);}}catch(e){}
+    el.textContent=done+'/'+all.length+(best?' · best '+best:'');
+  }
+  updLScore('l1'); updLScore('l2');
+
   // one-time hint toast
   try{
     if(!localStorage.getItem('wbHintSeen')){
@@ -1602,9 +1677,9 @@ def build_artifact(bodies):
             '<button class="bn-item" data-tab="flashcards">'
             '<svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M8 6V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"/></svg>'
             'Cards</button>'
-            '<button class="bn-item" data-tab="tests">'
-            '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 5-6"/></svg>'
-            'Tests</button>'
+            '<button class="bn-item" data-tab="listen">'
+            '<svg viewBox="0 0 24 24"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="7" rx="2"/><rect x="17" y="13" width="4" height="7" rx="2"/></svg>'
+            'Listen</button>'
             '</nav>'
             '<div class="accent-bar" id="accentBar">'
             + "".join(f'<button type="button" data-ch="{c}">{c}</button>'
@@ -1720,6 +1795,7 @@ if __name__ == "__main__":
         "answers":     build_answers(),
         "flashcards":  build_flashcards(),
         "grammar":     build_grammar(),
+        "listen":      build_listen(),
         "cheatsheets": build_cheats(),
         "tests":       build_tests(),
     }
