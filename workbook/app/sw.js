@@ -1,6 +1,6 @@
 /* Offline cache for the standalone workbook app.
    CACHE includes a content hash so every new build replaces the old one. */
-const CACHE = 'hablar-workbook-b49adba59e';
+const CACHE = 'hablar-workbook-67243ef1ba';
 const ASSETS = ['./', './index.html', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', e => {

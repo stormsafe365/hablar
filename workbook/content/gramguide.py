@@ -413,21 +413,45 @@ TOPICS = [
         ("is there food?","¿hay comida?")],
 },
 {
- "t": "Frequency words", "d": "Always, sometimes, never — how often.",
+ "t": "Frequency words", "d": "Always, usually, sometimes, never — how often.",
  "chips": [("siempre","g"),("a veces","g"),("nunca","a")],
  "body": (
-   _gtable(["Spanish","English"],[
-     [_es("siempre"),"always"],[_es("casi siempre"),"almost always"],
-     [_es("a veces"),"sometimes"],[_es("casi nunca"),"almost never"],
-     [_es("nunca"),"never"],[_es("todos los días"),"every day"],
-     [_es("los fines de semana"),"on weekends"]])
-   + '<p>They usually sit right before the verb or at the end. '
-   'And remember the double negative: '+_es("No voy nunca.")+'</p>'),
+   '<p>From “always” down to “never”:</p>'
+   + _gtable(["Spanish","English"],[
+     [_es("siempre"),"always"],
+     [_es("casi siempre"),"almost always"],
+     [_es("normalmente"),"usually / normally"],
+     [_es("a menudo"),"often"],
+     [_es("a veces"),"sometimes"],
+     [_es("raramente"),"rarely"],
+     [_es("casi nunca"),"almost never"],
+     [_es("nunca"),"never"]])
+   + '<p><b>To be specific</b>, use '+_es("todos los")+' / '
+   +_es("todas las")+' + a plural time period, or '+_es("una vez")+' (once) '
+   'and a number + '+_es("veces")+' (times):</p>'
+   + _gtable(["Spanish","English"],[
+     [_es("todos los días"),"every day"],
+     [_es("todos los domingos"),"every Sunday"],
+     [_es("todas las mañanas"),"every morning"],
+     [_es("los fines de semana"),"on weekends"],
+     [_es("una vez al mes"),"once a month"],
+     [_es("dos veces a la semana"),"twice a week"]])
+   + '<p>They sit right before the verb or at the end of the sentence — '
+   'both are fine: '+_es("Normalmente voy al gimnasio")+' / '
+   +_es("Voy al gimnasio normalmente")+'.</p>'
+   '<p><b>With “no”:</b> '+_es("no")+' still goes directly before the verb: '
+   +_es("Normalmente no cocino los lunes.")+' And for “never,” don\'t say '
+   '“no siempre” — use '+_es("nunca")+', with the double negative when it '
+   'follows the verb: '+_es("No voy nunca.")+'</p>'),
  "ex": [("Siempre tomamos un cafecito después de cenar.","We always have a little coffee after dinner."),
-        ("Hago ejercicio casi todos los días.","I exercise almost every day."),
+        ("Normalmente voy al gimnasio después del trabajo.","I usually go to the gym after work."),
+        ("Hago paddleboard dos veces a la semana.","I paddleboard twice a week."),
+        ("Todos los domingos comemos con su familia.","Every Sunday we eat with his family."),
+        ("Riego las plantas todas las mañanas.","I water the plants every morning."),
         ("A veces veo delfines desde la tabla.","Sometimes I see dolphins from the board.")],
- "pr": [("always","siempre"),("sometimes","a veces"),
-        ("every day","todos los días")],
+ "pr": [("usually","normalmente"),("often","a menudo"),
+        ("rarely","raramente"),("twice a week","dos veces a la semana"),
+        ("every Sunday","todos los domingos"),("once a month","una vez al mes")],
 },
 {
  "t": "“Gustar” — the backwards verb", "d": "Me gusta = it pleases me.",
