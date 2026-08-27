@@ -1243,6 +1243,33 @@ textarea.free-write:focus{border-color:var(--accent)}
 .gcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .sh-body .gg-t{font-family:var(--serif);font-size:28px;font-weight:700;margin:2px 0 0}
 
+/* ---------- floating "jump to section" ---------- */
+h1,h2{scroll-margin-top:74px}
+.jump-btn{position:fixed;right:14px;bottom:18px;z-index:70;
+  display:flex;align-items:center;gap:7px;
+  font-family:var(--round);font-weight:800;font-size:13px;color:var(--ink);
+  background:color-mix(in srgb,var(--paper) 94%,transparent);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border:1px solid var(--line);border-radius:999px;padding:10px 16px;
+  box-shadow:var(--hover-shadow);cursor:pointer}
+.jump-btn .jb-ic{color:var(--accent);font-size:14px}
+@media (max-width:640px){.jump-btn{bottom:104px}}
+.jump-panel{position:fixed;right:14px;bottom:64px;z-index:71;
+  width:min(320px,86vw);max-height:56vh;overflow-y:auto;
+  background:var(--paper);border:1px solid var(--line);border-radius:18px;
+  box-shadow:var(--hover-shadow);padding:8px;
+  opacity:0;pointer-events:none;transform:translateY(8px);
+  transition:opacity .18s ease,transform .18s ease}
+.jump-panel.show{opacity:1;pointer-events:auto;transform:none}
+@media (max-width:640px){.jump-panel{bottom:150px}}
+.jp-item{display:block;width:100%;text-align:left;background:none;border:none;
+  font-family:var(--sans);font-size:14px;font-weight:600;color:var(--ink);
+  padding:8px 12px;border-radius:10px;cursor:pointer}
+.jp-item:hover{background:var(--sand2)}
+.jp-item.l1{font-family:var(--serif);font-size:15px;font-weight:700}
+.jp-item.l2{padding-left:26px;color:var(--soft);font-weight:500}
+@media (prefers-reduced-motion: reduce){.jump-panel{transition:none}}
+
 /* ---------- daily review ---------- */
 .rev-hero{display:flex;align-items:center;justify-content:space-between;gap:14px;
   background:linear-gradient(135deg,var(--sea) 0%,#8ee8c2 100%);color:#132018;
@@ -1402,6 +1429,43 @@ def build_artifact(bodies):
       b.classList.toggle('on', b.dataset.tab===name); });
     window.scrollTo({top:0,behavior:'instant'});
     hidePop();
+    curTab=name;
+    if(typeof renderJump==='function') renderJump(name);
+  }
+  var curTab='contents';
+
+  // ---------- floating "jump to section" ----------
+  var jumpSecs={}, jumpBtn=null, jumpPanel=null;
+  function escT(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+  function buildJump(){
+    jumpBtn=document.getElementById('jumpBtn');
+    jumpPanel=document.getElementById('jumpPanel');
+    document.querySelectorAll('.tab').forEach(function(sec){
+      var tab=sec.id.replace('tab-','');
+      var list=[];
+      sec.querySelectorAll('h1, h2').forEach(function(h){
+        if(h.closest('.cover')) return;
+        var t=(h.textContent||'').replace(/[♪·]+\s*$/,'').trim();
+        if(!t) return;
+        if(t.length>52) t=t.slice(0,52)+'…';
+        list.push({el:h, t:t, l:(h.tagName==='H1'?1:2)});
+      });
+      jumpSecs[tab]=list;
+    });
+  }
+  function hideJump(){ if(jumpPanel) jumpPanel.classList.remove('show'); }
+  function renderJump(tab){
+    if(!jumpBtn||!jumpPanel) return;
+    hideJump();
+    var list=jumpSecs[tab]||[];
+    if(list.length<4){ jumpBtn.style.display='none'; return; }
+    jumpBtn.style.display='';
+    var html='';
+    for(var i=0;i<list.length;i++){
+      html+='<button class="jp-item l'+list[i].l+'" data-ji="'+i+'">'
+           +escT(list[i].t)+'</button>';
+    }
+    jumpPanel.innerHTML=html;
   }
 
   // ---------- Spanish syllabifier + stress (rule-based) ----------
@@ -1537,6 +1601,20 @@ def build_artifact(bodies):
 
   var SEL='.ex .es,.dlg .es,p.es,li.es,span.es,.vocab td:first-child,.conj .v,.chip,.sh-w';
   document.addEventListener('click', function(e){
+    // jump-to-section widget
+    if(e.target.closest('#jumpBtn')){ jumpPanel.classList.toggle('show'); return; }
+    var ji=e.target.closest('.jp-item');
+    if(ji){
+      var it=(jumpSecs[curTab]||[])[+ji.getAttribute('data-ji')];
+      hideJump();
+      if(it&&it.el){
+        var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var far=Math.abs(it.el.getBoundingClientRect().top)>2500;
+        it.el.scrollIntoView({behavior:(rm||far)?'auto':'smooth',block:'start'});
+      }
+      return;
+    }
+    if(!e.target.closest('.jump-panel')) hideJump();
     if(e.target.closest('[data-tab]')){ e.preventDefault(); closeSheet(); show(e.target.closest('[data-tab]').getAttribute('data-tab')); return; }
     if(e.target.closest('.sh-x')){ closeSheet(); return; }
     if(e.target.closest('input,textarea,.accent-bar')) return;
@@ -1797,6 +1875,7 @@ def build_artifact(bodies):
     }
   }catch(e){}
 
+  buildJump();
   show('contents');
 })();
 """
@@ -1834,6 +1913,9 @@ def build_artifact(bodies):
             + "".join(f'<button type="button" data-ch="{c}">{c}</button>'
                       for c in ["á","é","í","ó","ú","ñ","¿","¡"])
             + '</div>'
+            '<button class="jump-btn" id="jumpBtn" aria-haspopup="true">'
+            '<span class="jb-ic">☰</span><span>Jump to</span></button>'
+            '<div class="jump-panel" id="jumpPanel"></div>'
             '<div class="rv-back" id="rvBack"></div>'
             '<div class="rv-modal" id="rvModal" role="dialog" aria-modal="true">'
             '<button class="sh-x" id="rvX" aria-label="Close">&times;</button>'
